@@ -1,0 +1,447 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Personal academic homepage for Lefan Lai, a PhD student researching HCI, XR, AI, LLMs, multimodal AI, and spatial skills training."
+    />
+    <title>Lefan Lai | HCI, XR, and AI Research</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="coastal-voyage" aria-hidden="true">
+      <svg class="voyage-line" viewBox="0 0 96 760" preserveAspectRatio="none">
+        <path class="voyage-line-shadow" d="M48 8C18 112 78 196 44 302C18 386 74 478 48 590C36 642 40 700 56 752" />
+        <path class="voyage-line-main" d="M48 8C18 112 78 196 44 302C18 386 74 478 48 590C36 642 40 700 56 752" />
+      </svg>
+      <div class="scroll-boat">
+        <svg viewBox="0 0 132 92" role="img" aria-label="A small rowboat travelling down the coastal route">
+          <path class="boat-wake wake-one" d="M12 72c18-8 34-8 52 0s34 8 54 0" />
+          <path class="boat-wake wake-two" d="M28 82c14-5 26-5 40 0s26 5 40 0" />
+          <g class="boat-body">
+            <path class="boat-hull" d="M24 54h84c-6 18-20 28-42 28S30 72 24 54Z" />
+            <path class="boat-rim" d="M30 52c18-8 54-8 72 0" />
+            <circle class="rower-head" cx="66" cy="29" r="8" />
+            <path class="rower-body" d="M58 48c2-12 14-12 18 0" />
+            <g class="oar oar-left">
+              <path d="M60 48 28 24" />
+              <path class="paddle" d="M20 18c8-4 15-2 18 4-7 5-14 4-18-4Z" />
+            </g>
+            <g class="oar oar-right">
+              <path d="M72 48 104 24" />
+              <path class="paddle" d="M112 18c-8-4-15-2-18 4 7 5 14 4 18-4Z" />
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <header class="site-header" aria-label="Primary navigation">
+      <nav class="nav shell">
+        <a class="brand" href="#home" aria-label="Go to home">Lefan Lai</a>
+        <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-links" id="nav-links" aria-label="Section links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#research">Research</a>
+          <a href="#education">Education</a>
+          <a href="#experience">Experience</a>
+          <a href="#publications">Publications</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="home" class="hero section-pad" aria-label="Home">
+        <canvas id="spatial-canvas" aria-hidden="true"></canvas>
+        <div class="hero-grid shell">
+          <div class="hero-copy" data-reveal>
+            <p class="eyebrow">HCI / XR / AI / Spatial Learning</p>
+            <h1>Lefan Lai</h1>
+            <p class="hero-role">
+              PhD Student in Human-Computer Interaction, Extended Reality, and AI
+            </p>
+            <p class="tagline">
+              Designing interactive and intelligent technologies for spatial
+              learning, cognition, and human skill development.
+            </p>
+            <div class="hero-actions" aria-label="Primary actions">
+              <a class="button primary" href="#publications">View Publications</a>
+              <a class="button secondary" href="#about">About Me</a>
+              <a class="button secondary" href="#contact">Contact</a>
+            </div>
+          </div>
+
+          <div class="hero-panel" data-reveal data-delay="160">
+            <figure class="portrait-stage" data-tilt-card>
+              <div class="portrait-aura" aria-hidden="true"></div>
+              <div class="portrait-frame">
+                <img
+                  src="assets/profile.jpg"
+                  alt="Portrait of Lefan Lai"
+                />
+              </div>
+              <figcaption class="portrait-caption">
+                <span>Human-centered systems</span>
+                <strong>HCI / XR / AI</strong>
+              </figcaption>
+              <div class="coastal-stamp" aria-hidden="true">
+                <span>University of Auckland</span>
+                <strong>PhD Student</strong>
+              </div>
+              <div class="sun-disc" aria-hidden="true"></div>
+              <div class="portrait-note note-one" aria-hidden="true">spatial learning</div>
+              <div class="portrait-note note-two" aria-hidden="true">multimodal AI</div>
+              <div class="portrait-note note-three" aria-hidden="true">extended reality</div>
+              <div class="portrait-thread thread-one" aria-hidden="true"></div>
+              <div class="portrait-thread thread-two" aria-hidden="true"></div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section section-pad" data-reveal>
+        <div class="shell narrow">
+          <p class="section-kicker">About</p>
+          <p class="lead">
+            I am currently a PhD student at the
+            <a href="https://www.auckland.ac.nz/" target="_blank" rel="noopener noreferrer">University of Auckland</a>,
+            New Zealand. My PhD is fully funded through a
+            <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/endeavour-fund/currently-funded-smart-ideas/university-of-auckland-smart-ideas-funded-projects" target="_blank" rel="noopener noreferrer">Smart Ideas project supported by MBIE</a>.
+          </p>
+          <p>
+            I am jointly supervised by
+            <a href="https://profiles.auckland.ac.nz/bwue001" target="_blank" rel="noopener noreferrer">Associate Professor Burkhard Wuensche</a>
+            and
+            <a href="https://profiles.auckland.ac.nz/mark-billinghurst" target="_blank" rel="noopener noreferrer">Professor Mark Billinghurst</a>,
+            with each supervisor contributing equally to my PhD supervision. I
+            am affiliated with both the Graphics Lab and the
+            <a href="https://empathiccomputing.org/" target="_blank" rel="noopener noreferrer">Empathic Computing Lab</a>.
+          </p>
+          <p>
+            Before starting my PhD, I completed a Master of Computer Science at
+            the
+            <a href="https://www.sydney.edu.au/" target="_blank" rel="noopener noreferrer">University of Sydney</a>,
+            where I worked in the
+            <a href="https://www.aid-lab.org/team" target="_blank" rel="noopener noreferrer">AID-Lab</a>
+            under the supervision of
+            <a href="https://bsyiem.github.io/" target="_blank" rel="noopener noreferrer">Dr Brandon Syiem</a>
+            and
+            <a href="https://zhannina.github.io/about/" target="_blank" rel="noopener noreferrer">Dr Zhanna Sarsenbayeva</a>.
+            I received my Bachelor's degree in Software Engineering from
+            Nanchang University.
+          </p>
+          <p>
+            My research interests include Human-Computer Interaction, Extended
+            Reality and Mixed Reality, Artificial Intelligence, Large Language
+            Models, multimodal AI, and spatial skills training. I am
+            particularly interested in how interactive and intelligent
+            technologies can be designed to support spatial learning, cognition,
+            and human skill development.
+          </p>
+          <p>
+            In addition to applied HCI and XR research, I am also interested in
+            AI and LLM algorithms, especially efficient, reliable, and
+            human-centred methods for large language models and multimodal
+            systems. My current research explores immersive environments,
+            AI-driven systems, and adaptive interaction techniques for training
+            and assessing spatial skills in educational contexts.
+          </p>
+        </div>
+      </section>
+
+      <section id="research" class="section section-pad tinted">
+        <div class="shell">
+          <div class="section-heading" data-reveal>
+            <p class="section-kicker">Research Interests</p>
+            <h2>Four threads that shape the work.</h2>
+          </div>
+
+          <div class="research-map" data-reveal>
+            <svg class="harbour-route" viewBox="0 0 1120 520" aria-hidden="true">
+              <path class="route-shadow" d="M142 318C292 118 420 128 536 230S738 424 978 184" />
+              <path class="route-line" d="M142 318C292 118 420 128 536 230S738 424 978 184" />
+              <circle class="route-point point-one" cx="142" cy="318" r="8" />
+              <circle class="route-point point-two" cx="424" cy="148" r="8" />
+              <circle class="route-point point-three" cx="704" cy="356" r="8" />
+              <circle class="route-point point-four" cx="978" cy="184" r="8" />
+            </svg>
+
+            <article class="interest-card island-card accent-green island-one" data-reveal data-delay="0">
+              <div class="interest-visual hci-visual" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path class="screen" d="M4 5h16v10H4z" />
+                  <path d="M8 19h8M12 15v4" />
+                  <path class="hand" d="M7 10c1.6-1 3.1-.9 4.5.4 1.2 1 2.7 1.2 4.5.1" />
+                  <path class="cursor" d="m15 8 3 3-2.1.4-.7 2.1-3-3 2.8-.5z" />
+                </svg>
+              </div>
+              <h3>Human-Computer Interaction</h3>
+              <p>
+                Designing and evaluating interactive systems that support human
+                cognition, learning, and experience.
+              </p>
+            </article>
+
+            <article class="interest-card island-card accent-purple island-two" data-reveal data-delay="80">
+              <div class="interest-visual ai-visual" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path class="node-line" d="M7 7h10M7 17h10M7 7l10 10M17 7 7 17" />
+                  <circle class="node n1" cx="7" cy="7" r="2.2" />
+                  <circle class="node n2" cx="17" cy="7" r="2.2" />
+                  <circle class="node n3" cx="7" cy="17" r="2.2" />
+                  <circle class="node n4" cx="17" cy="17" r="2.2" />
+                  <circle class="core" cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+              <h3>AI, LLMs, and Multimodal AI</h3>
+              <p>
+                Developing and studying intelligent systems that are efficient,
+                reliable, and human-centred.
+              </p>
+            </article>
+
+            <article class="interest-card island-card accent-sand island-three" data-reveal data-delay="160">
+              <div class="interest-visual spatial-visual" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path class="cube-front" d="M7 9h8v8H7z" />
+                  <path class="cube-top" d="m7 9 3-3h8l-3 3z" />
+                  <path class="cube-side" d="m15 9 3-3v8l-3 3z" />
+                  <path class="path" d="M5 19c3-1.4 5.7-1 8 .9 2.1 1.7 4.1 1.7 6 0" />
+                </svg>
+              </div>
+              <h3>Spatial Skills Training</h3>
+              <p>
+                Designing adaptive and interactive tools for training spatial
+                reasoning, STEM-related skills, and human skill development.
+              </p>
+            </article>
+
+            <article class="interest-card island-card accent-blue island-four" data-reveal data-delay="240">
+              <div class="interest-visual xr-visual" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path class="headset" d="M5 9.5c0-2 1.6-3.5 3.5-3.5h7C17.4 6 19 7.5 19 9.5V13c0 1.7-1.3 3-3 3h-1.2l-1.1-2h-3.4l-1.1 2H8c-1.7 0-3-1.3-3-3z" />
+                  <path class="panel" d="M3.5 5.5 8 3v4.8L3.5 10zM16 3l4.5 2.5V10L16 7.8z" />
+                  <path d="M8.4 11h2M13.6 11h2" />
+                </svg>
+              </div>
+              <h3>Extended Reality</h3>
+              <p>
+                Exploring how virtual and physical environments shape
+                perception, attention, interaction, and spatial behaviour.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="education" class="section section-pad">
+        <div class="shell">
+          <div class="section-heading" data-reveal>
+            <p class="section-kicker">Education</p>
+            <h2>A research path across software engineering, computer science, and HCI.</h2>
+          </div>
+
+          <div class="timeline" data-reveal>
+            <article class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <p class="project-meta">2026.5 - Present</p>
+                <h3>Doctor of Philosophy</h3>
+                <p class="institution">The University of Auckland, New Zealand</p>
+                <ul>
+                  <li>Fully funded PhD position supported by a Smart Ideas research project.</li>
+                  <li>Research Area: HCI, LLMs, AI, MR, and Education.</li>
+                  <li>Supervisors: Professor Mark Billinghurst and Associate Professor Burkhard Wuensche.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <p class="project-meta">2024.7 - 2026.1</p>
+                <h3>Master of Computer Science</h3>
+                <p class="institution">The University of Sydney, Australia</p>
+                <ul>
+                  <li>Weighted Average Mark: 85.75, High Distinction.</li>
+                  <li>Thesis: Searching Through Complex Worlds.</li>
+                  <li>Thesis Grade: 92, High Distinction.</li>
+                  <li>Supervisors: Dr Brandon Syiem and Dr Zhanna Sarsenbayeva.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <p class="project-meta">2019.9 - 2023.6</p>
+                <h3>Bachelor of Software Engineering</h3>
+                <p class="institution">Nanchang University, China</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="section section-pad">
+        <div class="shell">
+          <div class="section-heading" data-reveal>
+            <p class="section-kicker">Selected Research Experience</p>
+            <h2>Research projects across MR interaction, spatial cognition, and multimodal AI.</h2>
+          </div>
+
+          <div class="project-list">
+            <article class="project-card research-card" data-reveal data-delay="0" data-tilt-card>
+              <div>
+                <p class="project-meta">The University of Sydney | 2025.2 - 2025.9</p>
+                <h3>Searching Through Complex Worlds: Visual Search and Spatial Regularity Memory in Mixed Reality</h3>
+                <p>
+                  This project investigates how physical surroundings, virtual
+                  depth cues, and task demands shape visual search and spatial
+                  regularity memory in mixed reality. It examines how users
+                  search for virtual targets in complex environments and how
+                  repeated spatial configurations influence performance.
+                </p>
+                <p class="contribution">
+                  Led the entire project, designing and executing
+                  all stages from conception to completion.
+                </p>
+              </div>
+              <div class="tag-row" aria-label="Keywords">
+                <span>Mixed Reality</span>
+                <span>Visual Search</span>
+                <span>Spatial Regularity</span>
+                <span>HCI</span>
+              </div>
+            </article>
+
+            <article class="project-card research-card" data-reveal data-delay="90" data-tilt-card>
+              <div>
+                <p class="project-meta">The Hong Kong University of Science and Technology | 2026.3 - 2026.5</p>
+                <h3>Looking Closer When Unsure: VIGOR, A Training-Free Framework for Mitigating Object Hallucination in Multimodal Large Language Models</h3>
+                <p>
+                  This project explores uncertainty-guided local visual
+                  refinement for reducing object hallucination in multimodal
+                  large language models.
+                </p>
+                <p class="contribution">
+                  Contributed to idea refinement, manuscript writing and
+                  revision, experimental design, and implementation.
+                </p>
+              </div>
+              <div class="tag-row" aria-label="Keywords">
+                <span>MLLMs</span>
+                <span>Object Hallucination</span>
+                <span>Training-Free Methods</span>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="publications" class="section section-pad tinted">
+        <div class="shell">
+          <div class="section-heading" data-reveal>
+            <p class="section-kicker">Publications</p>
+            <h2>Selected publication.</h2>
+          </div>
+
+          <article class="publication-feature" data-reveal data-tilt-card>
+            <a
+              class="publication-thumb"
+              href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open ACM publication page"
+            >
+              <img
+                src="assets/teaser.png"
+                alt="Mixed reality visual search teaser showing a headset user interacting with floating interface panels"
+              />
+            </a>
+            <div class="publication-copy">
+              <div class="badge-row" aria-label="Publication badges">
+                <span>CHI 2026</span>
+                <span>Mixed Reality</span>
+                <span>Visual Search</span>
+              </div>
+              <h3>
+                <a
+                  href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Searching Through Complex Worlds: Visual Search and Spatial
+                  Regularity Memory in Mixed Reality
+                </a>
+              </h3>
+              <p class="pub-detail">
+                Lefan Lai, Tinghui Li, Zhanna Sarsenbayeva, Brandon Victor Syiem.
+              </p>
+              <p class="pub-detail">
+                ACM CHI Conference on Human Factors in Computing Systems, CHI 2026.
+              </p>
+              <a
+                class="button primary external-button"
+                href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View ACM DOI
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section section-pad contact-section">
+        <div class="shell contact-grid" data-reveal>
+          <div>
+            <p class="section-kicker">Contact</p>
+            <h2>Open to research conversations about HCI, XR, AI, and spatial learning.</h2>
+            <p>
+              I would be very happy to discuss extended reality, AI, HCI, and
+              spatial learning, and I welcome research collaborations, project
+              ideas, and thoughtful academic conversations.
+            </p>
+          </div>
+          <div class="contact-card postcard-card" data-tilt-card>
+            <div class="postcard-visual" aria-hidden="true">
+              <span class="postcard-mark">Lefan Lai</span>
+              <span class="postcard-line line-a"></span>
+              <span class="postcard-line line-b"></span>
+              <span class="postcard-line line-c"></span>
+              <span class="postcard-wave"></span>
+              <span class="postcard-stamp">NZ</span>
+            </div>
+            <div class="contact-links" aria-label="Contact links">
+              <a class="email-link" href="mailto:llai933@aucklanduni.ac.nz">llai933@aucklanduni.ac.nz</a>
+              <a href="https://scholar.google.com/citations?user=AcSDk90AAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+              <a href="https://nz.linkedin.com/in/lefan-lai-134026322" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell">
+        <p>&copy; <span id="year"></span> Lefan Lai. Built for thoughtful interaction.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+

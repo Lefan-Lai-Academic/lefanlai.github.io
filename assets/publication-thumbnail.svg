@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Mixed reality visual search thumbnail</title>
+  <desc id="desc">A polished abstract scene with spatial grids, floating interface panels, highlighted targets, and mixed reality visual search cues.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fff7"/>
+      <stop offset="0.48" stop-color="#eef8ff"/>
+      <stop offset="1" stop-color="#f6f0ff"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#dff8ff" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#16c784"/>
+      <stop offset="0.48" stop-color="#05b7ff"/>
+      <stop offset="1" stop-color="#7b61ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#113451" flood-opacity="0.18"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.13"/>
+      </feComponentTransfer>
+    </filter>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#1b5f7a" stroke-opacity="0.12" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect width="1280" height="720" fill="url(#grid)"/>
+  <rect width="1280" height="720" filter="url(#grain)" opacity="0.32"/>
+
+  <g opacity="0.54">
+    <path d="M120 560C258 420 352 420 490 500S760 640 1016 390" fill="none" stroke="#05b7ff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M196 154C320 226 438 242 550 198C680 146 796 118 1016 172" fill="none" stroke="#16c784" stroke-width="4" stroke-linecap="round"/>
+    <path d="M696 612C768 486 854 424 956 424C1062 424 1112 336 1160 240" fill="none" stroke="#7b61ff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path d="M182 168h374c30 0 54 24 54 54v252c0 30-24 54-54 54H182c-30 0-54-24-54-54V222c0-30 24-54 54-54Z" fill="url(#panel)" stroke="url(#accent)" stroke-width="3"/>
+    <path d="M724 104h342c28 0 50 22 50 50v190c0 28-22 50-50 50H724c-28 0-50-22-50-50V154c0-28 22-50 50-50Z" fill="url(#panel)" stroke="#05b7ff" stroke-opacity="0.72" stroke-width="3"/>
+    <path d="M770 436h308c28 0 50 22 50 50v122c0 28-22 50-50 50H770c-28 0-50-22-50-50V486c0-28 22-50 50-50Z" fill="url(#panel)" stroke="#16c784" stroke-opacity="0.72" stroke-width="3"/>
+  </g>
+
+  <g transform="translate(166 206)">
+    <rect x="0" y="0" width="392" height="282" rx="24" fill="#ffffff" opacity="0.58"/>
+    <g stroke="#1d4e68" stroke-opacity="0.18" stroke-width="2">
+      <path d="M44 48h304M44 96h304M44 144h304M44 192h304M44 240h304"/>
+      <path d="M72 24v236M144 24v236M216 24v236M288 24v236"/>
+    </g>
+    <circle cx="92" cy="88" r="18" fill="#16c784"/>
+    <circle cx="284" cy="186" r="26" fill="#05b7ff" opacity="0.9"/>
+    <circle cx="284" cy="186" r="52" fill="none" stroke="#05b7ff" stroke-opacity="0.42" stroke-width="6"/>
+    <circle cx="206" cy="130" r="13" fill="#7b61ff"/>
+    <path d="M92 88 206 130 284 186" fill="none" stroke="#17324a" stroke-opacity="0.32" stroke-width="4" stroke-dasharray="8 12"/>
+  </g>
+
+  <g transform="translate(722 148)">
+    <text x="0" y="0" fill="#123047" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="800">MR Visual Search</text>
+    <text x="0" y="48" fill="#3f5c70" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="21" font-weight="600">Depth cues + repeated spatial layouts</text>
+    <rect x="0" y="88" width="132" height="38" rx="19" fill="#16c784"/>
+    <text x="24" y="114" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">target</text>
+    <rect x="152" y="88" width="154" height="38" rx="19" fill="#10345a"/>
+    <text x="176" y="114" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">memory map</text>
+  </g>
+
+  <g transform="translate(774 486)">
+    <text x="0" y="0" fill="#123047" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Spatial regularity</text>
+    <text x="0" y="42" fill="#3f5c70" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="600">Search paths, attention, and learning</text>
+    <path d="M8 84h280" stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(102 92)" opacity="0.9">
+    <rect x="0" y="0" width="178" height="48" rx="24" fill="#123047"/>
+    <text x="24" y="31" fill="#ffffff" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="800">CHI 2026</text>
+  </g>
+
+  <g fill="#123047" opacity="0.28">
+    <circle cx="1120" cy="92" r="7"/>
+    <circle cx="1168" cy="138" r="5"/>
+    <circle cx="1098" cy="610" r="7"/>
+    <circle cx="108" cy="624" r="6"/>
+    <circle cx="612" cy="118" r="5"/>
+    <circle cx="646" cy="598" r="6"/>
+  </g>
+</svg>
