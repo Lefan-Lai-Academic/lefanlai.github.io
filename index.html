@@ -5,12 +5,800 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Personal academic homepage for Lefan Lai, a PhD student researching HCI, XR, AI, LLMs, multimodal AI, and spatial skills training."
+      content="Personal academic website for Lefan Lai, a PhD student researching AI, HCI, LLMs, XR, and spatial skills training."
     />
-    <title>Lefan Lai | HCI, XR, and AI Research</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Lefan Lai | AI, HCI, LLMs, and XR Research</title>
+    <script>
+      document.documentElement.classList.add("js-enabled", "prologue-active");
+    </script>
+    <link rel="stylesheet" href="styles.css?v=html-effects-20260730" />
+    <link rel="stylesheet" href="reboot.css?v=20260825" />
+    <link rel="stylesheet" href="atlas.css?v=20260825-chi-search1" />
   </head>
   <body>
+    <div class="atlas-site" data-atlas-site>
+      <canvas class="atlas-cursor" data-atlas-cursor aria-hidden="true"></canvas>
+
+      <header class="atlas-topbar" aria-label="Primary navigation">
+        <div class="atlas-topbar-inner">
+          <a class="atlas-brand" href="#index" data-atlas-target="index">
+            <strong>Lefan Lai</strong>
+            <span hidden aria-hidden="true"></span>
+          </a>
+          <nav class="atlas-nav" aria-label="Website sections">
+            <button class="atlas-tab is-active" type="button" data-atlas-target="index">Overview</button>
+            <button class="atlas-tab" type="button" data-atlas-target="human" hidden aria-hidden="true">Human</button>
+            <button class="atlas-tab" type="button" data-atlas-target="ai" hidden aria-hidden="true">AI</button>
+            <button class="atlas-tab" type="button" data-atlas-target="space" hidden aria-hidden="true">Space</button>
+            <button class="atlas-tab" type="button" data-atlas-target="news">News</button>
+            <button class="atlas-tab" type="button" data-atlas-target="work">Publications</button>
+            <button class="atlas-tab" type="button" data-atlas-target="about">About</button>
+            <button class="atlas-tab" type="button" data-atlas-target="contact">Contact</button>
+          </nav>
+        </div>
+      </header>
+
+      <main class="atlas-main" aria-live="polite">
+        <section class="atlas-panel is-active" data-atlas-panel="index" aria-label="Research index">
+          <div class="index-layout">
+            <div class="index-copy">
+              <p class="atlas-kicker">University of Auckland PhD Student</p>
+              <h1 class="atlas-title interactive-name" data-interactive-name aria-label="Lefan Lai">
+                <span class="name-line name-first" data-name="Lefan">Lefan</span>
+                <span class="name-line name-last" data-name="Lai">Lai</span>
+              </h1>
+              <p class="atlas-lead">
+                My name is Lefan Lai (赖乐凡), and I am currently pursuing a PhD
+                at the University of Auckland. Thank you for visiting my personal website.
+              </p>
+              <div class="index-actions" aria-label="Primary paths">
+                <button class="text-link" type="button" data-atlas-target="news">
+                  <span class="action-number" aria-hidden="true">01</span>
+                  <span class="action-label">News</span>
+                  <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+                <button class="text-link" type="button" data-atlas-target="work">
+                  <span class="action-number" aria-hidden="true">02</span>
+                  <span class="action-label">Publications</span>
+                  <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+                <button class="text-link" type="button" data-atlas-target="about">
+                  <span class="action-number" aria-hidden="true">03</span>
+                  <span class="action-label">About Me</span>
+                  <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+                <button class="text-link" type="button" data-atlas-target="contact">
+                  <span class="action-number" aria-hidden="true">04</span>
+                  <span class="action-label">Contact</span>
+                  <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="atlas-map" aria-label="Interactive publication topic map">
+              <canvas class="atlas-map-canvas" data-atlas-map-canvas aria-hidden="true"></canvas>
+              <div class="vigor-echo" data-vigor-echo aria-hidden="true">
+                <span style="--echo-index: 0"></span>
+                <span style="--echo-index: 1"></span>
+                <span style="--echo-index: 2"></span>
+                <span style="--echo-index: 3"></span>
+                <span style="--echo-index: 4"></span>
+                <span style="--echo-index: 5"></span>
+                <span style="--echo-index: 6"></span>
+              </div>
+              <div class="topic-cloud" data-topic-cloud></div>
+              <button class="map-node node-human" type="button" data-map-node data-graph-core data-graph-topic="human-centered" data-paper-area-shortcut="hci" data-paper-topic-shortcut="human-centered">
+                <strong>Human</strong>
+              </button>
+              <button class="map-node node-hci" type="button" data-map-node data-graph-core data-graph-area="hci" data-paper-area-shortcut="hci">
+                <strong>HCI</strong>
+              </button>
+              <button class="map-node node-ai" type="button" data-map-node data-graph-core data-graph-area="ai" data-paper-area-shortcut="ai">
+                <strong>AI</strong>
+              </button>
+              <button class="map-node node-space" type="button" data-map-node data-graph-core data-graph-topic="mllms" data-paper-area-shortcut="ai" data-paper-topic-shortcut="mllms">
+                <strong>MLLMs</strong>
+              </button>
+              <button class="map-node node-interaction" type="button" data-map-node data-graph-core data-graph-topic="interaction" data-paper-area-shortcut="hci" data-paper-topic-shortcut="interaction">
+                <strong>Interaction</strong>
+              </button>
+              <button class="map-publication-link" type="button" data-map-publication hidden>
+                <span data-map-paper-count>View publication</span>
+                <span aria-hidden="true">&#8594;</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel human-axis" data-atlas-panel="human" hidden aria-label="Human research">
+          <div class="atlas-axis">
+            <div class="axis-label">
+              <p class="atlas-kicker">01 / Human</p>
+              <h2 class="atlas-heading">The person is not a user label.</h2>
+              <p class="atlas-lead">
+                My HCI work begins with people as learners, searchers, collaborators,
+                and spatial thinkers.
+              </p>
+            </div>
+            <div class="axis-list">
+              <article class="axis-item">
+                <span>HCI</span>
+                <div>
+                  <h3>Human-Computer Interaction</h3>
+                  <p>Designing and evaluating interactive systems that support cognition, learning, decision making, and user experience.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>Learning</span>
+                <div>
+                  <h3>Spatial skills and STEM learning</h3>
+                  <p>Studying how interactive tools can help people practise spatial reasoning and develop skills connected to STEM learning.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>Study</span>
+                <div>
+                  <h3>User studies as research instruments</h3>
+                  <p>Using empirical studies to understand attention, memory, perception, task demands, and human skill development.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel ai-axis" data-atlas-panel="ai" hidden aria-label="AI research">
+          <div class="atlas-axis">
+            <div class="axis-label">
+              <p class="atlas-kicker">02 / AI</p>
+              <h2 class="atlas-heading">The model is not the whole intelligence.</h2>
+              <p class="atlas-lead">
+                I also work on technical AI questions, especially reliable and
+                human-centred methods for LLMs and multimodal systems.
+              </p>
+            </div>
+            <div class="axis-list">
+              <article class="axis-item">
+                <span>LLMs</span>
+                <div>
+                  <h3>Large language models</h3>
+                  <p>Investigating LLMs and multimodal LLMs as systems that reason with language, vision, uncertainty, and context.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>Reliability</span>
+                <div>
+                  <h3>Hallucination and uncertainty</h3>
+                  <p>Exploring ways to reduce object hallucination and improve reliability through uncertainty-guided visual refinement.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>Method</span>
+                <div>
+                  <h3>Training-free refinement</h3>
+                  <p>Studying efficient methods that improve model behaviour without requiring expensive retraining pipelines.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel space-axis" data-atlas-panel="space" hidden aria-label="Space research">
+          <div class="atlas-axis">
+            <div class="axis-label">
+              <p class="atlas-kicker">03 / Space</p>
+              <h2 class="atlas-heading">Space changes what we can notice.</h2>
+              <p class="atlas-lead">
+                XR and mixed reality let research questions become embodied:
+                objects, depth, memory, motion, attention, and skill can all be studied together.
+              </p>
+            </div>
+            <div class="axis-list">
+              <article class="axis-item">
+                <span>XR</span>
+                <div>
+                  <h3>Extended reality</h3>
+                  <p>Exploring how virtual and physical environments shape perception, attention, interaction, and spatial behaviour.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>MR</span>
+                <div>
+                  <h3>Mixed reality visual search</h3>
+                  <p>Understanding how people search for virtual information in complex environments and how spatial regularities influence memory.</p>
+                </div>
+              </article>
+              <article class="axis-item">
+                <span>Training</span>
+                <div>
+                  <h3>Spatial skills training</h3>
+                  <p>Designing adaptive interactive tools and games that support spatial reasoning and human skill development.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel" data-atlas-panel="news" hidden aria-label="News">
+          <div>
+            <h2 class="atlas-heading news-heading">News</h2>
+
+            <div class="news-filters" aria-label="Filter news">
+              <div class="news-filter-group" role="group" aria-label="News category">
+                <span>Category</span>
+                <button class="is-active" type="button" data-news-category="all" aria-pressed="true">All</button>
+                <button type="button" data-news-category="social" aria-pressed="false">Social</button>
+                <button type="button" data-news-category="paper" aria-pressed="false">Papers</button>
+              </div>
+              <div class="news-filter-group news-status-filter" role="group" aria-label="Paper status" data-news-status-group hidden>
+                <span>Paper Status</span>
+                <button class="is-active" type="button" data-news-status="accepted" aria-pressed="true">Accepted</button>
+                <button type="button" data-news-status="submitted" aria-pressed="false">Submitted</button>
+              </div>
+            </div>
+
+            <p class="news-count" data-news-count aria-live="polite">Showing 3 updates.</p>
+
+            <div class="news-list" data-news-list>
+              <article class="news-item news-accepted" data-news-item data-news-category="paper" data-news-status="accepted">
+                <time datetime="2026-08">Aug 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Accepted</span></p>
+                  <h3>VIGOR was accepted to Findings of EMNLP 2026.</h3>
+                  <p>
+                    Our paper
+                    <a href="assets/EMNLP2026_VIGOR.pdf" target="_blank" rel="noopener noreferrer"><cite>Looking Closer When Unsure: VIGOR, A Training-Free Framework for Mitigating Object Hallucination in Multimodal Large Language Models</cite></a>
+                    was accepted to Findings of EMNLP 2026.
+                  </p>
+                </div>
+              </article>
+
+              <article class="news-item news-submitted" data-news-item data-news-category="paper" data-news-status="submitted">
+                <time datetime="2026-07">Jul 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Submitted</span></p>
+                  <h3>I submitted my first lead-authored AI paper to AAAI 2027.</h3>
+                  <p>This marked a new step in my technical AI research and my first time leading an AI paper.</p>
+                </div>
+              </article>
+
+              <article class="news-item news-submitted" data-news-item data-news-category="paper" data-news-status="submitted">
+                <time datetime="2026-05">May 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Submitted</span></p>
+                  <h3>VIGOR was resubmitted to EMNLP 2026.</h3>
+                  <p>We submitted a revised version of our multimodal AI paper to EMNLP 2026.</p>
+                </div>
+              </article>
+
+              <article class="news-item news-social" data-news-item data-news-category="social" data-news-status="none">
+                <time datetime="2026-04">Apr 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Social</span></p>
+                  <h3>I attended CHI 2026 in Barcelona.</h3>
+                  <p>I travelled to Barcelona for the CHI conference and presented <em>Searching Through Complex Worlds: Visual Search and Spatial Regularity Memory in Mixed Reality</em>.</p>
+                </div>
+              </article>
+
+              <article class="news-item news-submitted" data-news-item data-news-category="paper" data-news-status="submitted">
+                <time datetime="2026-03">Mar 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Submitted</span></p>
+                  <h3>My first AI paper was submitted to EMNLP 2026.</h3>
+                  <p>
+                    We submitted
+                    <cite>Looking Closer When Unsure: VIGOR</cite>, the first AI paper I contributed to, to EMNLP 2026.
+                  </p>
+                </div>
+              </article>
+
+              <article class="news-item news-accepted" data-news-item data-news-category="paper" data-news-status="accepted">
+                <time datetime="2026-01">Jan 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Accepted</span></p>
+                  <h3>My first paper was accepted at CHI 2026.</h3>
+                  <p>
+                    <a href="https://dl.acm.org/doi/full/10.1145/3772318.3790976" target="_blank" rel="noopener noreferrer"><cite>Searching Through Complex Worlds: Visual Search and Spatial Regularity Memory in Mixed Reality</cite></a>
+                    became my first accepted publication.
+                  </p>
+                </div>
+              </article>
+
+              <article class="news-item news-submitted" data-news-item data-news-category="paper" data-news-status="submitted">
+                <time datetime="2025-09">Sep 2025</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Paper</span><span>Submitted</span></p>
+                  <h3>I submitted my first lead-authored paper to CHI 2026.</h3>
+                  <p>The submission grew from my master's research on visual search and spatial regularity memory in mixed reality.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel" data-atlas-panel="work" hidden aria-label="Publications">
+          <div>
+            <h2 class="atlas-heading publications-heading">Publications</h2>
+
+            <div class="paper-filters" aria-label="Publication filters">
+              <label>
+                <span>Year</span>
+                <select data-paper-filter="year">
+                  <option value="all">All years</option>
+                  <option value="2026">2026</option>
+                </select>
+              </label>
+              <label>
+                <span>Research Area</span>
+                <select data-paper-filter="area">
+                  <option value="all">All research areas</option>
+                  <option value="ai">AI</option>
+                  <option value="hci">HCI</option>
+                  <option value="xr">XR &amp; Spatial</option>
+                </select>
+              </label>
+              <label>
+                <span>Topic</span>
+                <select data-paper-filter="topic">
+                  <option value="all">Choose an area first</option>
+                </select>
+              </label>
+            </div>
+            <p class="filter-status" data-paper-count aria-live="polite">Showing 2 papers.</p>
+
+            <div class="work-list" data-paper-list>
+              <article
+                class="paper-entry paper-chi"
+                data-paper
+                data-paper-key="chi-search-2026"
+                data-graph-animation="chi-search"
+                data-year="2026"
+                data-area="hci xr"
+                data-topic="human-centered interaction visual-search mixed-reality spatial-learning"
+              >
+                <a class="paper-visual chi-paper-visual" href="assets/CHI2026_Searching_Through_Complex_Worlds.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="Read Searching Through Complex Worlds as a PDF">
+                  <img src="assets/teaser.png" alt="Mixed reality visual search teaser" />
+                  <span class="chi-search-scene" aria-hidden="true">
+                    <span class="chi-search-label">Search trace</span>
+                    <span class="chi-route route-monitor-panel"></span>
+                    <span class="chi-route route-panel-headset"></span>
+                    <span class="chi-route route-headset-book"></span>
+                    <span class="chi-route route-book-monitor"></span>
+                    <span class="chi-target target-monitor" style="--search-order: 0" data-search="01"></span>
+                    <span class="chi-target target-panel" style="--search-order: 1" data-search="02"></span>
+                    <span class="chi-target target-headset" style="--search-order: 2" data-search="03"></span>
+                    <span class="chi-target target-book" style="--search-order: 3" data-search="04"></span>
+                  </span>
+                </a>
+                <div>
+                  <div class="paper-meta" aria-label="Publication venue and track">
+                    <span>CHI 2026</span>
+                    <span>Main Conference</span>
+                  </div>
+                  <h3>
+                    <a href="https://dl.acm.org/doi/full/10.1145/3772318.3790976" target="_blank" rel="noopener noreferrer">
+                      Searching Through Complex Worlds: Visual Search and Spatial Regularity Memory in Mixed Reality
+                    </a>
+                  </h3>
+                  <p class="paper-authors">
+                    <span class="author-corresponding"><strong class="author-self">Lefan Lai</strong> <span class="corresponding-mark" tabindex="0" role="img" aria-label="Corresponding author" data-tooltip="Corresponding author">&#9993;</span></span>,
+                    Tinghui Li, Zhanna Sarsenbayeva, Brandon Victor Syiem.
+                  </p>
+                  <p class="paper-venue">
+                    <span class="venue-name">ACM Conference on Human Factors in Computing Systems</span>
+                  </p>
+                  <div class="paper-tags" aria-label="Filter by research hierarchy">
+                    <div class="taxonomy-areas" aria-label="Research areas">
+                      <button class="tag-hci taxonomy-area" type="button" data-paper-area="hci">HCI</button>
+                      <button class="tag-xr taxonomy-area" type="button" data-paper-area="xr">XR &amp; Spatial</button>
+                      <button class="taxonomy-toggle" type="button" data-topic-toggle aria-expanded="false" aria-controls="chi-topics">Show topics</button>
+                    </div>
+                    <div class="taxonomy-topics" id="chi-topics" aria-label="Research topics" hidden>
+                      <button class="tag-human" type="button" data-paper-topic="human-centered" data-parent-area="hci">Human-Centred</button>
+                      <button class="tag-interaction" type="button" data-paper-topic="interaction" data-parent-area="hci">Interaction</button>
+                      <button class="tag-search" type="button" data-paper-topic="visual-search" data-parent-area="hci">Visual Search</button>
+                      <button class="tag-mr" type="button" data-paper-topic="mixed-reality" data-parent-area="xr">Mixed Reality</button>
+                      <button class="tag-spatial" type="button" data-paper-topic="spatial-learning" data-parent-area="xr">Spatial Learning</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="paper-entry paper-emnlp"
+                data-paper
+                data-paper-key="vigor-2026"
+                data-graph-animation="vigor-frames"
+                data-year="2026"
+                data-area="ai"
+                data-topic="mllms object-hallucination visual-grounding training-free"
+              >
+                <a class="paper-visual vigor-paper-visual" href="assets/EMNLP2026_VIGOR.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="Read VIGOR as a PDF">
+                  <img src="assets/vigor-scene.jpg" alt="VIGOR visual grounding example showing a sink area" />
+                  <span class="vigor-badge" aria-hidden="true">VIGOR</span>
+                  <span class="vigor-focus focus-top-left" data-view="01" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-top-right" data-view="02" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-bottom-left" data-view="03" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-bottom-right" data-view="04" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-center" data-view="05" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-middle-left" data-view="06" aria-hidden="true"></span>
+                  <span class="vigor-focus focus-middle-right" data-view="07" aria-hidden="true"></span>
+                </a>
+                <div>
+                  <div class="paper-meta" aria-label="Publication venue and track">
+                    <span>EMNLP 2026</span>
+                    <span>Findings</span>
+                  </div>
+                  <h3>
+                    <a href="assets/EMNLP2026_VIGOR.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf">
+                      Looking Closer When Unsure: VIGOR, A Training-Free Framework for Mitigating Object Hallucination in Multimodal Large Language Models
+                    </a>
+                  </h3>
+                  <p class="paper-authors">
+                    Jiaxin Li, Yixiang Chen, <strong class="author-self">Lefan Lai</strong>, Geng Zhao, Xiaohan Long,
+                    <span class="author-corresponding">Xuming Hu <span class="corresponding-mark" tabindex="0" role="img" aria-label="Corresponding author" data-tooltip="Corresponding author">&#9993;</span></span>.
+                  </p>
+                  <p class="paper-venue">
+                    <span class="venue-name">Conference on Empirical Methods in Natural Language Processing</span>
+                  </p>
+                  <div class="paper-tags" aria-label="Filter by research hierarchy">
+                    <div class="taxonomy-areas" aria-label="Research areas">
+                      <button class="tag-ai taxonomy-area" type="button" data-paper-area="ai">AI</button>
+                      <button class="taxonomy-toggle" type="button" data-topic-toggle aria-expanded="false" aria-controls="emnlp-topics">Show topics</button>
+                    </div>
+                    <div class="taxonomy-topics" id="emnlp-topics" aria-label="Research topics" hidden>
+                      <button class="tag-multimodal" type="button" data-paper-topic="mllms" data-parent-area="ai">MLLMs</button>
+                      <button class="tag-hallucination" type="button" data-paper-topic="object-hallucination" data-parent-area="ai">Object Hallucination</button>
+                      <button class="tag-grounding" type="button" data-paper-topic="visual-grounding" data-parent-area="ai">Visual Grounding</button>
+                      <button class="tag-training" type="button" data-paper-topic="training-free" data-parent-area="ai">Training-Free</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel" data-atlas-panel="about" hidden aria-label="About Lefan Lai">
+          <div class="about-layout">
+            <div>
+              <h2 class="atlas-heading about-heading">About</h2>
+              <div class="about-text">
+                <p>
+                  I am currently a PhD student at the
+                  <a href="https://www.auckland.ac.nz/" target="_blank" rel="noopener noreferrer">University of Auckland</a>,
+                  New Zealand. My PhD is fully funded through a
+                  <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/endeavour-fund/currently-funded-smart-ideas/university-of-auckland-smart-ideas-funded-projects" target="_blank" rel="noopener noreferrer">Smart Ideas project supported by MBIE</a>.
+                  I am jointly supervised by
+                  <a href="https://profiles.auckland.ac.nz/bwue001" target="_blank" rel="noopener noreferrer">Associate Professor Burkhard Wuensche</a>
+                  and
+                  <a href="https://profiles.auckland.ac.nz/mark-billinghurst" target="_blank" rel="noopener noreferrer">Professor Mark Billinghurst</a>,
+                  with each supervisor contributing equally to my PhD supervision. I am affiliated with both the
+                  <a href="https://www.youtube.com/playlist?list=PLjnTE4jWQKxf-V8BsJ-uP1MWf2zhyLXWi" target="_blank" rel="noopener noreferrer">Graphics Lab</a>
+                  and the
+                  <a href="https://empathiccomputing.org/" target="_blank" rel="noopener noreferrer">Empathic Computing Lab</a>.
+                </p>
+                <p>
+                  Before starting my PhD, I completed a Master of Computer Science at the
+                  <a href="https://www.sydney.edu.au/" target="_blank" rel="noopener noreferrer">University of Sydney</a>,
+                  where I worked in the
+                  <a href="https://www.aid-lab.org/team" target="_blank" rel="noopener noreferrer">AID-Lab</a>
+                  under the supervision of
+                  <a href="https://bsyiem.github.io/" target="_blank" rel="noopener noreferrer">Dr Brandon Syiem</a>
+                  and
+                  <a href="https://zhannina.github.io/about/" target="_blank" rel="noopener noreferrer">Dr Zhanna Sarsenbayeva</a>.
+                </p>
+                <p>
+                  I received my Bachelor's degree in Software Engineering from
+                  Nanchang University. My research interests include
+                  Human-Computer Interaction, Artificial Intelligence, Large
+                  Language Models, Extended Reality and Mixed Reality, multimodal
+                  AI, spatial skills training, visual search, and human-centred
+                  intelligent systems.
+                </p>
+              </div>
+
+              <div class="timeline" aria-label="Education timeline">
+                <article>
+                  <span>2026.5 - Present</span>
+                  <div>
+                    <h3>PhD in Human-Computer Interaction</h3>
+                    <p>The University of Auckland, New Zealand.</p>
+                  </div>
+                </article>
+                <article>
+                  <span>2024.7 - 2026.1</span>
+                  <div>
+                    <h3>Master of Computer Science</h3>
+                    <p>The University of Sydney, Australia.</p>
+                    <p class="timeline-wam"><span>WAM</span> 85.75 <em>High Distinction</em></p>
+                  </div>
+                </article>
+                <article>
+                  <span>2019.9 - 2023.6</span>
+                  <div>
+                    <h3>Bachelor of Software Engineering</h3>
+                    <p>Nanchang University, China</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <figure class="portrait-file">
+              <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+              <figcaption>
+                <strong>Lefan Lai</strong>
+                <span>PhD student in HCI, AI, XR, and spatial learning</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="atlas-panel" data-atlas-panel="contact" hidden aria-label="Contact">
+          <div class="contact-layout" data-letter-layout>
+            <canvas class="contact-letter-canvas" data-letter-canvas aria-hidden="true"></canvas>
+            <div>
+              <h2 class="atlas-heading contact-heading">Open conversation</h2>
+              <p class="atlas-lead contact-intro">
+                I am always happy to discuss any question, explore unfamiliar
+                territory, and follow ideas wherever curiosity leads.
+              </p>
+              <div class="contact-lines" aria-label="Contact links">
+                <a class="email-link" href="mailto:llai933@aucklanduni.ac.nz" data-letter-link="email">llai933@aucklanduni.ac.nz</a>
+                <a href="https://scholar.google.com/citations?user=AcSDk90AAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer" data-letter-link="scholar">Google Scholar</a>
+                <a href="https://nz.linkedin.com/in/lefan-lai-134026322" target="_blank" rel="noopener noreferrer" data-letter-link="linkedin">LinkedIn</a>
+              </div>
+            </div>
+            <div class="letter-field" data-letter-field role="img" aria-label="A note from Lefan Lai: A question about people. A problem for AI. An idea worth discussing.">
+              <span class="letter-accessible">Lefan Lai. 赖乐凡, Auckland, New Zealand. A question about people. A problem for AI. An idea worth discussing.</span>
+              <p class="letter-meta" data-letter-meta>赖乐凡 · Auckland, New Zealand</p>
+              <div class="letter-copy" data-letter-copy aria-hidden="true">
+                <p data-letter-text="A question about people."></p>
+                <p data-letter-text="A problem for AI."></p>
+                <p data-letter-text="An idea worth discussing."></p>
+                <span class="letter-cursor" data-letter-cursor></span>
+              </div>
+              <span class="letter-send-mark" aria-hidden="true"></span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="atlas-footer">
+        <p>&copy; <span data-atlas-year></span> Lefan Lai. Built for human-centred intelligent interaction.</p>
+      </footer>
+    </div>
+
+    <div class="reboot-site" data-reboot-site>
+      <div class="reboot-bg" aria-hidden="true"></div>
+      <canvas class="ambient-canvas" data-ambient-canvas aria-hidden="true"></canvas>
+
+      <header class="reboot-nav" aria-label="Primary navigation">
+        <div class="reboot-nav-inner">
+          <a class="reboot-brand" href="#start" data-reboot-target="start">
+            <strong>Lefan Lai</strong>
+            <span>Human / AI / Interaction</span>
+          </a>
+          <nav class="reboot-tabs" aria-label="Portfolio sections">
+            <button class="reboot-tab is-active" type="button" data-reboot-target="start">Start</button>
+            <button class="reboot-tab" type="button" data-reboot-target="me">Me</button>
+            <button class="reboot-tab" type="button" data-reboot-target="ideas">Ideas</button>
+            <button class="reboot-tab" type="button" data-reboot-target="paper">Paper</button>
+            <button class="reboot-tab" type="button" data-reboot-target="contact">Contact</button>
+          </nav>
+        </div>
+      </header>
+
+      <main class="reboot-shell" aria-live="polite">
+        <section class="reboot-panel panel-paper is-active" data-reboot-panel="start" aria-label="Research opening">
+          <div class="start-layout">
+            <div>
+              <p class="eyebrow">A research space</p>
+              <h1 class="reboot-h1">Human, AI, Interaction.</h1>
+              <p class="reboot-lead">
+                What is a person when intelligence begins to speak back?
+                What is AI when it enters perception, space, and learning?
+                My work studies the moments where people, intelligent systems,
+                and spatial experience begin to shape one another.
+              </p>
+              <div class="reboot-actions">
+                <button class="reboot-button primary" type="button" data-reboot-target="me">Enter the work</button>
+                <button class="reboot-button" type="button" data-reboot-target="ideas">Explore ideas</button>
+              </div>
+            </div>
+
+            <div class="concept-stage" aria-label="Conceptual map of person, AI, and interaction">
+              <span class="flow-line" aria-hidden="true"></span>
+              <span class="flow-line second" aria-hidden="true"></span>
+              <article class="concept-node person">
+                <h2>Person</h2>
+                <p>Memory, attention, skill, uncertainty, movement, and lived experience.</p>
+              </article>
+              <article class="concept-node ai">
+                <h2>AI</h2>
+                <p>Language, vision, reliability, adaptation, hallucination, and collaboration.</p>
+              </article>
+              <div class="interaction-core">Interaction</div>
+              <span class="floating-term">spatial learning</span>
+              <span class="floating-term">mixed reality</span>
+              <span class="floating-term">human-centred systems</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="reboot-panel panel-paper" data-reboot-panel="me" hidden aria-label="About Lefan Lai">
+          <div class="me-layout">
+            <div>
+              <p class="eyebrow">The researcher</p>
+              <h2 class="reboot-h2">Lefan Lai</h2>
+              <div class="text-stack">
+                <p>
+                  I am currently a PhD student at the
+                  <a href="https://www.auckland.ac.nz/" target="_blank" rel="noopener noreferrer">University of Auckland</a>,
+                  New Zealand. My PhD is a fully funded PhD scholarship supported by a
+                  <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/endeavour-fund/currently-funded-smart-ideas/university-of-auckland-smart-ideas-funded-projects" target="_blank" rel="noopener noreferrer">Smart Ideas project supported by MBIE</a>.
+                </p>
+                <p>
+                  I am jointly supervised by
+                  <a href="https://profiles.auckland.ac.nz/bwue001" target="_blank" rel="noopener noreferrer">Associate Professor Burkhard Wuensche</a>
+                  and
+                  <a href="https://profiles.auckland.ac.nz/mark-billinghurst" target="_blank" rel="noopener noreferrer">Professor Mark Billinghurst</a>,
+                  and I am affiliated with both the
+                  <a href="https://www.youtube.com/playlist?list=PLjnTE4jWQKxf-V8BsJ-uP1MWf2zhyLXWi" target="_blank" rel="noopener noreferrer">Graphics Lab</a>
+                  and the
+                  <a href="https://empathiccomputing.org/" target="_blank" rel="noopener noreferrer">Empathic Computing Lab</a>.
+                </p>
+                <p>
+                  Before starting my PhD, I completed a Master of Computer Science at the
+                  <a href="https://www.sydney.edu.au/" target="_blank" rel="noopener noreferrer">University of Sydney</a>,
+                  where I worked in the
+                  <a href="https://www.aid-lab.org/team" target="_blank" rel="noopener noreferrer">AID-Lab</a>
+                  under the supervision of
+                  <a href="https://bsyiem.github.io/" target="_blank" rel="noopener noreferrer">Dr Brandon Syiem</a>
+                  and
+                  <a href="https://zhannina.github.io/about/" target="_blank" rel="noopener noreferrer">Dr Zhanna Sarsenbayeva</a>.
+                </p>
+              </div>
+
+              <div class="mini-timeline" aria-label="Education timeline">
+                <article>
+                  <span>2026.5 - Present</span>
+                  <h3>PhD in Human-Computer Interaction</h3>
+                  <p>The University of Auckland, New Zealand</p>
+                </article>
+                <article>
+                  <span>2024.7 - 2026.1</span>
+                  <h3>Master of Computer Science</h3>
+                  <p>The University of Sydney, Australia</p>
+                </article>
+                <article>
+                  <span>2019.9 - 2023.6</span>
+                  <h3>Bachelor of Software Engineering</h3>
+                  <p>Nanchang University, China</p>
+                </article>
+              </div>
+            </div>
+
+            <figure class="profile-note">
+              <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+              <figcaption>
+                <strong>Lefan Lai</strong>
+                <span>PhD student researching AI, HCI, XR, and spatial learning</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="reboot-panel panel-paper ideas-panel" data-reboot-panel="ideas" hidden aria-label="Research ideas">
+          <div class="ideas-heading">
+            <p class="eyebrow">Thinking map</p>
+            <h2 class="reboot-h2">Ideas to explore</h2>
+            <p class="reboot-lead">
+              I work across pure technical questions in AI and LLMs, and
+              human-centred questions in HCI, XR, mixed reality, and spatial skills.
+              Move the lens to inspect the research language.
+            </p>
+          </div>
+
+          <div class="cloud-lab" data-reboot-cloud>
+            <div class="cloud-stage" data-cloud-stage-v2 aria-label="Research word cloud">
+              <span class="cloud-word major word-ai" style="--x: 20%; --y: 34%; --s: 1.45;">Artificial Intelligence</span>
+              <span class="cloud-word major word-hci" style="--x: 50%; --y: 52%; --s: 1.62;">Human-Computer Interaction</span>
+              <span class="cloud-word major word-llm" style="--x: 75%; --y: 36%; --s: 1.42;">Large Language Models</span>
+              <span class="cloud-word major word-xr" style="--x: 28%; --y: 70%; --s: 1.18;">Extended Reality</span>
+              <span class="cloud-word major word-spatial" style="--x: 70%; --y: 70%; --s: 1.16;">Spatial Skills Training</span>
+              <span class="cloud-word word-ai" style="--x: 12%; --y: 18%; --s: 0.72;">Multimodal AI</span>
+              <span class="cloud-word word-llm" style="--x: 63%; --y: 18%; --s: 0.68;">MLLMs</span>
+              <span class="cloud-word word-hci" style="--x: 39%; --y: 22%; --s: 0.72;">Human Cognition</span>
+              <span class="cloud-word word-xr" style="--x: 86%; --y: 22%; --s: 0.68;">Visual Search</span>
+              <span class="cloud-word word-ai" style="--x: 13%; --y: 55%; --s: 0.62;">Reliable AI</span>
+              <span class="cloud-word word-xr" style="--x: 88%; --y: 56%; --s: 0.62;">Mixed Reality</span>
+              <span class="cloud-word word-llm" style="--x: 18%; --y: 84%; --s: 0.6;">Object Hallucination</span>
+              <span class="cloud-word word-hci" style="--x: 43%; --y: 84%; --s: 0.6;">Interaction Design</span>
+              <span class="cloud-word word-spatial" style="--x: 59%; --y: 84%; --s: 0.58;">STEM Learning</span>
+              <span class="cloud-word word-hci" style="--x: 83%; --y: 84%; --s: 0.58;">User Experience</span>
+              <span class="cloud-word word-llm" style="--x: 33%; --y: 10%; --s: 0.52;">Model Reliability</span>
+              <span class="cloud-word word-ai" style="--x: 69%; --y: 10%; --s: 0.52;">Uncertainty</span>
+              <span class="cloud-word word-xr" style="--x: 11%; --y: 72%; --s: 0.5;">Immersive Systems</span>
+              <span class="cloud-word word-spatial" style="--x: 90%; --y: 72%; --s: 0.5;">Adaptive Training</span>
+            </div>
+            <div class="cloud-lens" data-cloud-lens-v2 aria-hidden="true">
+              <div class="lens-copy" data-lens-copy></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="reboot-panel panel-paper" data-reboot-panel="paper" hidden aria-label="Publication">
+          <div class="paper-layout">
+            <div>
+              <p class="eyebrow">Selected paper</p>
+              <h2 class="reboot-h2">Research in motion</h2>
+              <p class="reboot-lead">
+                A publication becomes a trace of a larger question: how people
+                search, remember, and act when virtual information is placed
+                inside physical space.
+              </p>
+            </div>
+            <article class="publication-note">
+              <a href="https://dl.acm.org/doi/full/10.1145/3772318.3790976" target="_blank" rel="noopener noreferrer">
+                <img src="assets/teaser.png" alt="Mixed reality visual search teaser" />
+              </a>
+              <div>
+                <div class="badge-row">
+                  <span>CHI 2026</span>
+                  <span>Mixed Reality</span>
+                  <span>Visual Search</span>
+                </div>
+                <h3>
+                  <a href="https://dl.acm.org/doi/full/10.1145/3772318.3790976" target="_blank" rel="noopener noreferrer">
+                    Searching Through Complex Worlds: Visual Search and Spatial Regularity Memory in Mixed Reality
+                  </a>
+                </h3>
+                <p>Lefan Lai, Tinghui Li, Zhanna Sarsenbayeva, Brandon Victor Syiem.</p>
+                <p>ACM CHI Conference on Human Factors in Computing Systems, CHI 2026.</p>
+                <a class="reboot-button primary" href="https://dl.acm.org/doi/full/10.1145/3772318.3790976" target="_blank" rel="noopener noreferrer">View ACM DOI</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="reboot-panel panel-paper" data-reboot-panel="contact" hidden aria-label="Contact">
+          <div class="contact-layout">
+            <div>
+              <p class="eyebrow">Open conversation</p>
+              <h2 class="reboot-h2">Let's talk research.</h2>
+              <p class="reboot-lead">
+                I would be very happy to discuss extended reality, AI, HCI,
+                LLMs, spatial learning, research collaborations, project ideas,
+                and thoughtful academic conversations.
+              </p>
+              <div class="contact-links">
+                <a class="email-link" href="mailto:llai933@aucklanduni.ac.nz">llai933@aucklanduni.ac.nz</a>
+                <a href="https://scholar.google.com/citations?user=AcSDk90AAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a href="https://nz.linkedin.com/in/lefan-lai-134026322" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </div>
+            </div>
+            <div class="contact-signal" aria-hidden="true">
+              <span class="signal-ring"></span>
+              <span class="signal-ring"></span>
+              <span class="signal-ring"></span>
+              <span class="signal-core">Lefan Lai</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="reboot-footer">
+        <p>&copy; <span data-reboot-year></span> Lefan Lai. Built for human-centred intelligent interaction.</p>
+      </footer>
+    </div>
+
     <a class="skip-link" href="#main">Skip to content</a>
 
     <div class="coastal-voyage" aria-hidden="true">
@@ -40,6 +828,60 @@
       </div>
     </div>
 
+    <section class="research-prologue" data-prologue aria-label="Opening research book">
+      <div class="prologue-light" aria-hidden="true"></div>
+      <div class="prologue-book-scene" aria-hidden="true">
+        <div class="prologue-book">
+          <div class="book-shadow"></div>
+          <div class="book-spine"></div>
+          <div class="book-page page-left">
+            <div class="paper-fiber"></div>
+            <article class="prologue-thought thought-person">
+              <span>01</span>
+              <h2>Person</h2>
+              <p>A person is not only a user.</p>
+              <p>They remember, hesitate, learn, imagine, and move through space.</p>
+            </article>
+            <article class="prologue-thought thought-ai">
+              <span>02</span>
+              <h2>AI</h2>
+              <p>AI is not only a model.</p>
+              <p>It sees patterns, speaks in probabilities, and needs to be questioned.</p>
+            </article>
+            <div class="annotation-line line-person"></div>
+            <div class="annotation-line line-ai"></div>
+            <div class="data-mist mist-one"></div>
+          </div>
+          <div class="book-page page-right">
+            <div class="paper-fiber"></div>
+            <article class="prologue-thought thought-space">
+              <span>03</span>
+              <h2>Space</h2>
+              <p>Space is not a background.</p>
+              <p>It shapes attention, memory, learning, and action.</p>
+            </article>
+            <article class="prologue-thought thought-interaction">
+              <span>04</span>
+              <h2>Interaction</h2>
+              <p>Interaction is where people, intelligence, and space begin to think together.</p>
+            </article>
+            <div class="annotation-line line-space"></div>
+            <div class="annotation-line line-interaction"></div>
+            <div class="data-mist mist-two"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prologue-copy">
+        <p class="prologue-label">Lefan Lai's research book</p>
+        <h1>People, Intelligence, and Spatial Experience</h1>
+      </div>
+
+      <button class="prologue-enter" type="button" data-enter-site>
+        <span>Enter the Research Book</span>
+      </button>
+    </section>
+
     <header class="site-header" aria-label="Primary navigation">
       <nav class="nav shell">
         <a class="brand" href="#home" aria-label="Go to home">Lefan Lai</a>
@@ -49,20 +891,345 @@
           <span></span>
         </button>
         <div class="nav-links" id="nav-links" aria-label="Section links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#research">Research</a>
-          <a href="#education">Education</a>
-          <a href="#experience">Experience</a>
-          <a href="#publications">Publications</a>
-          <a href="#contact">Contact</a>
+          <a href="#home" data-tab-target="home">Book</a>
+          <a href="#about" data-tab-target="about">About</a>
+          <a href="#research" data-tab-target="research">Research</a>
+          <a href="#education" data-tab-target="about" hidden aria-hidden="true">Education</a>
+          <a href="#experience" hidden aria-hidden="true">Experience</a>
+          <a href="#publications" data-tab-target="publications">Publications</a>
+          <a href="#contact" data-tab-target="contact">Contact</a>
         </div>
       </nav>
     </header>
 
     <main id="main">
+      <div class="planet-tabs shell" aria-label="Lefan Lai academic portfolio">
+        <section class="cosmic-tab-panel book-cover-panel is-active" data-tab-panel="home" aria-label="Book contents">
+          <canvas id="spatial-canvas" aria-hidden="true"></canvas>
+          <div class="cosmic-hero">
+            <div class="cosmic-copy" data-reveal>
+              <p class="eyebrow">Research Book / Chapter 00</p>
+              <h1>Lefan Lai</h1>
+              <p class="hero-role">A PhD research book about people, AI, and spatial experience.</p>
+              <p class="tagline">
+                This book follows one research question through four chapters:
+                the researcher, the path, the thinking map, and the work that
+                turns ideas into studies.
+              </p>
+              <div class="hero-actions" aria-label="Primary actions">
+                <a class="button primary" href="#about" data-tab-target="about">Meet the Researcher</a>
+                <a class="button secondary" href="#research" data-tab-target="research">Thinking Map</a>
+                <a class="button secondary" href="#publications" data-tab-target="publications">Research Work</a>
+              </div>
+              <div class="book-toc" aria-label="Research book chapters">
+                <a href="#about" data-tab-target="about"><span>01</span>The Researcher</a>
+                <a href="#research" data-tab-target="research"><span>02</span>Thinking Map</a>
+                <a href="#publications" data-tab-target="publications"><span>03</span>Research Work</a>
+                <a href="#contact" data-tab-target="contact"><span>04</span>Open Conversation</a>
+              </div>
+            </div>
+
+            <div class="planetarium" data-reveal data-delay="140" data-tilt-card aria-label="Research orbit portrait">
+              <div class="orbit-ring ring-one" aria-hidden="true"></div>
+              <div class="orbit-ring ring-two" aria-hidden="true"></div>
+              <div class="orbit-ring ring-three" aria-hidden="true"></div>
+              <div class="portrait-planet">
+                <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+              </div>
+              <span class="orbit-label label-ai">AI</span>
+              <span class="orbit-label label-hci">HCI</span>
+              <span class="orbit-label label-llm">LLMs</span>
+              <span class="orbit-label label-xr">XR</span>
+              <span class="orbit-label label-spatial">Spatial Skills</span>
+              <span class="planet-note">Technical intelligence + human interaction</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cosmic-tab-panel book-researcher-panel" data-tab-panel="about" hidden aria-label="The Researcher">
+          <div class="tab-grid about-grid">
+            <div class="tab-copy" data-reveal>
+              <p class="section-kicker">Chapter 01</p>
+              <h2>The Researcher</h2>
+              <p>
+                I am currently a PhD student at the
+                <a href="https://www.auckland.ac.nz/" target="_blank" rel="noopener noreferrer">University of Auckland</a>,
+                New Zealand. My PhD is a fully funded PhD scholarship supported by a
+                <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/endeavour-fund/currently-funded-smart-ideas/university-of-auckland-smart-ideas-funded-projects" target="_blank" rel="noopener noreferrer">Smart Ideas project supported by MBIE</a>.
+                I am jointly supervised by
+                <a href="https://profiles.auckland.ac.nz/bwue001" target="_blank" rel="noopener noreferrer">Associate Professor Burkhard Wuensche</a>
+                and
+                <a href="https://profiles.auckland.ac.nz/mark-billinghurst" target="_blank" rel="noopener noreferrer">Professor Mark Billinghurst</a>,
+                with each supervisor contributing equally to my PhD supervision.
+                I am affiliated with both the
+                <a href="https://www.youtube.com/playlist?list=PLjnTE4jWQKxf-V8BsJ-uP1MWf2zhyLXWi" target="_blank" rel="noopener noreferrer">Graphics Lab</a>
+                and the
+                <a href="https://empathiccomputing.org/" target="_blank" rel="noopener noreferrer">Empathic Computing Lab</a>.
+              </p>
+              <p>
+                Before starting my PhD, I completed a Master of Computer Science at the
+                <a href="https://www.sydney.edu.au/" target="_blank" rel="noopener noreferrer">University of Sydney</a>,
+                where I worked in the
+                <a href="https://www.aid-lab.org/team" target="_blank" rel="noopener noreferrer">AID-Lab</a>
+                under the supervision of
+                <a href="https://bsyiem.github.io/" target="_blank" rel="noopener noreferrer">Dr Brandon Syiem</a>
+                and
+                <a href="https://zhannina.github.io/about/" target="_blank" rel="noopener noreferrer">Dr Zhanna Sarsenbayeva</a>.
+                I received my Bachelor's degree in Software Engineering from Nanchang University.
+              </p>
+              <p>
+                My work spans pure technical research in AI, LLMs, and
+                multimodal model reliability, as well as human-centred research
+                in HCI, XR, mixed reality, spatial learning, and interactive
+                systems.
+              </p>
+            </div>
+
+            <div class="academic-path" data-reveal data-delay="120" aria-label="Education">
+              <figure class="researcher-photo-note">
+                <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+                <figcaption>
+                  <span>Lefan Lai</span>
+                  <strong>Fully funded PhD student</strong>
+                </figcaption>
+              </figure>
+              <article>
+                <span>2026.5 - Present</span>
+                <h3>PhD in Human-Computer Interaction</h3>
+                <p>The University of Auckland, New Zealand</p>
+              </article>
+              <article>
+                <span>2024.7 - 2026.1</span>
+                <h3>Master of Computer Science</h3>
+                <p>The University of Sydney, Australia</p>
+              </article>
+              <article>
+                <span>2019.9 - 2023.6</span>
+                <h3>Bachelor of Software Engineering</h3>
+                <p>Nanchang University, China</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="cosmic-tab-panel book-thinking-panel" data-tab-panel="research" hidden aria-label="Thinking Map">
+          <div class="tab-heading" data-reveal>
+            <p class="section-kicker">Chapter 02</p>
+            <h2>Thinking Map</h2>
+          </div>
+
+          <div class="research-explorer research-cloud-lab" data-active-topic="ai" data-reveal data-delay="100" aria-label="Interactive research word cloud">
+            <div class="research-word-cloud" data-cloud-stage aria-label="Research keyword cloud">
+              <span data-research-word data-topics="hci" style="--x: 49%; --y: 52%; --s: 1.28; --d: 0ms;">Human-Computer Interaction</span>
+              <span data-research-word data-topics="ai" style="--x: 22%; --y: 42%; --s: 1.12; --d: 70ms;">Artificial Intelligence</span>
+              <span data-research-word data-topics="llm" style="--x: 72%; --y: 42%; --s: 1.1; --d: 140ms;">Large Language Models</span>
+              <span data-research-word data-topics="xr" style="--x: 30%; --y: 68%; --s: 1; --d: 210ms;">Extended Reality</span>
+              <span data-research-word data-topics="xr hci" style="--x: 69%; --y: 68%; --s: 0.98; --d: 280ms;">Spatial Skills Training</span>
+              <span data-research-word data-topics="llm ai" style="--x: 14%; --y: 23%; --s: 0.74; --d: 350ms;">Multimodal AI</span>
+              <span data-research-word data-topics="hci xr" style="--x: 84%; --y: 24%; --s: 0.72; --d: 420ms;">Visual Search</span>
+              <span data-research-word data-topics="llm ai" style="--x: 19%; --y: 84%; --s: 0.68; --d: 490ms;">Object Hallucination</span>
+              <span data-research-word data-topics="hci" style="--x: 82%; --y: 83%; --s: 0.66; --d: 560ms;">User Experience</span>
+              <span data-research-word data-topics="ai llm" style="--x: 13%; --y: 56%; --s: 0.62; --d: 630ms;">Reliable AI</span>
+              <span data-research-word data-topics="xr" style="--x: 87%; --y: 56%; --s: 0.62; --d: 700ms;">Mixed Reality</span>
+              <span data-research-word data-topics="hci xr" style="--x: 38%; --y: 24%; --s: 0.6; --d: 770ms;">Human Cognition</span>
+              <span data-research-word data-topics="llm" style="--x: 61%; --y: 24%; --s: 0.6; --d: 840ms;">MLLMs</span>
+              <span data-research-word data-topics="hci" style="--x: 41%; --y: 84%; --s: 0.58; --d: 910ms;">Interaction Design</span>
+              <span data-research-word data-topics="xr hci" style="--x: 59%; --y: 84%; --s: 0.58; --d: 980ms;">STEM Learning</span>
+              <span data-research-word data-topics="ai llm" style="--x: 31%; --y: 10%; --s: 0.54; --d: 1050ms;">Model Reliability</span>
+              <span data-research-word data-topics="llm ai" style="--x: 68%; --y: 10%; --s: 0.54; --d: 1120ms;">Uncertainty</span>
+              <span data-research-word data-topics="xr" style="--x: 11%; --y: 72%; --s: 0.52; --d: 1190ms;">Immersive Systems</span>
+              <span data-research-word data-topics="hci ai" style="--x: 89%; --y: 72%; --s: 0.52; --d: 1260ms;">Human-Centred AI</span>
+              <span data-research-word data-topics="llm" style="--x: 50%; --y: 93%; --s: 0.5; --d: 1330ms;">Training-Free Methods</span>
+            </div>
+            <div class="cloud-magnifier is-active" data-cloud-lens aria-hidden="true">
+              <span class="lens-handle"></span>
+              <div class="magnifier-cloud" data-magnifier-cloud></div>
+            </div>
+
+            <div class="orbital-field" aria-label="Clickable research planets">
+              <div class="orbit-path path-wide" aria-hidden="true"></div>
+              <div class="orbit-path path-inner" aria-hidden="true"></div>
+              <div class="research-core" aria-hidden="true">
+                <strong>Lefan Lai</strong>
+                <span>research orbit</span>
+              </div>
+
+              <button class="research-orb-button orb-ai is-selected" type="button" data-research-topic="ai" aria-pressed="true" aria-controls="research-detail-ai">
+                <span class="planet-sphere" aria-hidden="true">
+                  <span class="planet-glint"></span>
+                  <span class="planet-band band-one"></span>
+                  <span class="planet-band band-two"></span>
+                  <span class="planet-moon moon-one"></span>
+                </span>
+                <span class="planet-label">AI</span>
+              </button>
+
+              <button class="research-orb-button orb-hci" type="button" data-research-topic="hci" aria-pressed="false" aria-controls="research-detail-hci">
+                <span class="planet-sphere" aria-hidden="true">
+                  <span class="planet-glint"></span>
+                  <span class="planet-band band-one"></span>
+                  <span class="planet-band band-two"></span>
+                  <span class="planet-moon moon-two"></span>
+                </span>
+                <span class="planet-label">HCI</span>
+              </button>
+
+              <button class="research-orb-button orb-llm" type="button" data-research-topic="llm" aria-pressed="false" aria-controls="research-detail-llm">
+                <span class="planet-sphere" aria-hidden="true">
+                  <span class="planet-glint"></span>
+                  <span class="planet-band band-one"></span>
+                  <span class="planet-band band-two"></span>
+                  <span class="planet-moon moon-three"></span>
+                </span>
+                <span class="planet-label">LLMs</span>
+              </button>
+
+              <button class="research-orb-button orb-xr" type="button" data-research-topic="xr" aria-pressed="false" aria-controls="research-detail-xr">
+                <span class="planet-sphere" aria-hidden="true">
+                  <span class="planet-glint"></span>
+                  <span class="planet-band band-one"></span>
+                  <span class="planet-band band-two"></span>
+                  <span class="planet-moon moon-four"></span>
+                </span>
+                <span class="planet-label">XR</span>
+              </button>
+            </div>
+
+            <aside class="research-detail-panel" aria-live="polite" aria-label="Research detail">
+              <article class="research-detail is-active" id="research-detail-ai" data-research-detail="ai">
+                <h3>Artificial Intelligence</h3>
+                <p>Technical work on reliable, adaptive, and multimodal intelligent systems.</p>
+                <div class="tag-row">
+                  <span>Reliable AI</span>
+                  <span>Adaptive Systems</span>
+                  <span>Multimodal Models</span>
+                </div>
+              </article>
+
+              <article class="research-detail" id="research-detail-hci" data-research-detail="hci" hidden>
+                <h3>Human-Computer Interaction</h3>
+                <p>Human-centred systems for cognition, learning, decision making, and user experience.</p>
+                <div class="tag-row">
+                  <span>Interaction Design</span>
+                  <span>User Experience</span>
+                  <span>Human Cognition</span>
+                </div>
+              </article>
+
+              <article class="research-detail" id="research-detail-llm" data-research-detail="llm" hidden>
+                <h3>Large Language Models</h3>
+                <p>LLMs and multimodal LLMs, especially uncertainty, hallucination, and training-free refinement.</p>
+                <div class="tag-row">
+                  <span>LLMs</span>
+                  <span>MLLMs</span>
+                  <span>Hallucination</span>
+                </div>
+              </article>
+
+              <article class="research-detail" id="research-detail-xr" data-research-detail="xr" hidden>
+                <h3>XR and Spatial Skills</h3>
+                <p>Mixed reality and immersive tools for spatial reasoning, visual search, and STEM skill development.</p>
+                <div class="tag-row">
+                  <span>Mixed Reality</span>
+                  <span>Visual Search</span>
+                  <span>Spatial Training</span>
+                </div>
+              </article>
+            </aside>
+          </div>
+        </section>
+
+        <section class="cosmic-tab-panel book-work-panel" data-tab-panel="publications" hidden aria-label="Research Work">
+          <div class="tab-grid publication-grid">
+            <div class="tab-copy" data-reveal>
+              <p class="section-kicker">Chapter 03</p>
+              <h2>Research Work</h2>
+              <p>
+                Current work explores how people search, remember, and interact
+                with virtual information in complex mixed reality worlds.
+              </p>
+            </div>
+
+            <article class="publication-orbit" data-reveal data-delay="120" data-tilt-card>
+              <a
+                class="publication-thumb"
+                href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open ACM publication page"
+              >
+                <img
+                  src="assets/teaser.png"
+                  alt="Mixed reality visual search teaser showing a headset user interacting with floating interface panels"
+                />
+              </a>
+              <div class="publication-copy">
+                <div class="badge-row" aria-label="Publication badges">
+                  <span>CHI 2026</span>
+                  <span>Mixed Reality</span>
+                  <span>Visual Search</span>
+                </div>
+                <h3>
+                  <a
+                    href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Searching Through Complex Worlds: Visual Search and Spatial
+                    Regularity Memory in Mixed Reality
+                  </a>
+                </h3>
+                <p class="pub-detail">
+                  Lefan Lai, Tinghui Li, Zhanna Sarsenbayeva, Brandon Victor Syiem.
+                </p>
+                <p class="pub-detail">
+                  ACM CHI Conference on Human Factors in Computing Systems, CHI 2026.
+                </p>
+                <a
+                  class="button primary external-button"
+                  href="https://dl.acm.org/doi/full/10.1145/3772318.3790976"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View ACM DOI
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="cosmic-tab-panel book-contact-panel" data-tab-panel="contact" hidden aria-label="Open Conversation">
+          <div class="tab-grid contact-grid">
+            <div class="tab-copy" data-reveal>
+              <p class="section-kicker">Chapter 04</p>
+              <h2>Open Conversation</h2>
+              <p>
+                I would be very happy to discuss extended reality, AI, HCI,
+                LLMs, spatial learning, and possible research collaborations.
+              </p>
+            </div>
+
+            <div class="signal-card" data-reveal data-delay="120" data-tilt-card>
+              <div class="signal-visual" aria-hidden="true">
+                <span class="signal-dot dot-one"></span>
+                <span class="signal-dot dot-two"></span>
+                <span class="signal-dot dot-three"></span>
+                <strong>Lefan Lai</strong>
+                <span>Research signal online</span>
+              </div>
+              <div class="contact-links" aria-label="Contact links">
+                <a class="email-link" href="mailto:llai933@aucklanduni.ac.nz">llai933@aucklanduni.ac.nz</a>
+                <a href="https://scholar.google.com/citations?user=AcSDk90AAAAJ&hl=en&oi=ao" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a href="https://nz.linkedin.com/in/lefan-lai-134026322" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="legacy-long-page" hidden aria-hidden="true">
       <section id="home" class="hero section-pad" aria-label="Home">
-        <canvas id="spatial-canvas" aria-hidden="true"></canvas>
+        <canvas id="legacy-spatial-canvas" aria-hidden="true"></canvas>
         <div class="hero-grid shell">
           <div class="hero-copy" data-reveal>
             <p class="eyebrow">HCI / XR / AI / Spatial Learning</p>
@@ -115,14 +1282,16 @@
           <p>
             I am currently a PhD student at the
             <a href="https://www.auckland.ac.nz/" target="_blank" rel="noopener noreferrer">University of Auckland</a>,
-            New Zealand. My PhD is fully funded through a
+            New Zealand. My PhD is a fully funded PhD scholarship supported by a
             <a href="https://www.mbie.govt.nz/science-and-technology/science-and-innovation/funding-information-and-opportunities/investment-funds/endeavour-fund/currently-funded-smart-ideas/university-of-auckland-smart-ideas-funded-projects" target="_blank" rel="noopener noreferrer">Smart Ideas project supported by MBIE</a>.
             I am jointly supervised by
             <a href="https://profiles.auckland.ac.nz/bwue001" target="_blank" rel="noopener noreferrer">Associate Professor Burkhard Wuensche</a>
             and
             <a href="https://profiles.auckland.ac.nz/mark-billinghurst" target="_blank" rel="noopener noreferrer">Professor Mark Billinghurst</a>,
             with each supervisor contributing equally to my PhD supervision. I
-            am affiliated with both the Graphics Lab and the
+            am affiliated with both the
+            <a href="https://www.youtube.com/playlist?list=PLjnTE4jWQKxf-V8BsJ-uP1MWf2zhyLXWi" target="_blank" rel="noopener noreferrer">Graphics Lab</a>
+            and the
             <a href="https://empathiccomputing.org/" target="_blank" rel="noopener noreferrer">Empathic Computing Lab</a>.
           </p>
           <p>
@@ -431,6 +1600,7 @@
           </div>
         </div>
       </section>
+      </div>
     </main>
 
     <footer class="site-footer">
@@ -439,7 +1609,9 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=html-effects-20260730"></script>
+    <script src="reboot.js?v=20260825"></script>
+    <script src="atlas.js?v=20260825-contact-letter1"></script>
   </body>
 </html>
 

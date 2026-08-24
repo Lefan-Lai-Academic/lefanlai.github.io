@@ -4719,3 +4719,4268 @@ body {
   width: 28px;
   transform: translateX(-50%) scaleX(1);
 }
+
+/* Planetary tab redesign */
+:root {
+  color-scheme: dark;
+  --space-bg: #06111f;
+  --space-bg-2: #0d1830;
+  --space-ink: #f5fbff;
+  --space-muted: #b8c7d6;
+  --space-dim: #8295ab;
+  --space-line: rgba(214, 236, 255, 0.16);
+  --space-glass: rgba(10, 22, 38, 0.72);
+  --space-glass-light: rgba(255, 255, 255, 0.08);
+  --space-teal: #5ee2d2;
+  --space-blue: #7db7ff;
+  --space-violet: #b99cff;
+  --space-coral: #ffb39d;
+  --space-gold: #f1d79a;
+  --space-shadow: 0 28px 88px rgba(0, 0, 0, 0.42);
+}
+
+html {
+  background: var(--space-bg);
+}
+
+body {
+  min-height: 100svh;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(94, 226, 210, 0.13), transparent 28%),
+    radial-gradient(circle at 82% 12%, rgba(185, 156, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 72% 78%, rgba(255, 179, 157, 0.1), transparent 28%),
+    linear-gradient(135deg, #050c18 0%, #081527 42%, #12102a 100%);
+  color: var(--space-ink);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(125, 183, 255, 0.28) 0 1px, transparent 1.6px);
+  background-position:
+    0 0,
+    34px 51px;
+  background-size:
+    110px 110px,
+    170px 170px;
+  opacity: 0.35;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 34%, rgba(255, 255, 255, 0.02));
+}
+
+.coastal-voyage {
+  display: none;
+}
+
+.site-header {
+  border-bottom: 1px solid rgba(214, 236, 255, 0.12);
+  background: rgba(5, 12, 24, 0.74);
+  box-shadow: 0 12px 42px rgba(0, 0, 0, 0.2);
+}
+
+.brand {
+  color: var(--space-ink);
+  background: linear-gradient(90deg, var(--space-teal), var(--space-blue), var(--space-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links a[hidden] {
+  display: none;
+}
+
+.nav-links a {
+  position: relative;
+  color: var(--space-muted);
+  background: transparent;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--space-teal), var(--space-violet));
+  transform: translateX(-50%);
+  transition: width 180ms ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--space-ink);
+}
+
+.nav-links a.is-active {
+  color: var(--space-ink);
+}
+
+.nav-links a.is-active::after {
+  width: 30px;
+}
+
+.nav-toggle {
+  border-color: rgba(214, 236, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-toggle span {
+  background: var(--space-ink);
+}
+
+.planet-tabs {
+  position: relative;
+  min-height: calc(100svh - var(--header-height));
+  padding: 34px 0 28px;
+}
+
+.cosmic-tab-panel {
+  position: relative;
+  min-height: calc(100svh - var(--header-height) - 72px);
+  display: grid;
+  align-items: center;
+  border: 1px solid var(--space-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035)),
+    rgba(7, 17, 32, 0.74);
+  box-shadow: var(--space-shadow);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cosmic-tab-panel[hidden] {
+  display: none;
+}
+
+.cosmic-tab-panel.is-active {
+  animation: tabArrival 360ms ease both;
+}
+
+.cosmic-tab-panel::before {
+  content: "";
+  position: absolute;
+  inset: 26px;
+  z-index: -2;
+  border: 1px solid rgba(214, 236, 255, 0.08);
+  border-radius: 8px;
+  transform: rotate(-1deg);
+  pointer-events: none;
+}
+
+.cosmic-tab-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 42%;
+  background:
+    radial-gradient(ellipse at center, rgba(94, 226, 210, 0.16), transparent 58%),
+    linear-gradient(180deg, transparent, rgba(10, 26, 42, 0.82));
+  pointer-events: none;
+}
+
+#spatial-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.74;
+}
+
+.cosmic-hero,
+.tab-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.78fr);
+  gap: 54px;
+  align-items: center;
+  width: 100%;
+  padding: 56px;
+}
+
+.cosmic-copy,
+.tab-copy {
+  max-width: 700px;
+}
+
+.eyebrow,
+.section-kicker,
+.planet-type {
+  color: var(--space-teal);
+  letter-spacing: 0;
+}
+
+.cosmic-copy h1 {
+  margin-bottom: 12px;
+  font-size: 5.1rem;
+  color: var(--space-ink);
+  background: linear-gradient(90deg, #ffffff, var(--space-teal) 42%, var(--space-blue) 68%, var(--space-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+.cosmic-tab-panel h2 {
+  color: var(--space-ink);
+  font-size: 2.35rem;
+}
+
+.cosmic-tab-panel h3 {
+  color: var(--space-ink);
+}
+
+.hero-role {
+  color: #d7e6f5;
+}
+
+.tagline,
+.cosmic-tab-panel p,
+.academic-path p,
+.publication-copy p {
+  color: var(--space-muted);
+}
+
+.cosmic-tab-panel a:not(.button) {
+  color: #8fd8ff;
+  text-decoration-color: rgba(143, 216, 255, 0.45);
+}
+
+.button.primary {
+  border-color: rgba(94, 226, 210, 0.54);
+  background: linear-gradient(135deg, rgba(25, 196, 188, 0.92), rgba(102, 123, 255, 0.86));
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.button.secondary {
+  border-color: rgba(214, 236, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--space-ink);
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible {
+  border-color: rgba(94, 226, 210, 0.58);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+.planetarium {
+  position: relative;
+  width: min(480px, 100%);
+  aspect-ratio: 1;
+  justify-self: center;
+  transition: transform 220ms ease;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid rgba(214, 236, 255, 0.2);
+  border-radius: 50%;
+  transform: rotate(-18deg) scaleX(1.16);
+}
+
+.ring-two {
+  inset: 19%;
+  border-color: rgba(94, 226, 210, 0.32);
+  transform: rotate(23deg) scaleX(1.26);
+}
+
+.ring-three {
+  inset: 29%;
+  border-color: rgba(185, 156, 255, 0.26);
+  transform: rotate(54deg) scaleX(1.1);
+}
+
+.portrait-planet {
+  position: absolute;
+  inset: 20%;
+  border: 1px solid rgba(214, 236, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 0 18px rgba(94, 226, 210, 0.04),
+    0 26px 68px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
+}
+
+.portrait-planet img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 59% 56%;
+}
+
+.orbit-label,
+.planet-note {
+  position: absolute;
+  border: 1px solid rgba(214, 236, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(9, 22, 38, 0.82);
+  color: var(--space-ink);
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  font-weight: 760;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(16px);
+}
+
+.label-ai {
+  left: 4%;
+  top: 28%;
+  color: var(--space-teal);
+}
+
+.label-hci {
+  right: 2%;
+  top: 20%;
+  color: var(--space-coral);
+}
+
+.label-llm {
+  right: 8%;
+  bottom: 20%;
+  color: var(--space-violet);
+}
+
+.label-xr {
+  left: 12%;
+  bottom: 17%;
+  color: var(--space-blue);
+}
+
+.label-spatial {
+  left: 34%;
+  top: 4%;
+  color: var(--space-gold);
+}
+
+.planet-note {
+  left: 50%;
+  bottom: 4%;
+  width: max-content;
+  max-width: 86%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #d7e6f5;
+}
+
+.tab-heading {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  padding: 28px 56px 0;
+}
+
+.tab-heading p:last-child {
+  max-width: 680px;
+}
+
+.research-universe {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 12px 56px 24px;
+}
+
+.research-universe::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(680px, 70vw);
+  height: min(420px, 46vw);
+  border: 1px solid rgba(214, 236, 255, 0.13);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-9deg);
+  pointer-events: none;
+}
+
+.universe-core {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  border: 1px solid rgba(94, 226, 210, 0.34);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 226, 210, 0.28), rgba(9, 22, 38, 0.64));
+  color: var(--space-ink);
+  font-weight: 780;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 46px rgba(94, 226, 210, 0.22);
+}
+
+.research-planet,
+.academic-path article,
+.publication-orbit,
+.signal-card {
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(214, 236, 255, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.045)),
+    rgba(9, 22, 38, 0.68);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(20px);
+}
+
+.research-planet {
+  min-height: 176px;
+  padding: 18px;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.research-planet::before {
+  content: "";
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--planet-accent);
+  box-shadow: 0 0 34px var(--planet-glow);
+  opacity: 0.86;
+}
+
+.research-planet:hover,
+.research-planet:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--planet-border);
+  box-shadow:
+    0 24px 58px rgba(0, 0, 0, 0.3),
+    0 0 0 1px var(--planet-border);
+  outline: none;
+}
+
+.planet-ai {
+  --planet-accent: radial-gradient(circle at 34% 34%, #cffff9, #5ee2d2 48%, #126f87);
+  --planet-glow: rgba(94, 226, 210, 0.34);
+  --planet-border: rgba(94, 226, 210, 0.58);
+}
+
+.planet-hci {
+  --planet-accent: radial-gradient(circle at 34% 34%, #ffe7dc, #ffb39d 48%, #b25e72);
+  --planet-glow: rgba(255, 179, 157, 0.32);
+  --planet-border: rgba(255, 179, 157, 0.56);
+}
+
+.planet-llm {
+  --planet-accent: radial-gradient(circle at 34% 34%, #eee8ff, #b99cff 48%, #6552c9);
+  --planet-glow: rgba(185, 156, 255, 0.34);
+  --planet-border: rgba(185, 156, 255, 0.58);
+}
+
+.planet-xr {
+  --planet-accent: radial-gradient(circle at 34% 34%, #e2f1ff, #7db7ff 48%, #2769b8);
+  --planet-glow: rgba(125, 183, 255, 0.34);
+  --planet-border: rgba(125, 183, 255, 0.58);
+}
+
+.research-planet h3 {
+  max-width: calc(100% - 76px);
+  font-size: 1.12rem;
+}
+
+.research-planet p {
+  max-width: 560px;
+  font-size: 0.94rem;
+  line-height: 1.52;
+}
+
+.research-planet .tag-row {
+  margin-top: 12px;
+}
+
+.research-planet .tag-row span,
+.badge-row span {
+  border-color: rgba(214, 236, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #d8e9f8;
+}
+
+.about-grid,
+.publication-grid,
+.contact-grid {
+  min-height: 620px;
+}
+
+.publication-grid {
+  grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr);
+}
+
+.academic-path {
+  display: grid;
+  gap: 14px;
+}
+
+.academic-path article {
+  padding: 22px;
+}
+
+.academic-path span,
+.planet-type {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.72rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.publication-orbit {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: center;
+  padding: 22px;
+}
+
+.publication-thumb {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(214, 236, 255, 0.14);
+}
+
+.publication-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.publication-copy h3 a {
+  color: var(--space-ink);
+  text-decoration: none;
+}
+
+.signal-card {
+  justify-self: center;
+  width: min(100%, 440px);
+  padding: 22px;
+}
+
+.signal-visual {
+  position: relative;
+  min-height: 190px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(214, 236, 255, 0.14);
+  border-radius: 8px;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(94, 226, 210, 0.16), rgba(185, 156, 255, 0.1)),
+    rgba(255, 255, 255, 0.05);
+}
+
+.signal-visual::before,
+.signal-visual::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(94, 226, 210, 0.58), transparent);
+}
+
+.signal-visual::before {
+  top: 46px;
+}
+
+.signal-visual::after {
+  bottom: 48px;
+}
+
+.signal-visual strong {
+  color: var(--space-ink);
+  font-size: 1.55rem;
+}
+
+.signal-visual span:not(.signal-dot) {
+  color: var(--space-muted);
+}
+
+.signal-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--space-teal);
+  box-shadow: 0 0 22px rgba(94, 226, 210, 0.6);
+}
+
+.dot-one {
+  right: 24px;
+  top: 26px;
+}
+
+.dot-two {
+  right: 58px;
+  top: 76px;
+  background: var(--space-blue);
+}
+
+.dot-three {
+  right: 30px;
+  bottom: 38px;
+  background: var(--space-violet);
+}
+
+.contact-links {
+  display: grid;
+  gap: 10px;
+}
+
+.contact-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 46px;
+  border: 1px solid rgba(214, 236, 255, 0.16);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--space-ink);
+  font-weight: 720;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.contact-links a::after {
+  content: "open";
+  color: var(--space-teal);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.contact-links .email-link::after {
+  content: "mail";
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.contact-links a:hover,
+.contact-links a:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(94, 226, 210, 0.52);
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.site-footer {
+  border-top: 1px solid rgba(214, 236, 255, 0.1);
+  background: rgba(5, 12, 24, 0.62);
+  color: var(--space-dim);
+}
+
+@keyframes tabArrival {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .orbit-ring {
+    animation: orbitDrift 18s linear infinite;
+  }
+
+  .ring-two {
+    animation-duration: 24s;
+    animation-direction: reverse;
+  }
+
+  .ring-three {
+    animation-duration: 32s;
+  }
+
+  .orbit-label {
+    animation: labelFloat 5.4s ease-in-out infinite;
+  }
+
+  .label-hci,
+  .label-xr {
+    animation-delay: 800ms;
+  }
+
+  .label-llm,
+  .label-spatial {
+    animation-delay: 1400ms;
+  }
+}
+
+@keyframes orbitDrift {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes labelFloat {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 980px) {
+  .planet-tabs {
+    width: min(100% - 28px, 1120px);
+    padding-top: 20px;
+  }
+
+  .cosmic-tab-panel {
+    min-height: auto;
+  }
+
+  .cosmic-hero,
+  .tab-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding: 34px;
+  }
+
+  .cosmic-copy h1 {
+    font-size: 4rem;
+  }
+
+  .planetarium {
+    max-width: 430px;
+  }
+
+  .research-universe {
+    grid-template-columns: 1fr;
+    padding: 22px 34px 34px;
+  }
+
+  .research-universe::before,
+  .universe-core {
+    display: none;
+  }
+
+  .publication-orbit {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    background: rgba(5, 12, 24, 0.88);
+  }
+
+  .nav-links.is-open {
+    background:
+      linear-gradient(180deg, rgba(10, 22, 38, 0.98), rgba(14, 20, 44, 0.98)),
+      var(--space-bg);
+  }
+
+  .nav-links.is-open a {
+    color: var(--space-ink);
+  }
+
+  .cosmic-hero,
+  .tab-grid {
+    padding: 24px;
+  }
+
+  .cosmic-copy h1 {
+    font-size: 3.2rem;
+  }
+
+  .cosmic-tab-panel h2 {
+    font-size: 1.85rem;
+  }
+
+  .tagline {
+    font-size: 1.05rem;
+  }
+
+  .planetarium {
+    width: min(100%, 360px);
+  }
+
+  .orbit-label {
+    position: static;
+    display: inline-flex;
+    margin: 6px 4px 0 0;
+  }
+
+  .planet-note {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin-top: 12px;
+    transform: none;
+  }
+
+  .portrait-planet {
+    inset: 18%;
+  }
+
+  .tab-heading {
+    padding: 26px 24px 0;
+  }
+
+  .research-universe {
+    padding: 20px 24px 24px;
+  }
+
+  .research-planet {
+    min-height: auto;
+  }
+}
+
+/* Light planetary theme override */
+:root {
+  color-scheme: light;
+  --space-bg: #f7fbff;
+  --space-bg-2: #eef7fb;
+  --space-ink: #13263b;
+  --space-muted: #52667c;
+  --space-dim: #6c8095;
+  --space-line: rgba(58, 99, 124, 0.16);
+  --space-glass: rgba(255, 255, 255, 0.74);
+  --space-glass-light: rgba(255, 255, 255, 0.58);
+  --space-teal: #24b9ad;
+  --space-blue: #4f93e8;
+  --space-violet: #8b72e8;
+  --space-coral: #e78471;
+  --space-gold: #c69c46;
+  --space-shadow: 0 26px 76px rgba(77, 112, 148, 0.18);
+}
+
+html {
+  background: #f7fbff;
+}
+
+body {
+  background:
+    radial-gradient(circle at 16% 14%, rgba(89, 205, 196, 0.2), transparent 30%),
+    radial-gradient(circle at 82% 10%, rgba(151, 134, 238, 0.18), transparent 28%),
+    radial-gradient(circle at 76% 82%, rgba(231, 132, 113, 0.14), transparent 30%),
+    linear-gradient(135deg, #fbfdff 0%, #eef8fb 48%, #f6f2ff 100%);
+  color: var(--space-ink);
+}
+
+body::before {
+  background-image:
+    radial-gradient(circle, rgba(38, 93, 125, 0.22) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(78, 147, 232, 0.16) 0 1px, transparent 1.6px);
+  opacity: 0.42;
+}
+
+body::after {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.72), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.64)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 34%, rgba(255, 255, 255, 0.24));
+}
+
+.site-header {
+  border-bottom: 1px solid rgba(67, 104, 128, 0.12);
+  background: rgba(250, 254, 255, 0.76);
+  box-shadow: 0 14px 42px rgba(73, 112, 148, 0.1);
+}
+
+.brand {
+  background: linear-gradient(90deg, #175c74, var(--space-teal), var(--space-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links a {
+  color: #40566d;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  background: rgba(71, 157, 203, 0.11);
+  color: var(--space-ink);
+}
+
+.nav-links a.is-active {
+  color: #13263b;
+}
+
+.nav-toggle {
+  border-color: rgba(58, 99, 124, 0.18);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.nav-toggle span {
+  background: #17344d;
+}
+
+.cosmic-tab-panel {
+  border-color: rgba(58, 99, 124, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(245, 250, 255, 0.64)),
+    rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 28px 78px rgba(71, 112, 148, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.cosmic-tab-panel::before {
+  border-color: rgba(61, 111, 142, 0.1);
+}
+
+.cosmic-tab-panel::after {
+  background:
+    radial-gradient(ellipse at center, rgba(77, 199, 190, 0.16), transparent 60%),
+    linear-gradient(180deg, transparent, rgba(232, 248, 251, 0.7));
+}
+
+#spatial-canvas {
+  opacity: 0.48;
+  mix-blend-mode: multiply;
+}
+
+.eyebrow,
+.section-kicker,
+.planet-type {
+  color: #148a88;
+}
+
+.cosmic-copy h1 {
+  background: linear-gradient(90deg, #18314a, #168f8b 40%, #4f93e8 68%, #8b72e8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cosmic-tab-panel h2,
+.cosmic-tab-panel h3,
+.hero-role,
+.publication-copy h3 a,
+.signal-visual strong {
+  color: var(--space-ink);
+}
+
+.tagline,
+.cosmic-tab-panel p,
+.academic-path p,
+.publication-copy p {
+  color: var(--space-muted);
+}
+
+.cosmic-tab-panel a:not(.button) {
+  color: #096fc7;
+  text-decoration-color: rgba(9, 111, 199, 0.34);
+}
+
+.button.primary {
+  border-color: rgba(36, 185, 173, 0.42);
+  background: linear-gradient(135deg, #20beb4, #5c95ef);
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgba(50, 123, 166, 0.22);
+}
+
+.button.secondary {
+  border-color: rgba(58, 99, 124, 0.16);
+  background: rgba(255, 255, 255, 0.74);
+  color: #17344d;
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible {
+  border-color: rgba(36, 185, 173, 0.48);
+  box-shadow: 0 16px 34px rgba(71, 112, 148, 0.14);
+}
+
+.orbit-ring {
+  border-color: rgba(48, 99, 126, 0.2);
+}
+
+.ring-two {
+  border-color: rgba(36, 185, 173, 0.34);
+}
+
+.ring-three {
+  border-color: rgba(139, 114, 232, 0.26);
+}
+
+.portrait-planet {
+  border-color: rgba(58, 99, 124, 0.18);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow:
+    0 0 0 18px rgba(36, 185, 173, 0.06),
+    0 24px 62px rgba(71, 112, 148, 0.24);
+}
+
+.orbit-label,
+.planet-note {
+  border-color: rgba(58, 99, 124, 0.16);
+  background: rgba(255, 255, 255, 0.78);
+  color: #17344d;
+  box-shadow: 0 12px 30px rgba(71, 112, 148, 0.16);
+}
+
+.planet-note {
+  color: #27475f;
+}
+
+.research-universe::before {
+  border-color: rgba(61, 111, 142, 0.14);
+}
+
+.universe-core {
+  border-color: rgba(36, 185, 173, 0.34);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.86), rgba(119, 224, 214, 0.28));
+  color: #17344d;
+  box-shadow: 0 0 42px rgba(36, 185, 173, 0.22);
+}
+
+.research-planet,
+.academic-path article,
+.publication-orbit,
+.signal-card {
+  border-color: rgba(58, 99, 124, 0.14);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(246, 251, 255, 0.66)),
+    rgba(255, 255, 255, 0.7);
+  box-shadow: 0 20px 50px rgba(71, 112, 148, 0.14);
+}
+
+.planet-ai {
+  --planet-accent: radial-gradient(circle at 34% 34%, #ffffff, #55d8cf 48%, #128c92);
+  --planet-glow: rgba(36, 185, 173, 0.26);
+  --planet-border: rgba(36, 185, 173, 0.5);
+}
+
+.planet-hci {
+  --planet-accent: radial-gradient(circle at 34% 34%, #ffffff, #f0a18e 48%, #cd667a);
+  --planet-glow: rgba(231, 132, 113, 0.24);
+  --planet-border: rgba(231, 132, 113, 0.48);
+}
+
+.planet-llm {
+  --planet-accent: radial-gradient(circle at 34% 34%, #ffffff, #a996ef 48%, #6b59d1);
+  --planet-glow: rgba(139, 114, 232, 0.26);
+  --planet-border: rgba(139, 114, 232, 0.5);
+}
+
+.planet-xr {
+  --planet-accent: radial-gradient(circle at 34% 34%, #ffffff, #74b6ff 48%, #3177c6);
+  --planet-glow: rgba(79, 147, 232, 0.26);
+  --planet-border: rgba(79, 147, 232, 0.5);
+}
+
+.research-planet:hover,
+.research-planet:focus-visible {
+  box-shadow:
+    0 24px 58px rgba(71, 112, 148, 0.18),
+    0 0 0 1px var(--planet-border);
+}
+
+.research-planet .tag-row span,
+.badge-row span,
+.tag-row span {
+  border-color: rgba(58, 99, 124, 0.13);
+  background: rgba(255, 255, 255, 0.66);
+  color: #365770;
+}
+
+.signal-visual {
+  border-color: rgba(58, 99, 124, 0.13);
+  background:
+    linear-gradient(135deg, rgba(80, 213, 202, 0.16), rgba(139, 114, 232, 0.11)),
+    rgba(255, 255, 255, 0.56);
+}
+
+.signal-visual::before,
+.signal-visual::after {
+  background: linear-gradient(90deg, transparent, rgba(36, 185, 173, 0.48), transparent);
+}
+
+.signal-visual span:not(.signal-dot) {
+  color: var(--space-muted);
+}
+
+.contact-links a {
+  border-color: rgba(58, 99, 124, 0.13);
+  background: rgba(255, 255, 255, 0.72);
+  color: #17344d;
+}
+
+.contact-links a:hover,
+.contact-links a:focus-visible {
+  border-color: rgba(36, 185, 173, 0.46);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer {
+  border-top: 1px solid rgba(58, 99, 124, 0.1);
+  background: rgba(248, 252, 255, 0.68);
+  color: #6c8095;
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    background: rgba(250, 254, 255, 0.9);
+  }
+
+  .nav-links.is-open {
+    background:
+      linear-gradient(180deg, rgba(251, 254, 255, 0.98), rgba(240, 249, 252, 0.98)),
+      #ffffff;
+  }
+
+  .nav-links.is-open a {
+    color: var(--space-ink);
+  }
+}
+
+/* Refined constellation research view and tab-specific arrivals */
+.planet-tabs .section-kicker {
+  display: none;
+}
+
+.cosmic-tab-panel.is-active {
+  animation: panelSoftBloom 360ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="home"].is-active .cosmic-copy {
+  animation: homeTextRise 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cosmic-tab-panel[data-tab-panel="home"].is-active .planetarium {
+  animation: orbitUnfold 740ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cosmic-tab-panel[data-tab-panel="about"].is-active .tab-copy {
+  animation: archiveSlide 520ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="about"].is-active .academic-path article {
+  animation: archiveCardIn 520ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="about"].is-active .academic-path article:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.cosmic-tab-panel[data-tab-panel="about"].is-active .academic-path article:nth-child(3) {
+  animation-delay: 180ms;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .tab-heading {
+  animation: constellationTitleIn 420ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .constellation-core {
+  animation: coreIgnite 560ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .constellation-orb {
+  animation: orbScatter 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .research-word-cloud span {
+  animation: wordStarIn 700ms ease both, wordFloat 7s ease-in-out infinite;
+  animation-delay: var(--d), calc(var(--d) + 700ms);
+}
+
+.cosmic-tab-panel[data-tab-panel="publications"].is-active .publication-orbit {
+  animation: publicationWindowIn 560ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="contact"].is-active .signal-card {
+  animation: signalPanelIn 560ms ease both;
+}
+
+.cosmic-tab-panel[data-tab-panel="contact"].is-active .signal-dot {
+  animation: signalPulse 1.8s ease-in-out infinite;
+}
+
+.cosmic-tab-panel[data-tab-panel="contact"].is-active .dot-two {
+  animation-delay: 240ms;
+}
+
+.cosmic-tab-panel[data-tab-panel="contact"].is-active .dot-three {
+  animation-delay: 480ms;
+}
+
+.research-constellation {
+  position: relative;
+  z-index: 1;
+  min-height: clamp(430px, 54svh, 540px);
+  margin: 10px 56px 42px;
+  border: 1px solid rgba(58, 99, 124, 0.12);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(36, 185, 173, 0.18), transparent 22%),
+    radial-gradient(circle at 16% 24%, rgba(79, 147, 232, 0.12), transparent 26%),
+    radial-gradient(circle at 82% 28%, rgba(139, 114, 232, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.54), rgba(239, 250, 255, 0.36));
+  overflow: hidden;
+}
+
+.research-constellation::before,
+.research-constellation::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(61, 111, 142, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.research-constellation::before {
+  width: 68%;
+  height: 76%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
+.research-constellation::after {
+  width: 48%;
+  height: 52%;
+  border-color: rgba(36, 185, 173, 0.14);
+  transform: translate(-50%, -50%) rotate(18deg);
+}
+
+.research-word-cloud {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.research-word-cloud span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) scale(var(--s));
+  border: 1px solid rgba(58, 99, 124, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  color: rgba(26, 65, 88, 0.78);
+  padding: 5px 10px;
+  font-size: 0.84rem;
+  font-weight: 720;
+  white-space: nowrap;
+  box-shadow: 0 10px 30px rgba(71, 112, 148, 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.constellation-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 136px;
+  height: 136px;
+  border: 1px solid rgba(36, 185, 173, 0.26);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.98), rgba(96, 224, 213, 0.34) 48%, rgba(255, 255, 255, 0.66));
+  color: var(--space-ink);
+  text-align: center;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 20px 54px rgba(71, 112, 148, 0.18),
+    0 0 44px rgba(36, 185, 173, 0.18);
+}
+
+.constellation-core strong {
+  font-size: 1.04rem;
+  line-height: 1.1;
+}
+
+.constellation-core span {
+  color: #557088;
+  font-size: 0.68rem;
+  font-weight: 720;
+  text-transform: uppercase;
+}
+
+.constellation-orb {
+  --orb-size: 138px;
+  --orb-glow: rgba(36, 185, 173, 0.24);
+  position: absolute;
+  z-index: 3;
+  width: var(--orb-size);
+  min-height: var(--orb-size);
+  border: 1px solid rgba(58, 99, 124, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 16px 44px rgba(71, 112, 148, 0.16),
+    0 0 42px var(--orb-glow);
+  backdrop-filter: blur(18px);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.orb-face {
+  position: relative;
+  z-index: 2;
+  min-height: var(--orb-size);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  border-radius: inherit;
+  padding: 20px;
+  text-align: center;
+  background: var(--orb-face);
+}
+
+.orb-face strong {
+  color: var(--space-ink);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.orb-face span {
+  color: #4c6378;
+  font-size: 0.72rem;
+  font-weight: 720;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.orb-detail {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  width: min(270px, 74vw);
+  border: 1px solid rgba(58, 99, 124, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -8px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  box-shadow: 0 18px 44px rgba(71, 112, 148, 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.orb-detail h3 {
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.orb-detail p {
+  margin-bottom: 10px;
+  font-size: 0.86rem;
+  line-height: 1.46;
+}
+
+.constellation-orb:hover,
+.constellation-orb:focus-visible,
+.constellation-orb:focus-within {
+  z-index: 5;
+  border-color: var(--orb-border);
+  box-shadow:
+    0 24px 58px rgba(71, 112, 148, 0.2),
+    0 0 52px var(--orb-glow);
+  outline: none;
+}
+
+.constellation-orb:hover .orb-detail,
+.constellation-orb:focus-visible .orb-detail,
+.constellation-orb:focus-within .orb-detail {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.orb-ai {
+  --orb-face: radial-gradient(circle at 34% 28%, #ffffff, rgba(86, 219, 209, 0.84) 48%, rgba(237, 255, 253, 0.92));
+  --orb-border: rgba(36, 185, 173, 0.5);
+  --orb-glow: rgba(36, 185, 173, 0.24);
+  left: 12%;
+  top: 22%;
+}
+
+.orb-hci {
+  --orb-face: radial-gradient(circle at 34% 28%, #ffffff, rgba(239, 161, 142, 0.84) 48%, rgba(255, 247, 244, 0.92));
+  --orb-border: rgba(231, 132, 113, 0.5);
+  --orb-glow: rgba(231, 132, 113, 0.24);
+  right: 12%;
+  top: 19%;
+}
+
+.orb-llm {
+  --orb-face: radial-gradient(circle at 34% 28%, #ffffff, rgba(169, 150, 239, 0.84) 48%, rgba(248, 246, 255, 0.92));
+  --orb-border: rgba(139, 114, 232, 0.5);
+  --orb-glow: rgba(139, 114, 232, 0.24);
+  left: 21%;
+  bottom: 13%;
+}
+
+.orb-xr {
+  --orb-face: radial-gradient(circle at 34% 28%, #ffffff, rgba(116, 182, 255, 0.86) 48%, rgba(241, 248, 255, 0.94));
+  --orb-border: rgba(79, 147, 232, 0.5);
+  --orb-glow: rgba(79, 147, 232, 0.24);
+  right: 20%;
+  bottom: 11%;
+}
+
+.constellation-orb:hover ~ .research-word-cloud span,
+.constellation-orb:focus-visible ~ .research-word-cloud span {
+  opacity: 0.9;
+}
+
+@keyframes panelSoftBloom {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(8px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes homeTextRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes orbitUnfold {
+  from {
+    opacity: 0;
+    transform: scale(0.92) rotate(-5deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes archiveSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes archiveCardIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes constellationTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes coreIgnite {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes orbScatter {
+  from {
+    opacity: 0;
+    transform: translate(var(--scatter-x, 0), var(--scatter-y, 0)) scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes wordStarIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(var(--s));
+  }
+}
+
+@keyframes wordFloat {
+  50% {
+    transform: translate(-50%, calc(-50% - 7px)) scale(var(--s));
+  }
+}
+
+@keyframes publicationWindowIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scaleX(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+  }
+}
+
+@keyframes signalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) rotate(1deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes signalPulse {
+  50% {
+    transform: scale(1.22);
+    box-shadow: 0 0 28px rgba(36, 185, 173, 0.62);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-tab-panel.is-active,
+  .cosmic-tab-panel[data-tab-panel="home"].is-active .cosmic-copy,
+  .cosmic-tab-panel[data-tab-panel="home"].is-active .planetarium,
+  .cosmic-tab-panel[data-tab-panel="about"].is-active .tab-copy,
+  .cosmic-tab-panel[data-tab-panel="about"].is-active .academic-path article,
+  .cosmic-tab-panel[data-tab-panel="research"].is-active .tab-heading,
+  .cosmic-tab-panel[data-tab-panel="research"].is-active .constellation-core,
+  .cosmic-tab-panel[data-tab-panel="research"].is-active .constellation-orb,
+  .cosmic-tab-panel[data-tab-panel="research"].is-active .research-word-cloud span,
+  .cosmic-tab-panel[data-tab-panel="publications"].is-active .publication-orbit,
+  .cosmic-tab-panel[data-tab-panel="contact"].is-active .signal-card,
+  .cosmic-tab-panel[data-tab-panel="contact"].is-active .signal-dot {
+    animation: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .research-constellation {
+    min-height: 720px;
+    margin: 10px 34px 34px;
+  }
+
+  .constellation-core {
+    top: 48%;
+  }
+
+  .orb-ai {
+    left: 10%;
+    top: 18%;
+  }
+
+  .orb-hci {
+    right: 10%;
+    top: 18%;
+  }
+
+  .orb-llm {
+    left: 11%;
+    bottom: 14%;
+  }
+
+  .orb-xr {
+    right: 10%;
+    bottom: 14%;
+  }
+}
+
+@media (max-width: 720px) {
+  .research-constellation {
+    min-height: auto;
+    display: grid;
+    gap: 14px;
+    margin: 14px 24px 24px;
+    padding: 120px 16px 18px;
+  }
+
+  .research-constellation::before,
+  .research-constellation::after {
+    display: none;
+  }
+
+  .research-word-cloud span {
+    font-size: 0.76rem;
+  }
+
+  .constellation-core {
+    left: 50%;
+    top: 68px;
+    width: 104px;
+    height: 104px;
+  }
+
+  .constellation-orb {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    min-height: 0;
+    border-radius: 8px;
+  }
+
+  .orb-face {
+    min-height: 104px;
+    border-radius: 8px;
+  }
+
+  .orb-detail {
+    position: static;
+    width: auto;
+    margin: -8px 12px 12px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Interactive research explorer */
+.cosmic-tab-panel[data-tab-panel="research"] .tab-heading {
+  padding-bottom: 0;
+}
+
+.research-explorer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 22px;
+  min-height: clamp(460px, 56svh, 560px);
+  margin: 10px 56px 42px;
+  border: 1px solid rgba(58, 99, 124, 0.12);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 44% 44%, rgba(36, 185, 173, 0.16), transparent 22%),
+    radial-gradient(circle at 76% 24%, rgba(139, 114, 232, 0.12), transparent 28%),
+    radial-gradient(circle at 18% 72%, rgba(79, 147, 232, 0.12), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.56), rgba(239, 250, 255, 0.34));
+  overflow: hidden;
+}
+
+.orbital-field {
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.orbit-path {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(61, 111, 142, 0.13);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.path-wide {
+  width: min(82%, 720px);
+  height: 68%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
+.path-inner {
+  width: min(56%, 520px);
+  height: 44%;
+  border-color: rgba(36, 185, 173, 0.15);
+  transform: translate(-50%, -50%) rotate(17deg);
+}
+
+.research-core {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 118px;
+  height: 118px;
+  border: 1px solid rgba(36, 185, 173, 0.24);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.98), rgba(122, 230, 221, 0.42) 46%, rgba(255, 255, 255, 0.76));
+  color: var(--space-ink);
+  text-align: center;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 18px 46px rgba(71, 112, 148, 0.16),
+    0 0 44px rgba(36, 185, 173, 0.18);
+}
+
+.research-core strong {
+  font-size: 0.98rem;
+  line-height: 1.1;
+}
+
+.research-core span {
+  color: #557088;
+  font-size: 0.62rem;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.research-orb-button {
+  --orb-size: 126px;
+  --orb-glow: rgba(36, 185, 173, 0.24);
+  --orb-border: rgba(36, 185, 173, 0.42);
+  --orbit-left: 50%;
+  --orbit-top: 50%;
+  position: absolute;
+  left: var(--orbit-left);
+  top: var(--orbit-top);
+  z-index: 3;
+  width: var(--orb-size);
+  height: calc(var(--orb-size) + 36px);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--space-ink);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.research-orb-button:hover,
+.research-orb-button:focus-visible,
+.research-orb-button.is-selected {
+  transform: translate(-50%, -50%) scale(1.06);
+  filter: saturate(1.08);
+  outline: none;
+}
+
+.planet-sphere {
+  position: relative;
+  width: var(--orb-size);
+  height: var(--orb-size);
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 31% 25%, rgba(255, 255, 255, 0.98), transparent 14%),
+    radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.72), transparent 18%),
+    var(--planet-surface);
+  box-shadow:
+    inset -20px -24px 42px rgba(70, 103, 130, 0.14),
+    inset 16px 18px 36px rgba(255, 255, 255, 0.34),
+    0 22px 46px rgba(71, 112, 148, 0.2),
+    0 0 54px var(--orb-glow);
+  overflow: visible;
+}
+
+.planet-glint {
+  position: absolute;
+  left: 26%;
+  top: 21%;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.64);
+  filter: blur(3px);
+}
+
+.planet-band {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+  transform: rotate(-12deg);
+  filter: blur(0.2px);
+}
+
+.band-one {
+  top: 43%;
+}
+
+.band-two {
+  top: 57%;
+  opacity: 0.56;
+  transform: rotate(-12deg) scaleX(0.78);
+}
+
+.planet-moon {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(58, 99, 124, 0.1);
+  box-shadow: 0 6px 18px rgba(71, 112, 148, 0.16);
+}
+
+.moon-one {
+  right: -15px;
+  top: 30%;
+}
+
+.moon-two {
+  left: -14px;
+  top: 56%;
+}
+
+.moon-three {
+  right: 8px;
+  bottom: -16px;
+}
+
+.moon-four {
+  left: 10px;
+  top: -14px;
+}
+
+.planet-label {
+  display: inline-flex;
+  min-width: 62px;
+  justify-content: center;
+  border: 1px solid rgba(58, 99, 124, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 5px 10px;
+  color: #213d54;
+  font-size: 0.9rem;
+  font-weight: 820;
+  box-shadow: 0 10px 26px rgba(71, 112, 148, 0.12);
+}
+
+.research-orb-button.is-selected .planet-label {
+  border-color: var(--orb-border);
+  color: #10283d;
+}
+
+.orb-ai {
+  --orbit-left: 22%;
+  --orbit-top: 36%;
+  --planet-surface: radial-gradient(circle at 42% 42%, #78e2d8, #43c7c1 58%, #22a6aa 100%);
+  --orb-glow: rgba(36, 185, 173, 0.3);
+  --orb-border: rgba(36, 185, 173, 0.5);
+}
+
+.orb-hci {
+  --orbit-left: 74%;
+  --orbit-top: 32%;
+  --planet-surface: radial-gradient(circle at 42% 42%, #ffc6b8, #ee9f8e 58%, #da7281 100%);
+  --orb-glow: rgba(231, 132, 113, 0.3);
+  --orb-border: rgba(231, 132, 113, 0.5);
+}
+
+.orb-llm {
+  --orbit-left: 30%;
+  --orbit-top: 72%;
+  --planet-surface: radial-gradient(circle at 42% 42%, #d9ccff, #ad94ef 58%, #7a65d8 100%);
+  --orb-glow: rgba(139, 114, 232, 0.28);
+  --orb-border: rgba(139, 114, 232, 0.5);
+}
+
+.orb-xr {
+  --orbit-left: 68%;
+  --orbit-top: 74%;
+  --planet-surface: radial-gradient(circle at 42% 42%, #c6e4ff, #7cb9ff 58%, #4d92e7 100%);
+  --orb-glow: rgba(79, 147, 232, 0.3);
+  --orb-border: rgba(79, 147, 232, 0.5);
+}
+
+.research-detail-panel {
+  position: relative;
+  z-index: 4;
+  align-self: stretch;
+  display: grid;
+  align-items: end;
+  border-left: 1px solid rgba(58, 99, 124, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.7));
+  padding: 22px;
+}
+
+.research-detail {
+  border: 1px solid rgba(58, 99, 124, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  padding: 20px;
+  box-shadow: 0 18px 42px rgba(71, 112, 148, 0.12);
+  animation: detailReveal 240ms ease both;
+}
+
+.research-detail[hidden] {
+  display: none;
+}
+
+.research-detail h3 {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.research-detail p {
+  margin-bottom: 16px;
+  color: #4b6176;
+  line-height: 1.5;
+}
+
+.research-explorer .research-word-cloud {
+  z-index: 1;
+  inset: 0 310px 0 0;
+}
+
+.research-explorer .research-word-cloud span {
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.research-explorer[data-active-topic] .research-word-cloud span {
+  background: rgba(255, 255, 255, 0.34);
+  border-color: rgba(58, 99, 124, 0.08);
+  color: rgba(68, 92, 112, 0.42);
+  filter: saturate(0.55);
+  box-shadow: none;
+}
+
+.research-explorer[data-active-topic="ai"] .research-word-cloud [data-topics~="ai"],
+.research-explorer[data-active-topic="hci"] .research-word-cloud [data-topics~="hci"],
+.research-explorer[data-active-topic="llm"] .research-word-cloud [data-topics~="llm"],
+.research-explorer[data-active-topic="xr"] .research-word-cloud [data-topics~="xr"] {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(36, 185, 173, 0.22);
+  color: #17344d;
+  filter: saturate(1);
+  box-shadow: 0 12px 28px rgba(71, 112, 148, 0.12);
+  transform: translate(-50%, -50%) scale(calc(var(--s) * 1.08));
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .research-orb-button {
+  animation: planetArrive 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .orb-hci {
+  animation-delay: 80ms;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .orb-llm {
+  animation-delay: 150ms;
+}
+
+.cosmic-tab-panel[data-tab-panel="research"].is-active .orb-xr {
+  animation-delay: 220ms;
+}
+
+@keyframes planetArrive {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes detailReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 980px) {
+  .research-explorer {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .orbital-field {
+    min-height: 560px;
+  }
+
+  .research-explorer .research-word-cloud {
+    inset: 0;
+  }
+
+  .research-detail-panel {
+    border-left: 0;
+    border-top: 1px solid rgba(58, 99, 124, 0.1);
+  }
+}
+
+@media (max-width: 720px) {
+  .research-explorer {
+    margin: 14px 24px 24px;
+  }
+
+  .orbital-field {
+    min-height: 620px;
+  }
+
+  .research-orb-button {
+    --orb-size: 104px;
+  }
+
+  .orb-ai {
+    --orbit-left: 28%;
+    --orbit-top: 26%;
+  }
+
+  .orb-hci {
+    --orbit-left: 72%;
+    --orbit-top: 28%;
+  }
+
+  .orb-llm {
+    --orbit-left: 30%;
+    --orbit-top: 70%;
+  }
+
+  .orb-xr {
+    --orbit-left: 72%;
+    --orbit-top: 72%;
+  }
+
+  .research-core {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* Brighter open-orbit polish for the tabbed research universe */
+.cosmic-tab-panel[data-tab-panel="research"] .tab-shell {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.92), transparent 24%),
+    radial-gradient(circle at 68% 18%, rgba(195, 222, 255, 0.38), transparent 30%),
+    radial-gradient(circle at 46% 72%, rgba(142, 234, 226, 0.24), transparent 32%),
+    linear-gradient(145deg, rgba(247, 253, 255, 0.72), rgba(255, 255, 255, 0.42));
+  border-color: rgba(112, 177, 205, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
+    0 26px 80px rgba(94, 148, 184, 0.1);
+}
+
+.research-explorer {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: clamp(10px, 2vw, 28px);
+  min-height: clamp(500px, 60svh, 620px);
+  border: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 49% 50%, rgba(235, 255, 253, 0.86), rgba(233, 249, 255, 0.3) 24%, transparent 44%),
+    radial-gradient(circle at 75% 28%, rgba(170, 203, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 22% 72%, rgba(126, 231, 221, 0.18), transparent 30%);
+  box-shadow: none;
+  overflow: visible;
+}
+
+.research-explorer::before,
+.research-explorer::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.research-explorer::before {
+  inset: 9% 16% 11% 7%;
+  border: 1px solid rgba(50, 150, 181, 0.14);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  box-shadow:
+    0 0 0 42px rgba(104, 205, 221, 0.025),
+    inset 0 0 38px rgba(255, 255, 255, 0.72);
+}
+
+.research-explorer::after {
+  inset: 9% 30% 17% 8%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 13% 42%, rgba(255, 255, 255, 0.95) 0 3px, transparent 4px),
+    radial-gradient(circle at 39% 24%, rgba(255, 255, 255, 0.95) 0 4px, transparent 5px),
+    radial-gradient(circle at 71% 38%, rgba(255, 255, 255, 0.9) 0 3px, transparent 4px),
+    radial-gradient(circle at 35% 79%, rgba(255, 255, 255, 0.9) 0 4px, transparent 5px),
+    radial-gradient(circle at 78% 78%, rgba(255, 255, 255, 0.86) 0 3px, transparent 4px);
+  opacity: 0.88;
+}
+
+.orbital-field {
+  overflow: visible;
+  isolation: isolate;
+}
+
+.orbit-path {
+  border-color: rgba(49, 147, 179, 0.14);
+  box-shadow:
+    0 0 24px rgba(115, 216, 230, 0.09),
+    inset 0 0 16px rgba(255, 255, 255, 0.55);
+}
+
+.path-wide {
+  width: min(84%, 740px);
+  height: 70%;
+}
+
+.path-inner {
+  width: min(58%, 540px);
+  height: 45%;
+  border-color: rgba(106, 219, 216, 0.18);
+}
+
+.research-core {
+  width: 128px;
+  height: 128px;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.98), rgba(193, 252, 247, 0.84) 34%, rgba(116, 230, 224, 0.42) 68%, rgba(255, 255, 255, 0.72));
+  box-shadow:
+    0 18px 42px rgba(62, 145, 170, 0.15),
+    0 0 62px rgba(104, 222, 224, 0.26);
+}
+
+.research-orb-button {
+  --orb-size: 136px;
+}
+
+.research-orb-button::before {
+  content: "";
+  position: absolute;
+  inset: 9px 2px 35px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  opacity: 0;
+  transform: rotate(-14deg) scale(1.04);
+  transition:
+    opacity 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.research-orb-button:hover::before,
+.research-orb-button:focus-visible::before,
+.research-orb-button.is-selected::before {
+  border-color: var(--orb-border);
+  opacity: 0.68;
+  transform: rotate(-14deg) scale(1.16);
+}
+
+.planet-sphere {
+  box-shadow:
+    inset -22px -26px 46px rgba(38, 88, 123, 0.15),
+    inset 16px 18px 38px rgba(255, 255, 255, 0.44),
+    0 26px 56px rgba(75, 134, 174, 0.18),
+    0 0 68px var(--orb-glow);
+}
+
+.planet-band {
+  left: 16%;
+  right: 16%;
+  height: 11px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.research-detail-panel {
+  border-left: 0;
+  background: transparent;
+  padding: 0 12px 26px 0;
+  align-items: center;
+}
+
+.research-detail {
+  border-color: rgba(109, 179, 206, 0.18);
+  border-radius: 24px;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(246, 253, 255, 0.58)),
+    radial-gradient(circle at 86% 10%, rgba(151, 217, 255, 0.18), transparent 32%);
+  box-shadow:
+    0 22px 60px rgba(76, 132, 170, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.research-explorer .research-word-cloud {
+  z-index: 5;
+}
+
+.research-explorer .research-word-cloud span {
+  backdrop-filter: blur(8px);
+}
+
+.research-explorer[data-active-topic] .research-word-cloud span {
+  background: rgba(255, 255, 255, 0.46);
+  color: rgba(47, 73, 94, 0.42);
+}
+
+.research-explorer[data-active-topic="ai"] .research-word-cloud [data-topics~="ai"],
+.research-explorer[data-active-topic="hci"] .research-word-cloud [data-topics~="hci"],
+.research-explorer[data-active-topic="llm"] .research-word-cloud [data-topics~="llm"],
+.research-explorer[data-active-topic="xr"] .research-word-cloud [data-topics~="xr"] {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(60, 171, 196, 0.24);
+}
+
+@media (max-width: 980px) {
+  .research-detail-panel {
+    padding: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .research-explorer {
+    border-radius: 22px;
+  }
+
+  .research-explorer::before,
+  .research-explorer::after {
+    inset: 6% 4% 36%;
+  }
+
+  .research-orb-button {
+    --orb-size: 108px;
+  }
+}
+
+.planet-tabs .research-explorer .research-word-cloud {
+  z-index: 3;
+}
+
+.planet-tabs .orbital-field {
+  z-index: 4;
+}
+
+.planet-tabs .research-core {
+  z-index: 5;
+}
+
+.planet-tabs .research-orb-button {
+  z-index: 7;
+}
+
+.planet-tabs .planet-label {
+  position: relative;
+  z-index: 2;
+}
+
+.planet-tabs .research-detail-panel {
+  z-index: 8;
+}
+
+/* Word-cloud research mode */
+.planet-tabs .research-cloud-lab {
+  --lens-size: clamp(150px, 16vw, 210px);
+  --cloud-ink: #12344c;
+  --cloud-teal: #0c9d9a;
+  --cloud-blue: #247fc7;
+  --cloud-violet: #7666c9;
+  --cloud-coral: #d9867d;
+  display: block;
+  min-height: clamp(520px, 62svh, 660px);
+  margin: 10px clamp(18px, 5vw, 58px) 38px;
+  padding: clamp(12px, 2vw, 28px);
+  border: 0;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 48%), rgba(255, 255, 255, 0.96), rgba(234, 252, 255, 0.28) 18%, transparent 36%),
+    radial-gradient(circle at 12% 18%, rgba(126, 224, 218, 0.22), transparent 30%),
+    radial-gradient(circle at 86% 22%, rgba(169, 206, 255, 0.22), transparent 31%),
+    radial-gradient(circle at 50% 82%, rgba(214, 202, 255, 0.18), transparent 34%),
+    linear-gradient(145deg, rgba(249, 254, 255, 0.78), rgba(255, 255, 255, 0.48));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 26px 90px rgba(75, 143, 182, 0.12);
+  overflow: hidden;
+}
+
+.planet-tabs .research-cloud-lab::before {
+  content: "";
+  position: absolute;
+  inset: 11% 8% 13%;
+  border: 1px solid rgba(82, 167, 196, 0.12);
+  border-radius: 48% 52% 51% 49% / 50% 47% 53% 50%;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+.planet-tabs .research-cloud-lab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 32%, rgba(255, 255, 255, 0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 31%, rgba(255, 255, 255, 0.72) 0 2px, transparent 3px),
+    radial-gradient(circle at 35% 78%, rgba(255, 255, 255, 0.72) 0 2px, transparent 3px),
+    radial-gradient(circle at 69% 72%, rgba(255, 255, 255, 0.68) 0 2px, transparent 3px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.planet-tabs .research-cloud-lab .orbital-field,
+.planet-tabs .research-cloud-lab .research-detail-panel {
+  display: none;
+}
+
+.planet-tabs .research-cloud-lab .research-word-cloud {
+  position: relative;
+  z-index: 2;
+  inset: auto;
+  width: 100%;
+  min-height: clamp(480px, 58svh, 610px);
+  border: 1px solid rgba(93, 171, 198, 0.14);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 50% 47%, rgba(255, 255, 255, 0.84), transparent 27%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(241, 253, 255, 0.28));
+  overflow: hidden;
+  cursor: none;
+  touch-action: none;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word] {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(36ch, 42vw);
+  border: 1px solid rgba(92, 159, 189, 0.13);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  padding: 0.46em 0.82em;
+  color: var(--cloud-ink);
+  font-size: calc(0.72rem + (var(--s) * 0.62rem));
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 14px 34px rgba(70, 133, 170, 0.1);
+  filter: none;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word]:nth-child(4n + 1) {
+  color: #095b63;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word]:nth-child(4n + 2) {
+  color: #155f95;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word]:nth-child(4n + 3) {
+  color: #594f9f;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word]:nth-child(4n + 4) {
+  color: #9a574f;
+}
+
+.planet-tabs .research-cloud-lab [data-research-word]:hover,
+.planet-tabs .research-cloud-lab [data-research-word].is-cloud-focus {
+  z-index: 4;
+  border-color: rgba(23, 151, 174, 0.32);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow:
+    0 18px 42px rgba(67, 136, 176, 0.16),
+    0 0 0 7px rgba(120, 224, 220, 0.12);
+  transform: translate(-50%, -50%) scale(1.04);
+}
+
+.planet-tabs .research-cloud-lab[data-active-topic] .research-word-cloud span,
+.planet-tabs .research-cloud-lab[data-active-topic="ai"] .research-word-cloud [data-topics~="ai"],
+.planet-tabs .research-cloud-lab[data-active-topic="hci"] .research-word-cloud [data-topics~="hci"],
+.planet-tabs .research-cloud-lab[data-active-topic="llm"] .research-word-cloud [data-topics~="llm"],
+.planet-tabs .research-cloud-lab[data-active-topic="xr"] .research-word-cloud [data-topics~="xr"] {
+  filter: none;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cloud-magnifier {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 7;
+  width: var(--lens-size);
+  height: var(--lens-size);
+  border: 1px solid rgba(20, 130, 160, 0.34);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow:
+    0 24px 54px rgba(50, 116, 160, 0.18),
+    inset 0 0 0 9px rgba(255, 255, 255, 0.52),
+    inset 0 0 28px rgba(134, 225, 226, 0.28);
+  overflow: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.cloud-magnifier::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 4;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: inherit;
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.72);
+}
+
+.cloud-magnifier::after {
+  content: "";
+  position: absolute;
+  left: 28%;
+  top: 18%;
+  z-index: 5;
+  width: 24%;
+  height: 12%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  filter: blur(1px);
+  transform: rotate(-24deg);
+}
+
+.lens-handle {
+  position: absolute;
+  right: 19%;
+  bottom: 16%;
+  z-index: 6;
+  width: 28%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(40, 129, 156, 0.48);
+  transform: rotate(38deg);
+}
+
+.magnifier-cloud {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.magnifier-cloud [data-research-word] {
+  box-shadow: 0 8px 20px rgba(54, 111, 150, 0.1);
+}
+
+.planet-tabs .research-cloud-lab.is-lens-moving .cloud-magnifier {
+  box-shadow:
+    0 28px 62px rgba(43, 113, 158, 0.22),
+    inset 0 0 0 9px rgba(255, 255, 255, 0.62),
+    inset 0 0 30px rgba(134, 225, 226, 0.32);
+}
+
+@media (max-width: 900px) {
+  .planet-tabs .research-cloud-lab {
+    --lens-size: clamp(132px, 28vw, 178px);
+    padding: 12px;
+  }
+
+  .planet-tabs .research-cloud-lab .research-word-cloud {
+    min-height: 640px;
+  }
+
+  .planet-tabs .research-cloud-lab [data-research-word] {
+    max-width: 78vw;
+    font-size: calc(0.68rem + (var(--s) * 0.48rem));
+  }
+}
+
+@media (max-width: 560px) {
+  .planet-tabs .research-cloud-lab {
+    margin-inline: 12px;
+    border-radius: 22px;
+  }
+
+  .planet-tabs .research-cloud-lab .research-word-cloud {
+    min-height: 720px;
+    border-radius: 20px;
+  }
+
+  .planet-tabs .research-cloud-lab [data-research-word] {
+    white-space: normal;
+    padding: 0.5em 0.72em;
+  }
+}
+
+.cosmic-tab-panel[data-tab-panel="research"] {
+  align-items: start;
+  min-height: auto;
+  padding-bottom: clamp(18px, 3vw, 34px);
+}
+
+.cosmic-tab-panel[data-tab-panel="research"] .tab-heading {
+  padding: clamp(28px, 4vw, 46px) clamp(24px, 5vw, 58px) 8px;
+}
+
+.planet-tabs .research-cloud-lab {
+  min-height: clamp(460px, 54svh, 610px);
+  margin-top: 0;
+}
+
+.planet-tabs .research-cloud-lab .research-word-cloud {
+  min-height: clamp(420px, 50svh, 560px);
+}
+
+/* Opening research-book prologue */
+.js-enabled.prologue-active {
+  overflow: hidden;
+}
+
+.js-enabled.prologue-active body {
+  overflow: hidden;
+}
+
+.js-enabled.prologue-active .site-header,
+.js-enabled.prologue-active main,
+.js-enabled.prologue-active .coastal-voyage {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.research-prologue {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: clamp(18px, 3vw, 42px);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(255, 255, 255, 0.96), transparent 28%),
+    radial-gradient(circle at 18% 20%, rgba(119, 222, 219, 0.24), transparent 34%),
+    radial-gradient(circle at 78% 80%, rgba(180, 163, 245, 0.2), transparent 34%),
+    linear-gradient(140deg, #f9fdff 0%, #eaf8fb 42%, #f6f1ff 100%);
+  color: #13263b;
+  overflow: hidden;
+}
+
+.research-prologue::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 28%, rgba(255, 255, 255, 0.36)),
+    radial-gradient(ellipse at 50% 6%, rgba(81, 150, 195, 0.16), transparent 42%);
+  pointer-events: none;
+}
+
+.research-prologue::after {
+  content: "";
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -18%;
+  height: 44%;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(79, 184, 209, 0.17), transparent 60%),
+    linear-gradient(180deg, transparent, rgba(220, 244, 249, 0.76));
+  pointer-events: none;
+}
+
+.prologue-light {
+  position: absolute;
+  inset: -10%;
+  background:
+    linear-gradient(112deg, transparent 0 35%, rgba(255, 255, 255, 0.54) 46%, transparent 58%),
+    radial-gradient(circle at 68% 22%, rgba(255, 255, 255, 0.68), transparent 20%);
+  filter: blur(2px);
+  opacity: 0;
+  animation: coastalLight 5200ms ease 800ms both;
+  pointer-events: none;
+}
+
+.prologue-book-scene {
+  position: relative;
+  z-index: 2;
+  width: min(1120px, 92vw);
+  aspect-ratio: 16 / 8.6;
+  perspective: 1600px;
+  transform: translateY(14px);
+  animation: bookSceneRise 1200ms cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.prologue-book {
+  position: absolute;
+  inset: 11% 3% 12%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  transform-style: preserve-3d;
+}
+
+.book-shadow {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -10%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(65, 112, 143, 0.18);
+  filter: blur(28px);
+}
+
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  bottom: 2%;
+  z-index: 5;
+  width: 18px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(191, 174, 150, 0.25), rgba(255, 255, 255, 0.8), rgba(109, 143, 164, 0.18));
+  box-shadow: 0 12px 28px rgba(70, 103, 130, 0.12);
+  transform: translateX(-50%);
+}
+
+.book-page {
+  position: relative;
+  min-height: 100%;
+  border: 1px solid rgba(93, 130, 155, 0.14);
+  background:
+    radial-gradient(circle at 38% 18%, rgba(255, 255, 255, 0.96), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(247, 252, 252, 0.84));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 28px 70px rgba(75, 112, 148, 0.13);
+  overflow: hidden;
+}
+
+.page-left {
+  border-radius: 22px 9px 9px 22px;
+  transform-origin: right center;
+  animation: openLeftPage 1500ms cubic-bezier(0.18, 0.84, 0.22, 1) 280ms both;
+}
+
+.page-right {
+  border-radius: 9px 22px 22px 9px;
+  transform-origin: left center;
+  animation: openRightPage 1500ms cubic-bezier(0.18, 0.84, 0.22, 1) 280ms both;
+}
+
+.paper-fiber {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(100deg, rgba(41, 67, 85, 0.025) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 20% 80%, rgba(108, 206, 203, 0.08), transparent 24%),
+    radial-gradient(circle at 78% 26%, rgba(157, 144, 230, 0.08), transparent 25%);
+  opacity: 0.8;
+}
+
+.prologue-thought {
+  position: absolute;
+  z-index: 3;
+  width: min(300px, 42%);
+  border: 1px solid rgba(82, 151, 181, 0.16);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: clamp(14px, 2vw, 22px);
+  box-shadow: 0 18px 42px rgba(75, 118, 148, 0.1);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: thoughtReveal 720ms ease both;
+}
+
+.prologue-thought span {
+  display: inline-flex;
+  margin-bottom: 6px;
+  color: #158b8a;
+  font-size: 0.72rem;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+}
+
+.prologue-thought h2 {
+  margin: 0 0 8px;
+  color: #18314a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.4rem, 2.7vw, 2.25rem);
+  line-height: 1;
+}
+
+.prologue-thought p {
+  margin: 0 0 7px;
+  color: #4f6377;
+  font-size: clamp(0.78rem, 1vw, 0.98rem);
+  line-height: 1.42;
+}
+
+.thought-person {
+  left: 10%;
+  top: 20%;
+  animation-delay: 1700ms;
+}
+
+.thought-ai {
+  right: 10%;
+  bottom: 16%;
+  animation-delay: 2500ms;
+}
+
+.thought-space {
+  left: 10%;
+  top: 21%;
+  animation-delay: 3300ms;
+}
+
+.thought-interaction {
+  right: 9%;
+  bottom: 16%;
+  animation-delay: 4100ms;
+}
+
+.annotation-line {
+  position: absolute;
+  z-index: 2;
+  border: 1px solid rgba(69, 150, 184, 0.18);
+  border-radius: 50%;
+  opacity: 0;
+  animation: annotationDraw 900ms ease both;
+}
+
+.line-person {
+  left: 8%;
+  top: 16%;
+  width: 42%;
+  height: 46%;
+  transform: rotate(-12deg);
+  animation-delay: 1900ms;
+}
+
+.line-ai {
+  right: 7%;
+  bottom: 10%;
+  width: 45%;
+  height: 40%;
+  transform: rotate(10deg);
+  animation-delay: 2700ms;
+}
+
+.line-space {
+  left: 8%;
+  top: 16%;
+  width: 46%;
+  height: 44%;
+  transform: rotate(9deg);
+  animation-delay: 3500ms;
+}
+
+.line-interaction {
+  right: 7%;
+  bottom: 10%;
+  width: 48%;
+  height: 42%;
+  transform: rotate(-11deg);
+  animation-delay: 4300ms;
+}
+
+.data-mist {
+  position: absolute;
+  z-index: 1;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  opacity: 0;
+  background:
+    radial-gradient(circle, rgba(94, 226, 210, 0.18), transparent 58%),
+    repeating-radial-gradient(circle, rgba(62, 101, 145, 0.14) 0 1px, transparent 1px 11px);
+  filter: blur(0.2px);
+  animation: mistArrive 1300ms ease both;
+}
+
+.mist-one {
+  right: 18%;
+  top: 18%;
+  animation-delay: 2400ms;
+}
+
+.mist-two {
+  left: 15%;
+  bottom: 16%;
+  animation-delay: 3800ms;
+}
+
+.prologue-copy {
+  position: absolute;
+  left: 50%;
+  top: clamp(24px, 5.5vh, 58px);
+  z-index: 4;
+  width: min(760px, calc(100% - 42px));
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -10px);
+  animation: prologueTitle 900ms ease 5100ms both;
+}
+
+.prologue-label {
+  margin: 0 0 6px;
+  color: #137b80;
+  font-size: 0.76rem;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prologue-copy h1 {
+  margin: 0;
+  color: #14263b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.9rem, 4.15vw, 3.9rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.prologue-enter {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(26px, 7vh, 76px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(32, 126, 157, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  padding: 14px 24px;
+  color: #14263b;
+  font: inherit;
+  font-weight: 820;
+  box-shadow:
+    0 18px 46px rgba(62, 112, 148, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  animation: enterReveal 760ms ease 6000ms both;
+}
+
+.prologue-enter:hover,
+.prologue-enter:focus-visible {
+  border-color: rgba(36, 185, 173, 0.42);
+  background: rgba(255, 255, 255, 0.92);
+  outline: none;
+  box-shadow:
+    0 20px 52px rgba(62, 112, 148, 0.2),
+    0 0 0 8px rgba(112, 224, 219, 0.13);
+}
+
+.research-prologue.is-leaving {
+  animation: prologueLeave 540ms ease both;
+}
+
+.prologue-complete .research-prologue {
+  display: none;
+}
+
+@keyframes bookSceneRise {
+  from {
+    opacity: 0;
+    transform: translateY(34px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(14px) scale(1);
+  }
+}
+
+@keyframes openLeftPage {
+  from {
+    transform: rotateY(17deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes openRightPage {
+  from {
+    transform: rotateY(-17deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes thoughtReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes annotationDraw {
+  from {
+    opacity: 0;
+    transform: rotate(var(--line-rotate, 0deg)) scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mistArrive {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+}
+
+@keyframes coastalLight {
+  20% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0.78;
+    transform: translateX(5%);
+  }
+}
+
+@keyframes prologueTitle {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes enterReveal {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes prologueLeave {
+  to {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+}
+
+@media (max-width: 860px) {
+  .prologue-book-scene {
+    width: min(680px, 94vw);
+    aspect-ratio: 1 / 1.22;
+  }
+
+  .prologue-book {
+    inset: 12% 4% 14%;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .book-spine {
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    width: 72%;
+    height: 12px;
+    transform: translate(-50%, -50%);
+  }
+
+  .book-page {
+    min-height: 0;
+  }
+
+  .page-left,
+  .page-right {
+    border-radius: 20px;
+  }
+
+  .prologue-thought {
+    width: 42%;
+    padding: 13px;
+  }
+
+  .thought-person,
+  .thought-space {
+    left: 7%;
+    top: 16%;
+  }
+
+  .thought-ai,
+  .thought-interaction {
+    right: 7%;
+    bottom: 15%;
+  }
+
+  .prologue-copy {
+    top: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .prologue-book-scene {
+    width: 96vw;
+    aspect-ratio: 0.82 / 1;
+  }
+
+  .prologue-book {
+    inset: 15% 2% 15%;
+  }
+
+  .prologue-thought {
+    width: 46%;
+    border-radius: 18px;
+    padding: 10px;
+  }
+
+  .prologue-thought p {
+    display: none;
+  }
+
+  .prologue-copy h1 {
+    font-size: clamp(1.7rem, 8vw, 2.65rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prologue-light,
+  .prologue-book-scene,
+  .page-left,
+  .page-right,
+  .prologue-thought,
+  .annotation-line,
+  .data-mist,
+  .prologue-copy,
+  .prologue-enter,
+  .research-prologue.is-leaving {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .prologue-copy {
+    transform: translateX(-50%);
+  }
+
+  .prologue-enter {
+    transform: translateX(-50%);
+  }
+}
+
+/* Complete research-book atlas redesign */
+body {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(112, 224, 219, 0.2), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(167, 190, 240, 0.2), transparent 34%),
+    linear-gradient(135deg, #f8fcff 0%, #edf8fb 44%, #f7f2ff 100%);
+}
+
+.research-prologue {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(107, 220, 218, 0.22), transparent 32%),
+    radial-gradient(circle at 84% 12%, rgba(177, 198, 247, 0.22), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(236, 250, 253, 0.18));
+}
+
+.research-prologue::before {
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.24), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 60%);
+}
+
+.research-prologue::after {
+  background: linear-gradient(180deg, transparent, rgba(230, 247, 251, 0.34));
+}
+
+.research-prologue .prologue-book-scene,
+.research-prologue .prologue-copy {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.research-prologue .prologue-enter {
+  bottom: clamp(28px, 6vh, 70px);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(18px);
+}
+
+.site-header {
+  background: rgba(250, 254, 255, 0.82);
+  box-shadow: 0 12px 38px rgba(75, 120, 150, 0.08);
+}
+
+.nav.shell {
+  width: min(1260px, calc(100% - 42px));
+}
+
+.brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+}
+
+.nav-links {
+  gap: 10px;
+}
+
+.nav-links a {
+  border-radius: 999px;
+  padding-inline: 13px;
+  font-size: 0.9rem;
+}
+
+.nav-links a.is-active {
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: 0 10px 26px rgba(75, 120, 150, 0.1);
+}
+
+.planet-tabs.shell {
+  width: min(1260px, calc(100% - 42px));
+  padding: 26px 0 30px;
+}
+
+.cosmic-tab-panel {
+  min-height: calc(100svh - var(--header-height) - 56px);
+  border: 1px solid rgba(78, 130, 155, 0.14);
+  border-radius: 30px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(246, 253, 255, 0.54)),
+    rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 30px 90px rgba(70, 116, 148, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.cosmic-tab-panel.is-active {
+  animation: bookPageIn 520ms cubic-bezier(0.2, 0.78, 0.18, 1) both;
+}
+
+.cosmic-tab-panel::before {
+  inset: 22px;
+  border-color: rgba(70, 130, 154, 0.1);
+  border-radius: 24px;
+  transform: rotate(-0.7deg);
+}
+
+.cosmic-tab-panel::after {
+  height: 100%;
+  background:
+    radial-gradient(circle at 12% 88%, rgba(110, 221, 219, 0.14), transparent 36%),
+    radial-gradient(circle at 88% 12%, rgba(179, 168, 242, 0.14), transparent 34%);
+}
+
+@keyframes bookPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) rotateX(4deg) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+  }
+}
+
+.book-cover-panel,
+.book-researcher-panel,
+.book-thinking-panel,
+.book-work-panel,
+.book-contact-panel {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.book-cover-panel {
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(112, 220, 216, 0.14), transparent 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.42) 54%, rgba(255, 255, 255, 0.68));
+}
+
+.book-researcher-panel {
+  background-image:
+    radial-gradient(circle at 18% 84%, rgba(116, 220, 216, 0.16), transparent 28%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.44));
+}
+
+.book-thinking-panel {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.58), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(244, 252, 255, 0.38));
+}
+
+.book-work-panel,
+.book-contact-panel {
+  background-image:
+    radial-gradient(circle at 73% 32%, rgba(123, 204, 230, 0.14), transparent 28%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.5));
+}
+
+.cosmic-hero,
+.tab-grid {
+  padding: clamp(34px, 5vw, 62px);
+}
+
+.book-cover-panel .cosmic-hero {
+  grid-template-columns: minmax(320px, 0.52fr) minmax(360px, 0.48fr);
+}
+
+.book-cover-panel .planetarium {
+  display: none;
+}
+
+.book-cover-panel .cosmic-copy {
+  position: relative;
+  max-width: 620px;
+  border: 1px solid rgba(74, 133, 158, 0.12);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: clamp(24px, 4vw, 42px);
+  box-shadow:
+    0 22px 60px rgba(68, 116, 149, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+}
+
+.book-cover-panel .cosmic-copy h1,
+.cosmic-tab-panel h2 {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.book-cover-panel .cosmic-copy h1 {
+  margin-bottom: 14px;
+  font-size: clamp(3.3rem, 8vw, 6.8rem);
+  line-height: 0.92;
+}
+
+.book-cover-panel .hero-role {
+  color: #17344d;
+  font-size: clamp(1.05rem, 1.6vw, 1.34rem);
+  font-weight: 760;
+}
+
+.book-toc {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.book-toc a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid rgba(66, 132, 160, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  padding: 11px 14px;
+  color: #18314a;
+  font-weight: 780;
+  box-shadow: 0 12px 28px rgba(74, 120, 150, 0.09);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.book-toc a:hover,
+.book-toc a:focus-visible {
+  border-color: rgba(36, 185, 173, 0.4);
+  background: rgba(255, 255, 255, 0.92);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.book-toc span {
+  color: #128987;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.book-researcher-panel .about-grid {
+  grid-template-columns: minmax(360px, 0.88fr) minmax(280px, 0.62fr);
+  gap: clamp(22px, 3vw, 42px);
+}
+
+.book-researcher-panel .tab-copy {
+  border: 1px solid rgba(74, 133, 158, 0.12);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.68);
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: 0 20px 58px rgba(68, 116, 149, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.book-researcher-panel .tab-copy p {
+  font-size: 0.96rem;
+}
+
+.book-researcher-panel .academic-path {
+  align-content: center;
+}
+
+.researcher-photo-note {
+  position: relative;
+  margin: 0;
+  border: 1px solid rgba(71, 124, 154, 0.13);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 14px;
+  box-shadow: 0 20px 48px rgba(68, 116, 149, 0.16);
+  transform: rotate(-1.5deg);
+}
+
+.researcher-photo-note::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 42px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(226, 235, 238, 0.9);
+  box-shadow: 0 8px 20px rgba(70, 103, 130, 0.14);
+  transform: translateX(-50%);
+}
+
+.researcher-photo-note img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: block;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: 58% 48%;
+}
+
+.researcher-photo-note figcaption {
+  display: grid;
+  gap: 2px;
+  padding: 12px 4px 2px;
+  color: #17344d;
+}
+
+.researcher-photo-note span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 720;
+}
+
+.researcher-photo-note strong {
+  color: #157e84;
+  font-size: 0.82rem;
+}
+
+.book-researcher-panel .academic-path article {
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 34px rgba(70, 116, 148, 0.1);
+}
+
+.book-thinking-panel {
+  align-items: start;
+  padding-bottom: clamp(22px, 3vw, 36px);
+}
+
+.book-thinking-panel .tab-heading {
+  width: min(560px, calc(100% - 52px));
+  margin: clamp(26px, 4vw, 48px) 0 0 clamp(28px, 6vw, 80px);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 18px 24px;
+  backdrop-filter: blur(10px);
+}
+
+.book-thinking-panel .tab-heading h2 {
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+}
+
+.book-thinking-panel .research-cloud-lab {
+  margin: -2px clamp(24px, 5vw, 70px) 26px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+}
+
+.book-thinking-panel .research-cloud-lab::before,
+.book-thinking-panel .research-cloud-lab::after {
+  opacity: 0.42;
+}
+
+.book-thinking-panel .research-cloud-lab .research-word-cloud {
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.book-thinking-panel .research-cloud-lab [data-research-word] {
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 12px 30px rgba(68, 116, 149, 0.08);
+}
+
+.book-work-panel .publication-grid,
+.book-contact-panel .contact-grid {
+  grid-template-columns: minmax(280px, 0.45fr) minmax(0, 0.85fr);
+  min-height: 640px;
+}
+
+.book-work-panel .tab-copy,
+.book-contact-panel .tab-copy {
+  align-self: center;
+  border: 1px solid rgba(74, 133, 158, 0.12);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: 0 20px 58px rgba(68, 116, 149, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.book-work-panel .publication-orbit,
+.book-contact-panel .signal-card {
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(248, 253, 255, 0.62));
+  box-shadow:
+    0 24px 64px rgba(68, 116, 149, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.book-work-panel .publication-thumb {
+  border-radius: 20px;
+}
+
+.book-work-panel .publication-thumb img {
+  aspect-ratio: 16 / 9;
+}
+
+.book-contact-panel .signal-card {
+  justify-self: stretch;
+  width: auto;
+  max-width: none;
+}
+
+.book-contact-panel .signal-visual {
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 72% 20%, rgba(109, 221, 217, 0.18), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(241, 252, 255, 0.48));
+}
+
+.book-contact-panel .contact-links a {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+@media (max-width: 980px) {
+  .cosmic-hero,
+  .tab-grid,
+  .book-researcher-panel .about-grid,
+  .book-work-panel .publication-grid,
+  .book-contact-panel .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-cover-panel .cosmic-copy,
+  .book-researcher-panel .tab-copy,
+  .book-work-panel .tab-copy,
+  .book-contact-panel .tab-copy {
+    max-width: none;
+  }
+
+  .book-thinking-panel .tab-heading {
+    margin-inline: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .planet-tabs.shell,
+  .nav.shell {
+    width: min(100% - 24px, 1260px);
+  }
+
+  .cosmic-tab-panel {
+    border-radius: 22px;
+  }
+
+  .cosmic-hero,
+  .tab-grid {
+    padding: 22px;
+  }
+
+  .book-toc {
+    grid-template-columns: 1fr;
+  }
+
+  .publication-orbit {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Research-book completion pass */
+:root {
+  --book-ink: #10263a;
+  --book-soft-ink: #496478;
+  --book-sea: #62d2d1;
+  --book-blue: #6eb9f0;
+  --book-lilac: #b7a8f6;
+  --book-coral: #f2b1a5;
+  --book-paper: rgba(255, 255, 255, 0.76);
+}
+
+body {
+  color: var(--book-ink);
+}
+
+.js-enabled.prologue-complete body {
+  background:
+    radial-gradient(circle at 15% 5%, rgba(101, 214, 212, 0.16), transparent 28%),
+    radial-gradient(circle at 87% 12%, rgba(159, 191, 244, 0.16), transparent 31%),
+    linear-gradient(180deg, #f7fdff 0%, #edf9fc 42%, #f9fbff 100%);
+}
+
+.research-prologue {
+  isolation: isolate;
+}
+
+.research-prologue::before {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 52% 36%, rgba(255, 255, 255, 0.1), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(218, 244, 249, 0.08));
+}
+
+.research-prologue::after {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, transparent 42%, rgba(222, 245, 249, 0.28) 100%);
+}
+
+.research-prologue .prologue-enter {
+  z-index: 4;
+  border: 1px solid rgba(96, 158, 188, 0.22);
+  color: #15304a;
+  letter-spacing: 0.08em;
+  box-shadow:
+    0 22px 62px rgba(58, 119, 150, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.research-prologue .prologue-enter:hover,
+.research-prologue .prologue-enter:focus-visible {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 26px 74px rgba(53, 124, 154, 0.2),
+    0 0 0 8px rgba(111, 213, 213, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.site-header {
+  height: 62px;
+  border-bottom: 1px solid rgba(80, 143, 170, 0.1);
+}
+
+.nav.shell {
+  height: 62px;
+}
+
+.brand {
+  color: #0f4d64;
+}
+
+.brand::after {
+  background: linear-gradient(90deg, var(--book-sea), var(--book-lilac));
+}
+
+.nav-links a {
+  color: #183a50;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.is-active {
+  color: #0f4d64;
+  background: rgba(255, 255, 255, 0.76);
+  border-color: rgba(89, 181, 202, 0.24);
+}
+
+.planet-tabs.shell {
+  min-height: calc(100svh - 62px);
+  display: grid;
+  align-items: center;
+}
+
+.cosmic-tab-panel {
+  position: relative;
+  overflow: hidden;
+  color: var(--book-ink);
+  transform-origin: 50% 68%;
+}
+
+.cosmic-tab-panel::before {
+  opacity: 0.82;
+}
+
+.cosmic-tab-panel::after {
+  z-index: 0;
+}
+
+.cosmic-tab-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.book-cover-panel.is-active {
+  animation: coverBookOpen 720ms cubic-bezier(0.18, 0.78, 0.2, 1) both;
+}
+
+.book-researcher-panel.is-active {
+  animation: pageFromRight 620ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+.book-thinking-panel.is-active {
+  animation: lensPageBloom 680ms cubic-bezier(0.16, 0.74, 0.22, 1) both;
+}
+
+.book-work-panel.is-active {
+  animation: pageFromBottom 620ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+.book-contact-panel.is-active {
+  animation: signalPageIn 620ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+@keyframes coverBookOpen {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98) rotateX(5deg);
+    filter: saturate(0.84);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0);
+    filter: saturate(1);
+  }
+}
+
+@keyframes pageFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px) rotateY(-4deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+@keyframes lensPageBloom {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+    filter: blur(8px) saturate(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) saturate(1);
+  }
+}
+
+@keyframes pageFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes signalPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+    filter: hue-rotate(10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: hue-rotate(0);
+  }
+}
+
+.book-cover-panel {
+  background-image:
+    radial-gradient(circle at 20% 74%, rgba(116, 220, 216, 0.18), transparent 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.42) 53%, rgba(255, 255, 255, 0.74));
+}
+
+.book-cover-panel .cosmic-hero {
+  min-height: inherit;
+  align-items: center;
+}
+
+.book-cover-panel .cosmic-copy {
+  max-width: 650px;
+  color: var(--book-ink);
+  background:
+    radial-gradient(circle at 12% 5%, rgba(112, 217, 214, 0.14), transparent 26%),
+    rgba(255, 255, 255, 0.72);
+}
+
+.book-cover-panel .cosmic-copy h1 {
+  color: transparent;
+  background: linear-gradient(100deg, #113a4b 0%, #087b89 43%, #69a7ef 76%, #9b88e4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.book-cover-panel .tagline {
+  max-width: 52ch;
+  color: var(--book-soft-ink);
+}
+
+.hero-actions .button.secondary {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.book-toc a {
+  min-height: 48px;
+}
+
+.book-toc a:nth-child(1) span {
+  color: #168a91;
+}
+
+.book-toc a:nth-child(2) span {
+  color: #5478d7;
+}
+
+.book-toc a:nth-child(3) span {
+  color: #b06d65;
+}
+
+.book-toc a:nth-child(4) span {
+  color: #0c8e75;
+}
+
+.book-researcher-panel {
+  background-image:
+    radial-gradient(circle at 18% 84%, rgba(116, 220, 216, 0.16), transparent 28%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.91), rgba(255, 255, 255, 0.52));
+}
+
+.book-thinking-panel {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.58), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(239, 252, 255, 0.42));
+}
+
+.book-work-panel {
+  background-image:
+    radial-gradient(circle at 73% 32%, rgba(123, 204, 230, 0.14), transparent 28%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.54));
+}
+
+.book-contact-panel {
+  background-image:
+    radial-gradient(circle at 76% 28%, rgba(127, 220, 214, 0.15), transparent 26%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.5));
+}
+
+.book-researcher-panel .tab-copy,
+.book-work-panel .tab-copy,
+.book-contact-panel .tab-copy,
+.book-cover-panel .cosmic-copy {
+  border-color: rgba(78, 140, 166, 0.12);
+  box-shadow:
+    0 24px 64px rgba(72, 122, 152, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.section-kicker,
+.eyebrow {
+  color: #0e8f92;
+}
+
+.cosmic-tab-panel h2 {
+  color: #12283d;
+  line-height: 1;
+}
+
+.book-researcher-panel .tab-copy p,
+.book-work-panel .tab-copy p,
+.book-contact-panel .tab-copy p {
+  color: var(--book-soft-ink);
+}
+
+.book-researcher-panel .academic-path article {
+  border: 1px solid rgba(79, 146, 171, 0.1);
+}
+
+.researcher-photo-note {
+  max-width: 360px;
+  justify-self: center;
+}
+
+.book-thinking-panel .tab-heading {
+  color: var(--book-ink);
+  box-shadow: 0 18px 42px rgba(71, 124, 154, 0.1);
+}
+
+.book-thinking-panel .research-cloud-lab {
+  background:
+    radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 48%), rgba(255, 255, 255, 0.98), rgba(234, 252, 255, 0.24) 20%, transparent 40%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(241, 253, 255, 0.16));
+  backdrop-filter: blur(4px);
+}
+
+.book-thinking-panel .research-cloud-lab .orbital-field,
+.book-thinking-panel .research-cloud-lab .research-detail-panel {
+  display: none !important;
+}
+
+.book-thinking-panel .research-cloud-lab .research-word-cloud {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.78), transparent 28%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(241, 253, 255, 0.22));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 18px 52px rgba(70, 130, 160, 0.08);
+}
+
+.book-thinking-panel .research-cloud-lab [data-research-word] {
+  border-color: rgba(80, 154, 184, 0.13);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.book-work-panel .publication-orbit,
+.book-contact-panel .signal-card {
+  border: 1px solid rgba(80, 145, 170, 0.11);
+}
+
+.book-work-panel .publication-orbit::before,
+.book-work-panel .publication-orbit::after {
+  display: none !important;
+}
+
+.book-work-panel .publication-copy h3 a {
+  color: #1068a5;
+}
+
+.book-work-panel .badge-row span {
+  background: rgba(255, 255, 255, 0.72);
+  color: #0b7386;
+}
+
+.book-contact-panel .signal-visual strong {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.book-contact-panel .signal-dot {
+  animation-duration: 2600ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-cover-panel.is-active,
+  .book-researcher-panel.is-active,
+  .book-thinking-panel.is-active,
+  .book-work-panel.is-active,
+  .book-contact-panel.is-active {
+    animation: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .planet-tabs.shell {
+    align-items: start;
+    padding-top: 18px;
+  }
+
+  .book-cover-panel .cosmic-copy {
+    max-width: none;
+  }
+
+  .book-researcher-panel .academic-path {
+    justify-items: start;
+  }
+
+  .researcher-photo-note {
+    justify-self: start;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header,
+  .nav.shell {
+    height: 68px;
+  }
+
+  .planet-tabs.shell {
+    min-height: calc(100svh - 68px);
+  }
+
+  .book-cover-panel .cosmic-copy h1 {
+    font-size: clamp(3rem, 18vw, 4.8rem);
+  }
+
+  .book-thinking-panel .tab-heading {
+    width: auto;
+    margin: 22px 16px 0;
+    padding: 16px 18px;
+  }
+
+  .book-thinking-panel .research-cloud-lab {
+    margin-inline: 12px;
+  }
+}
+
+/* Lighter exploratory word-cloud tuning */
+.book-thinking-panel .research-cloud-lab {
+  --lens-size: clamp(118px, 12vw, 166px);
+}
+
+.book-thinking-panel .research-cloud-lab .research-word-cloud {
+  min-height: clamp(500px, 54svh, 620px);
+}
+
+.book-thinking-panel .research-cloud-lab [data-research-word] {
+  padding: 0.5em 0.84em;
+  font-size: calc(0.64rem + (var(--s) * 0.38rem));
+  font-weight: 760;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow:
+    0 10px 26px rgba(70, 133, 170, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.book-thinking-panel .research-cloud-lab [data-research-word]:nth-child(-n + 5) {
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow:
+    0 16px 38px rgba(66, 127, 166, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.book-thinking-panel .cloud-magnifier {
+  opacity: 0.76;
+  box-shadow:
+    0 18px 42px rgba(50, 116, 160, 0.14),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.5),
+    inset 0 0 24px rgba(134, 225, 226, 0.22);
+}
+
+.book-thinking-panel .research-cloud-lab.is-lens-moving .cloud-magnifier {
+  opacity: 0.94;
+}
+
+.book-thinking-panel .lens-handle {
+  width: 22%;
+  height: 5px;
+  opacity: 0.82;
+}
+
+@media (max-width: 720px) {
+  .book-thinking-panel .research-cloud-lab {
+    --lens-size: clamp(104px, 25vw, 136px);
+  }
+
+  .book-thinking-panel .research-cloud-lab .research-word-cloud {
+    min-height: 680px;
+  }
+
+  .book-thinking-panel .research-cloud-lab [data-research-word] {
+    font-size: calc(0.62rem + (var(--s) * 0.32rem));
+  }
+}
+
+/* No generated background images: pure HTML/CSS research-book stage */
+.research-prologue,
+.book-cover-panel,
+.book-researcher-panel,
+.book-thinking-panel,
+.book-work-panel,
+.book-contact-panel {
+  background-image: none !important;
+  background-size: auto !important;
+}
+
+.research-prologue {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(107, 220, 218, 0.22), transparent 32%),
+    radial-gradient(circle at 84% 12%, rgba(177, 198, 247, 0.22), transparent 34%),
+    radial-gradient(ellipse at 50% 100%, rgba(104, 203, 226, 0.2), transparent 46%),
+    linear-gradient(140deg, #fbfeff 0%, #ecf9fc 45%, #f8f5ff 100%) !important;
+}
+
+.research-prologue .prologue-book-scene,
+.research-prologue .prologue-copy {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.research-prologue .prologue-book-scene {
+  z-index: 2;
+}
+
+.research-prologue .prologue-book {
+  filter: drop-shadow(0 34px 70px rgba(67, 118, 150, 0.18));
+}
+
+.research-prologue .book-page {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72)),
+    repeating-linear-gradient(0deg, transparent 0 32px, rgba(82, 153, 178, 0.035) 33px 34px);
+}
+
+.research-prologue .prologue-thought {
+  background:
+    radial-gradient(circle at 12% 15%, rgba(111, 219, 215, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 18px 48px rgba(72, 124, 154, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.research-prologue .prologue-copy {
+  z-index: 3;
+  top: clamp(28px, 6vh, 70px);
+  bottom: auto;
+  color: #10263a;
+  text-shadow: 0 1px 18px rgba(255, 255, 255, 0.72);
+}
+
+.research-prologue .prologue-copy h1 {
+  color: transparent;
+  background: linear-gradient(96deg, #123e50, #118c92 48%, #7b80d8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.research-prologue .prologue-enter {
+  bottom: clamp(22px, 5vh, 58px);
+}
+
+.cosmic-tab-panel {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(112, 220, 216, 0.14), transparent 30%),
+    radial-gradient(circle at 86% 14%, rgba(166, 190, 245, 0.13), transparent 32%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(241, 252, 255, 0.58)) !important;
+}
+
+.cosmic-tab-panel::before {
+  border-style: solid;
+  border-color: rgba(77, 143, 169, 0.12);
+  background:
+    linear-gradient(90deg, transparent 49.7%, rgba(91, 154, 180, 0.08) 50%, transparent 50.3%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.76), transparent 28%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    inset 0 28px 80px rgba(255, 255, 255, 0.22);
+  transform: none;
+}
+
+.cosmic-tab-panel::after {
+  background:
+    radial-gradient(circle at 16% 84%, rgba(92, 211, 210, 0.12), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(178, 166, 243, 0.11), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(214, 244, 249, 0.18));
+}
+
+.book-cover-panel .cosmic-hero {
+  grid-template-columns: minmax(320px, 0.54fr) minmax(320px, 0.46fr);
+}
+
+.book-cover-panel .planetarium {
+  display: grid !important;
+  min-height: clamp(420px, 58svh, 620px);
+  border: 1px solid rgba(72, 143, 171, 0.12);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.86), transparent 28%),
+    radial-gradient(circle at 30% 22%, rgba(113, 224, 218, 0.2), transparent 28%),
+    radial-gradient(circle at 75% 78%, rgba(176, 170, 245, 0.18), transparent 30%),
+    rgba(255, 255, 255, 0.48);
+  box-shadow:
+    0 26px 70px rgba(67, 118, 150, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+}
+
+.book-cover-panel .planetarium::before {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border: 1px solid rgba(62, 166, 182, 0.16);
+  border-radius: 50%;
+  transform: rotate(-9deg) scaleX(1.22);
+}
+
+.book-cover-panel .planetarium::after {
+  content: "";
+  position: absolute;
+  inset: 23%;
+  border: 1px solid rgba(122, 132, 220, 0.13);
+  border-radius: 50%;
+  transform: rotate(14deg) scaleX(1.36);
+}
+
+.book-cover-panel .portrait-planet {
+  box-shadow:
+    0 26px 56px rgba(52, 110, 143, 0.2),
+    0 0 0 12px rgba(255, 255, 255, 0.32);
+}
+
+.book-cover-panel .orbit-label {
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 12px 30px rgba(70, 133, 170, 0.1);
+}
+
+.book-cover-panel .planet-note {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.book-researcher-panel .tab-copy,
+.book-work-panel .tab-copy,
+.book-contact-panel .tab-copy,
+.book-cover-panel .cosmic-copy,
+.researcher-photo-note,
+.book-thinking-panel .tab-heading,
+.book-work-panel .publication-orbit,
+.book-contact-panel .signal-card {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(109, 220, 216, 0.1), transparent 28%),
+    rgba(255, 255, 255, 0.74) !important;
+}
+
+.book-researcher-panel .academic-path article {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(240, 253, 255, 0.54)) !important;
+}
+
+.book-thinking-panel .research-cloud-lab {
+  background:
+    radial-gradient(circle at var(--pointer-x, 72%) var(--pointer-y, 34%), rgba(255, 255, 255, 0.96), rgba(228, 251, 254, 0.18) 22%, transparent 40%),
+    radial-gradient(circle at 17% 30%, rgba(105, 218, 215, 0.12), transparent 28%),
+    radial-gradient(circle at 83% 72%, rgba(177, 168, 245, 0.11), transparent 30%),
+    rgba(255, 255, 255, 0.22) !important;
+}
+
+.book-thinking-panel .research-cloud-lab .research-word-cloud {
+  background:
+    linear-gradient(90deg, transparent 49.85%, rgba(83, 150, 177, 0.08) 50%, transparent 50.15%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7), transparent 30%),
+    rgba(255, 255, 255, 0.18) !important;
+}
+
+@media (max-width: 980px) {
+  .book-cover-panel .cosmic-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .book-cover-panel .planetarium {
+    min-height: 460px;
+  }
+}

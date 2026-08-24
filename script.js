@@ -32,8 +32,25 @@ if (prefersReducedMotion.matches) {
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
 const navItems = document.querySelectorAll(".nav-links a");
-const sections = Array.from(document.querySelectorAll("main section[id]"));
+const usesPanelTabs = Boolean(document.querySelector(".planet-tabs"));
+const sections = usesPanelTabs ? [] : Array.from(document.querySelectorAll("main section[id]"));
 const rootElement = document.documentElement;
+const prologue = document.querySelector("[data-prologue]");
+const enterSiteButton = document.querySelector("[data-enter-site]");
+
+function enterResearchBook() {
+  if (!prologue) return;
+
+  prologue.classList.add("is-leaving");
+  rootElement.classList.remove("prologue-active");
+  rootElement.classList.add("prologue-complete");
+
+  window.setTimeout(() => {
+    prologue.hidden = true;
+  }, prefersReducedMotion.matches ? 0 : 560);
+}
+
+enterSiteButton?.addEventListener("click", enterResearchBook);
 
 function closeNavigation() {
   navToggle?.setAttribute("aria-expanded", "false");
@@ -335,4 +352,212 @@ resizeCanvas();
 
 if (!prefersReducedMotion.matches) {
   frameId = window.requestAnimationFrame(drawSpatialField);
+}
+
+const tabTriggers = document.querySelectorAll("[data-tab-target]");
+const tabPanels = document.querySelectorAll("[data-tab-panel]");
+const tabAliases = {
+  education: "about",
+  experience: "research",
+};
+
+function normalizeTabId(tabId) {
+  const normalized = tabAliases[tabId] || tabId || "home";
+  return Array.from(tabPanels).some((panel) => panel.dataset.tabPanel === normalized)
+    ? normalized
+    : "home";
+}
+
+function updateTabNavigation(tabId) {
+  tabTriggers.forEach((trigger) => {
+    const isActive = trigger.dataset.tabTarget === tabId && !trigger.hidden;
+    trigger.classList.toggle("is-active", isActive);
+    if (isActive) {
+      trigger.setAttribute("aria-current", "page");
+    } else {
+      trigger.removeAttribute("aria-current");
+    }
+  });
+}
+
+function revealActivePanel(panel) {
+  panel.querySelectorAll("[data-reveal]").forEach((element) => {
+    element.classList.add("is-visible");
+  });
+}
+
+function activateTab(tabId, options = {}) {
+  const { updateHash = true, scrollTop = true } = options;
+  const activeTabId = normalizeTabId(tabId);
+
+  tabPanels.forEach((panel) => {
+    const isActive = panel.dataset.tabPanel === activeTabId;
+    panel.hidden = !isActive;
+    panel.classList.toggle("is-active", isActive);
+    if (isActive) {
+      revealActivePanel(panel);
+    }
+  });
+
+  updateTabNavigation(activeTabId);
+  rootElement.dataset.activeTab = activeTabId;
+
+  if (activeTabId === "research") {
+    window.dispatchEvent(new CustomEvent("research-cloud-refresh"));
+  }
+
+  if (updateHash) {
+    history.pushState(null, "", `#${activeTabId}`);
+  }
+
+  if (scrollTop) {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion.matches ? "auto" : "smooth",
+    });
+  }
+}
+
+tabTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    activateTab(trigger.dataset.tabTarget);
+    closeNavigation();
+  });
+});
+
+window.addEventListener("hashchange", () => {
+  activateTab(window.location.hash.slice(1), {
+    updateHash: false,
+    scrollTop: false,
+  });
+});
+
+activateTab(window.location.hash.slice(1), {
+  updateHash: false,
+  scrollTop: false,
+});
+
+const researchExplorer = document.querySelector(".research-explorer");
+const researchTopicButtons = document.querySelectorAll("[data-research-topic]");
+const researchDetails = document.querySelectorAll("[data-research-detail]");
+
+function activateResearchTopic(topic) {
+  if (!researchExplorer || !topic) return;
+
+  researchExplorer.dataset.activeTopic = topic;
+
+  researchTopicButtons.forEach((button) => {
+    const isSelected = button.dataset.researchTopic === topic;
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+
+  researchDetails.forEach((detail) => {
+    const isActive = detail.dataset.researchDetail === topic;
+    detail.hidden = !isActive;
+    detail.classList.toggle("is-active", isActive);
+  });
+}
+
+researchTopicButtons.forEach((button) => {
+  const topic = button.dataset.researchTopic;
+  button.addEventListener("click", () => activateResearchTopic(topic));
+  button.addEventListener("pointerenter", () => activateResearchTopic(topic));
+  button.addEventListener("focus", () => activateResearchTopic(topic));
+});
+
+activateResearchTopic(researchExplorer?.dataset.activeTopic || "ai");
+
+const researchCloudLab = document.querySelector(".research-cloud-lab");
+const cloudStage = researchCloudLab?.querySelector("[data-cloud-stage]");
+const cloudLens = researchCloudLab?.querySelector("[data-cloud-lens]");
+const magnifierCloud = researchCloudLab?.querySelector("[data-magnifier-cloud]");
+let cloudLensFrame = null;
+
+function clampValue(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function syncMagnifierCloud() {
+  if (!cloudStage || !magnifierCloud) return;
+
+  magnifierCloud.innerHTML = cloudStage.innerHTML;
+  magnifierCloud.querySelectorAll("[data-research-word]").forEach((word) => {
+    word.setAttribute("aria-hidden", "true");
+    word.classList.remove("is-cloud-focus");
+  });
+}
+
+function updateCloudFocus(clientX, clientY) {
+  if (!cloudStage) return;
+
+  const focusedWord = document
+    .elementsFromPoint(clientX, clientY)
+    .find((element) => element.matches?.("[data-cloud-stage] [data-research-word]"));
+
+  cloudStage.querySelectorAll("[data-research-word]").forEach((word) => {
+    word.classList.toggle("is-cloud-focus", word === focusedWord);
+  });
+}
+
+function moveCloudLens(clientX, clientY) {
+  if (!researchCloudLab || !cloudStage || !cloudLens || !magnifierCloud) return;
+
+  const rect = cloudStage.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+
+  const x = clampValue(clientX - rect.left, 0, rect.width);
+  const y = clampValue(clientY - rect.top, 0, rect.height);
+  const lensSize = cloudLens.getBoundingClientRect().width || 180;
+  const scale = window.matchMedia("(max-width: 720px)").matches ? 1.45 : 1.65;
+
+  researchCloudLab.style.setProperty("--pointer-x", `${(x / rect.width) * 100}%`);
+  researchCloudLab.style.setProperty("--pointer-y", `${(y / rect.height) * 100}%`);
+
+  cloudLens.style.left = `${x}px`;
+  cloudLens.style.top = `${y}px`;
+  magnifierCloud.style.width = `${rect.width}px`;
+  magnifierCloud.style.height = `${rect.height}px`;
+  magnifierCloud.style.transform = `translate(${lensSize / 2 - x * scale}px, ${lensSize / 2 - y * scale}px) scale(${scale})`;
+
+  updateCloudFocus(clientX, clientY);
+}
+
+function refreshResearchCloudLens() {
+  if (!researchCloudLab || !cloudStage) return;
+
+  if (cloudLensFrame) {
+    window.cancelAnimationFrame(cloudLensFrame);
+  }
+
+  cloudLensFrame = window.requestAnimationFrame(() => {
+    syncMagnifierCloud();
+    const rect = cloudStage.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      moveCloudLens(rect.left + rect.width * 0.72, rect.top + rect.height * 0.34);
+    }
+  });
+}
+
+if (researchCloudLab && cloudStage) {
+  syncMagnifierCloud();
+
+  cloudStage.addEventListener("pointermove", (event) => {
+    researchCloudLab.classList.add("is-lens-moving");
+    moveCloudLens(event.clientX, event.clientY);
+  });
+
+  cloudStage.addEventListener("pointerdown", (event) => {
+    researchCloudLab.classList.add("is-lens-moving");
+    moveCloudLens(event.clientX, event.clientY);
+  });
+
+  cloudStage.addEventListener("pointerleave", () => {
+    researchCloudLab.classList.remove("is-lens-moving");
+  });
+
+  window.addEventListener("research-cloud-refresh", refreshResearchCloudLens);
+  window.addEventListener("resize", refreshResearchCloudLens);
+  refreshResearchCloudLens();
 }
