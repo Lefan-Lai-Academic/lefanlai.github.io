@@ -190,6 +190,7 @@ function updateNewsFilters() {
   }
 
   newsItems.forEach((item) => {
+    item.querySelector(".news-latest-label")?.remove();
     const isAcceptedPaper = item.dataset.newsCategory === "paper" && item.dataset.newsStatus === "accepted";
     const visible = activeNewsCategory === "all"
       ? item.dataset.newsCategory === "social" || isAcceptedPaper
@@ -206,6 +207,15 @@ function updateNewsFilters() {
   visibleItems.forEach((item, index) => {
     item.classList.toggle("is-first-visible", index === 0);
     item.style.setProperty("--news-order", index);
+
+    if (index === 0) {
+      const latestLabel = document.createElement("span");
+      latestLabel.className = "news-latest-label";
+      latestLabel.textContent = activeNewsCategory === "paper" && activeNewsStatus === "submitted"
+        ? "Latest submission"
+        : "Latest";
+      item.querySelector(".news-copy")?.prepend(latestLabel);
+    }
   });
 
   const newsList = document.querySelector("[data-news-list]");

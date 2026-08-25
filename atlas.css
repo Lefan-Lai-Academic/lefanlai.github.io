@@ -1295,7 +1295,7 @@ html body > .atlas-site[data-atlas-site] {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 16px 0 0;
+  margin: 13px 0 0;
   color: color-mix(in srgb, var(--atlas-muted) 90%, var(--atlas-coral));
   font-family: var(--atlas-display-font);
   font-size: 0.92rem;
@@ -1316,7 +1316,7 @@ html body > .atlas-site[data-atlas-site] {
   row-gap: 0;
   width: 100%;
   max-width: none;
-  margin-top: clamp(32px, 5vw, 62px);
+  margin-top: clamp(22px, 3vw, 38px);
   border-top: 1px solid var(--atlas-line);
 }
 
@@ -1334,7 +1334,7 @@ html body > .atlas-site[data-atlas-site] {
   min-width: 0;
   padding: clamp(28px, 4vw, 46px) 0;
   border-bottom: 1px solid var(--atlas-line);
-  animation: newsItemIn 520ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+  animation: newsItemIn 440ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
   animation-delay: calc(var(--news-order, 0) * 65ms);
 }
 
@@ -1349,10 +1349,10 @@ html body > .atlas-site[data-atlas-site] {
 
 .news-item.is-first-visible {
   grid-column: 1 / -1;
-  grid-template-columns: minmax(110px, 0.22fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(92px, 0.15fr) minmax(0, 1fr) auto;
   grid-template-areas: "date copy marker";
-  gap: clamp(24px, 4vw, 60px);
-  padding: clamp(36px, 5vw, 68px) 0;
+  gap: clamp(22px, 3.2vw, 48px);
+  padding: clamp(30px, 4vw, 52px) 0;
 }
 
 .news-item::after {
@@ -1382,13 +1382,11 @@ html body > .atlas-site[data-atlas-site] {
 @keyframes newsItemIn {
   from {
     opacity: 0;
-    clip-path: inset(0 100% 0 0);
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
 
   to {
     opacity: 1;
-    clip-path: inset(0 0 0 0);
     transform: translateY(0);
   }
 }
@@ -1441,11 +1439,72 @@ html body > .atlas-site[data-atlas-site] {
   min-width: 0;
 }
 
+.news-item.is-first-visible .news-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.62fr);
+  grid-template-rows: auto auto 1fr;
+  column-gap: clamp(34px, 5vw, 72px);
+  align-items: start;
+}
+
+.news-latest-label {
+  grid-column: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 0 0 12px;
+  color: var(--news-accent);
+  font-family: var(--atlas-label-font);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: newsLatestIn 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.news-latest-label::before {
+  width: 22px;
+  height: 1px;
+  background: var(--news-accent);
+  content: "";
+  transform-origin: left;
+  animation: newsLatestRule 560ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+}
+
+@keyframes newsLatestIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes newsLatestRule {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .news-kind {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
   margin: 0 0 8px;
+}
+
+.news-item.is-first-visible .news-kind {
+  grid-column: 1;
+  margin-bottom: 10px;
 }
 
 .news-kind span {
@@ -1471,13 +1530,27 @@ html body > .atlas-site[data-atlas-site] {
   font-weight: 520;
   line-height: 1.18;
   transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: newsHeadlineIn 560ms cubic-bezier(0.22, 1, 0.36, 1) 50ms both;
 }
 
 .news-item.is-first-visible .news-copy h3 {
-  max-width: 24ch;
-  font-size: clamp(2rem, 4.4vw, 4.35rem);
+  grid-column: 1;
+  max-width: 20ch;
+  font-size: clamp(2rem, 3.6vw, 3.55rem);
   font-weight: 400;
-  line-height: 0.98;
+  line-height: 1.02;
+}
+
+@keyframes newsHeadlineIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .news-item:hover .news-copy h3,
@@ -1493,12 +1566,28 @@ html body > .atlas-site[data-atlas-site] {
   font-size: 0.98rem;
   font-weight: 400;
   line-height: 1.68;
+  animation: newsBodyIn 520ms ease 150ms both;
 }
 
 .news-item.is-first-visible .news-copy > p:last-child {
-  max-width: 66ch;
-  margin-top: 18px;
-  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: center;
+  max-width: 38ch;
+  margin: 0;
+  padding-left: clamp(22px, 3vw, 38px);
+  border-left: 1px solid color-mix(in srgb, var(--news-accent) 30%, var(--atlas-line));
+  font-size: clamp(1rem, 1.2vw, 1.08rem);
+}
+
+@keyframes newsBodyIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .news-copy a {
@@ -3120,6 +3209,16 @@ html body > .atlas-site[data-atlas-site] {
   .news-item.is-first-visible .news-copy h3 {
     font-size: clamp(2rem, 10vw, 3.15rem);
   }
+
+  .news-item.is-first-visible .news-copy {
+    display: block;
+  }
+
+  .news-item.is-first-visible .news-copy > p:last-child {
+    margin-top: 18px;
+    padding-left: 0;
+    border-left: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3137,6 +3236,10 @@ html body > .atlas-site[data-atlas-site] {
   .vigor-badge::after,
   .news-filter-group button,
   .news-masthead::after,
+  .news-latest-label,
+  .news-latest-label::before,
+  .news-copy h3,
+  .news-copy > p:last-child,
   .news-item,
   .news-marker span,
   .corresponding-mark::after,
