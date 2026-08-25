@@ -191,6 +191,7 @@ function updateNewsFilters() {
 
   newsItems.forEach((item) => {
     item.querySelector(".news-latest-label")?.remove();
+    item.querySelector(".news-year-mark")?.remove();
     const isAcceptedPaper = item.dataset.newsCategory === "paper" && item.dataset.newsStatus === "accepted";
     const visible = activeNewsCategory === "all"
       ? item.dataset.newsCategory === "social" || isAcceptedPaper
@@ -215,6 +216,12 @@ function updateNewsFilters() {
         ? "Latest submission"
         : "Latest";
       item.querySelector(".news-copy")?.prepend(latestLabel);
+
+      const yearMark = document.createElement("span");
+      yearMark.className = "news-year-mark";
+      yearMark.setAttribute("aria-hidden", "true");
+      yearMark.textContent = item.querySelector("time")?.dateTime.slice(0, 4) || "";
+      item.append(yearMark);
     }
   });
 
