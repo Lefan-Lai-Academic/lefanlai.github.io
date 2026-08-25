@@ -13,7 +13,7 @@
     </script>
     <link rel="stylesheet" href="styles.css?v=html-effects-20260730" />
     <link rel="stylesheet" href="reboot.css?v=20260825" />
-    <link rel="stylesheet" href="atlas.css?v=20260825-chi-search1" />
+    <link rel="stylesheet" href="atlas.css?v=20260826-mobile-lines4" />
   </head>
   <body>
     <div class="atlas-site" data-atlas-site>
@@ -25,15 +25,19 @@
             <strong>Lefan Lai</strong>
             <span hidden aria-hidden="true"></span>
           </a>
-          <nav class="atlas-nav" aria-label="Website sections">
-            <button class="atlas-tab is-active" type="button" data-atlas-target="index">Overview</button>
+          <button class="atlas-menu-toggle" type="button" aria-expanded="false" aria-controls="atlas-navigation" aria-label="Open navigation menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+          <nav class="atlas-nav" id="atlas-navigation" aria-label="Website sections">
+            <button class="atlas-tab is-active" type="button" data-atlas-target="index" data-menu-index="00">Overview</button>
             <button class="atlas-tab" type="button" data-atlas-target="human" hidden aria-hidden="true">Human</button>
             <button class="atlas-tab" type="button" data-atlas-target="ai" hidden aria-hidden="true">AI</button>
             <button class="atlas-tab" type="button" data-atlas-target="space" hidden aria-hidden="true">Space</button>
-            <button class="atlas-tab" type="button" data-atlas-target="news">News</button>
-            <button class="atlas-tab" type="button" data-atlas-target="work">Publications</button>
-            <button class="atlas-tab" type="button" data-atlas-target="about">About</button>
-            <button class="atlas-tab" type="button" data-atlas-target="contact">Contact</button>
+            <button class="atlas-tab" type="button" data-atlas-target="news" data-menu-index="01">News</button>
+            <button class="atlas-tab" type="button" data-atlas-target="work" data-menu-index="02">Publications</button>
+            <button class="atlas-tab" type="button" data-atlas-target="about" data-menu-index="03">About Me</button>
+            <button class="atlas-tab" type="button" data-atlas-target="contact" data-menu-index="04">Contact</button>
           </nav>
         </div>
       </header>
@@ -1638,7 +1642,7 @@
 
     <script src="script.js?v=html-effects-20260730"></script>
     <script src="reboot.js?v=20260825"></script>
-    <script src="atlas.js?v=20260825-contact-letter1"></script>
+    <script src="atlas.js?v=20260826-mobile-lines3"></script>
   </body>
 </html>
 

@@ -12,6 +12,11 @@ if (atlasYear) {
 
 const atlasButtons = document.querySelectorAll("[data-atlas-target]");
 const atlasPanels = document.querySelectorAll("[data-atlas-panel]");
+const atlasTopbar = document.querySelector(".atlas-topbar");
+const atlasNavigation = document.querySelector("#atlas-navigation");
+const atlasMenuToggle = document.querySelector(".atlas-menu-toggle");
+const atlasNarrowNavigation = window.matchMedia("(max-width: 980px)");
+const atlasCoarsePointer = window.matchMedia("(pointer: coarse)");
 const paperFilters = document.querySelectorAll("[data-paper-filter]");
 const paperItems = document.querySelectorAll("[data-paper]");
 const paperCount = document.querySelector("[data-paper-count]");
@@ -41,6 +46,46 @@ const newsCount = document.querySelector("[data-news-count]");
 const interactiveName = document.querySelector("[data-interactive-name]");
 let activeNewsCategory = "all";
 let activeNewsStatus = "accepted";
+
+function usesMobileEffects() {
+  return atlasNarrowNavigation.matches;
+}
+
+function usesTouchPointer() {
+  return atlasCoarsePointer.matches;
+}
+
+function setAtlasMenuOpen(open, options = {}) {
+  const narrow = atlasNarrowNavigation.matches;
+  const nextOpen = narrow && open;
+  document.documentElement.classList.toggle("atlas-menu-open", nextOpen);
+  atlasTopbar?.classList.toggle("is-menu-open", nextOpen);
+  atlasMenuToggle?.setAttribute("aria-expanded", String(nextOpen));
+  atlasMenuToggle?.setAttribute("aria-label", nextOpen ? "Close navigation menu" : "Open navigation menu");
+  if (atlasNavigation) {
+    atlasNavigation.inert = narrow && !nextOpen;
+    atlasNavigation.setAttribute("aria-hidden", String(narrow && !nextOpen));
+  }
+  if (!nextOpen && options.returnFocus) atlasMenuToggle?.focus();
+}
+
+atlasMenuToggle?.addEventListener("click", () => {
+  setAtlasMenuOpen(atlasMenuToggle.getAttribute("aria-expanded") !== "true");
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (!atlasTopbar?.classList.contains("is-menu-open")) return;
+  if (!atlasTopbar.contains(event.target)) setAtlasMenuOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && atlasTopbar?.classList.contains("is-menu-open")) {
+    setAtlasMenuOpen(false, { returnFocus: true });
+  }
+});
+
+atlasNarrowNavigation.addEventListener("change", () => setAtlasMenuOpen(false));
+setAtlasMenuOpen(false);
 
 function topicLabelFromSlug(value) {
   if (value === "mllms") return "MLLMs";
@@ -225,18 +270,19 @@ function drawPublicationFlow(time = 0) {
   if (!firstVisual || !secondVisual) return;
 
   const compact = window.innerWidth <= 980;
+  const firstPaperRect = visiblePapers[0].getBoundingClientRect();
   const start = compact
-    ? { x: 9, y: firstVisual.bottom - listRect.top + 12 }
+    ? { x: listRect.width * 0.72, y: firstPaperRect.bottom - listRect.top - 1 }
     : { x: firstVisual.left + firstVisual.width * 0.72 - listRect.left, y: firstVisual.bottom - listRect.top + 8 };
   const end = compact
-    ? { x: 9, y: secondVisual.top - listRect.top - 12 }
+    ? { x: listRect.width * 0.28, y: secondVisual.top - listRect.top + 1 }
     : { x: secondVisual.left + secondVisual.width * 0.28 - listRect.left, y: secondVisual.top - listRect.top - 8 };
   const middleY = (start.y + end.y) * 0.5;
   const controlA = compact
-    ? { x: 26, y: middleY - 34 }
+    ? { x: listRect.width * 0.62, y: middleY - 7 }
     : { x: listRect.width * 0.7, y: middleY - 24 };
   const controlB = compact
-    ? { x: 26, y: middleY + 34 }
+    ? { x: listRect.width * 0.38, y: middleY + 7 }
     : { x: listRect.width * 0.3, y: middleY + 24 };
   const activePaper = visiblePapers[activePublicationIndex] || null;
   const activeColor = activePaper
@@ -411,22 +457,26 @@ function resizeContactLetterCanvas(rect) {
   contactLetterContext.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
+function contactLetterTiming() {
+  return usesMobileEffects()
+    ? { delay: 620, characterTime: 22, pauseTime: 160, signatureTime: 720, writingTime: 420 }
+    : { delay: 1380, characterTime: 36, pauseTime: 300, signatureTime: 1180, writingTime: 780 };
+}
+
 function contactLetterDuration() {
-  const characterTime = 36;
-  const pauseTime = 300;
-  return 1380 + contactLetterLines.reduce((total, line) => (
+  const { delay, characterTime, pauseTime } = contactLetterTiming();
+  return delay + contactLetterLines.reduce((total, line) => (
     total + (line.dataset.letterText || "").length * characterTime + pauseTime
   ), 0);
 }
 
 function updateContactTyping(elapsed) {
-  const characterTime = 36;
-  const pauseTime = 300;
-  let remaining = Math.max(0, elapsed - 1380);
+  const { delay, characterTime, pauseTime } = contactLetterTiming();
+  let remaining = Math.max(0, elapsed - delay);
   let unfinished = false;
 
   contactLetterLines.forEach((line) => line.classList.remove("is-current"));
-  if (elapsed < 1380) {
+  if (elapsed < delay) {
     contactLetterLines.forEach((line) => { line.textContent = ""; });
     contactLetterComplete = false;
     contactLetterLayout?.classList.remove("is-letter-complete");
@@ -480,11 +530,15 @@ function drawContactLetter(time = performance.now()) {
   contactLetterContext.clearRect(0, 0, layoutRect.width, layoutRect.height);
 
   const elapsed = atlasReduceMotion.matches ? contactLetterDuration() + 900 : Math.max(0, time - contactLetterStartedAt);
-  const signatureProgress = Math.min(1, elapsed / 1180);
+  const timing = contactLetterTiming();
+  const signatureProgress = Math.min(1, elapsed / timing.signatureTime);
   const signatureEase = 1 - (1 - signatureProgress) ** 3;
+  const compactLetterLayout = window.innerWidth <= 980;
   const signatureX = fieldRect.left - layoutRect.left + 4;
-  const signatureY = fieldRect.top - layoutRect.top + 82;
-  const signatureSize = Math.max(42, Math.min(58, fieldRect.width * 0.15));
+  const signatureY = fieldRect.top - layoutRect.top + (compactLetterLayout ? 62 : 82);
+  const signatureSize = compactLetterLayout
+    ? Math.max(36, Math.min(48, fieldRect.width * 0.14))
+    : Math.max(42, Math.min(58, fieldRect.width * 0.15));
   contactLetterContext.save();
   contactLetterContext.font = `italic ${signatureSize}px Georgia, "Times New Roman", serif`;
   const signatureWidth = contactLetterContext.measureText("Lefan Lai").width;
@@ -498,7 +552,7 @@ function drawContactLetter(time = performance.now()) {
   contactLetterContext.fillText("Lefan Lai", signatureX, signatureY);
   contactLetterContext.restore();
 
-  if (elapsed > 780) contactLetterLayout.classList.add("is-letter-writing");
+  if (elapsed > timing.writingTime) contactLetterLayout.classList.add("is-letter-writing");
   updateContactTyping(elapsed);
 
   const linksRect = contactLetterLayout.querySelector(".contact-lines")?.getBoundingClientRect();
@@ -515,16 +569,28 @@ function drawContactLetter(time = performance.now()) {
   const lineProgress = atlasReduceMotion.matches || contactLetterSendingAt
     ? 1
     : Math.max(0, Math.min(1, (elapsed - contactLetterDuration()) / 720));
-  if (lineProgress > 0) {
-    const start = { x: signatureX + 12, y: signatureY + 24 };
-    const end = contactLetterPoint;
+  if (lineProgress > 0 && !compactLetterLayout) {
+    const compact = compactLetterLayout;
+    const start = compact
+      ? { x: signatureX + signatureWidth * 0.62, y: signatureY + 7 }
+      : { x: signatureX + 12, y: signatureY + 24 };
+    const end = compact
+      ? {
+          x: Math.min(fieldRect.right - layoutRect.left - 10, start.x + Math.max(74, fieldRect.width * 0.28)),
+          y: start.y + 8,
+        }
+      : contactLetterPoint;
     const horizontal = Math.abs(start.x - end.x) > Math.abs(start.y - end.y);
-    const controlA = horizontal
-      ? { x: start.x - Math.max(62, (start.x - end.x) * 0.34), y: start.y + 18 }
-      : { x: start.x - 42, y: start.y + (end.y - start.y) * 0.38 };
-    const controlB = horizontal
-      ? { x: end.x + Math.max(52, (start.x - end.x) * 0.25), y: end.y }
-      : { x: end.x + 36, y: end.y - (end.y - start.y) * 0.3 };
+    const controlA = compact
+      ? { x: start.x + (end.x - start.x) * 0.28, y: start.y + 11 }
+      : horizontal
+        ? { x: start.x - Math.max(62, (start.x - end.x) * 0.34), y: start.y + 18 }
+        : { x: start.x - 42, y: start.y + (end.y - start.y) * 0.38 };
+    const controlB = compact
+      ? { x: start.x + (end.x - start.x) * 0.72, y: end.y - 7 }
+      : horizontal
+        ? { x: end.x + Math.max(52, (start.x - end.x) * 0.25), y: end.y }
+        : { x: end.x + 36, y: end.y - (end.y - start.y) * 0.3 };
     const colorKey = contactLetterTarget?.dataset.letterLink || "default";
     const [red, green, blue] = contactLetterColors[colorKey] || contactLetterColors.default;
 
@@ -657,9 +723,12 @@ function activateAtlasPanel(id, options = {}) {
     stopPostcardCycle();
   }
 
+  if (usesMobileEffects() && activeId !== "work") setPublicationFocus(-1);
+
   requestAnimationFrame(() => {
     drawAtlasLines();
     drawPublicationFlow(performance.now());
+    syncMobileViewportFocus(activeId);
   });
 }
 
@@ -667,6 +736,7 @@ atlasButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     if (button.matches("[data-map-node]")) return;
     event.preventDefault();
+    if (button.closest(".atlas-topbar")) setAtlasMenuOpen(false);
     if (button.dataset.paperAreaShortcut) {
       setPaperFilters({
         area: button.dataset.paperAreaShortcut,
@@ -736,7 +806,7 @@ function restartPanelEntrance(activeId) {
       paper.classList.remove("is-in-view");
       panelEntranceTimers.push(window.setTimeout(() => {
         paper.classList.add("is-in-view");
-      }, 120 + index * 170));
+      }, (usesMobileEffects() ? 70 : 120) + index * (usesMobileEffects() ? 95 : 170)));
     });
   }
 
@@ -756,19 +826,21 @@ const revealObserver = "IntersectionObserver" in window
   }, { threshold: 0.12 })
   : null;
 
+function setPublicationFocus(index = -1) {
+  activePublicationIndex = index;
+  publicationList?.classList.toggle("has-paper-focus", index >= 0);
+  paperItems.forEach((item, itemIndex) => item.classList.toggle("is-paper-focused", itemIndex === index));
+}
+
 paperItems.forEach((paper, index) => {
   if (revealObserver) revealObserver.observe(paper);
   else paper.classList.add("is-in-view");
 
   const focusPaper = () => {
-    activePublicationIndex = index;
-    publicationList?.classList.add("has-paper-focus");
-    paperItems.forEach((item, itemIndex) => item.classList.toggle("is-paper-focused", itemIndex === index));
+    if (!usesMobileEffects()) setPublicationFocus(index);
   };
   const releasePaper = () => {
-    activePublicationIndex = -1;
-    publicationList?.classList.remove("has-paper-focus");
-    paperItems.forEach((item) => item.classList.remove("is-paper-focused"));
+    if (!usesMobileEffects()) setPublicationFocus(-1);
   };
 
   paper.addEventListener("pointerenter", focusPaper);
@@ -780,6 +852,66 @@ paperItems.forEach((paper, index) => {
     });
   });
 });
+
+const mobilePaperRatios = new Map();
+const mobilePaperObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => mobilePaperRatios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0));
+    if (!usesMobileEffects() || document.querySelector('[data-atlas-panel="work"]')?.hidden) return;
+    const bestPaper = [...paperItems]
+      .filter((paper) => !paper.hidden && !paper.classList.contains("is-hidden"))
+      .sort((left, right) => (mobilePaperRatios.get(right) || 0) - (mobilePaperRatios.get(left) || 0))[0];
+    const bestRatio = bestPaper ? mobilePaperRatios.get(bestPaper) || 0 : 0;
+    setPublicationFocus(bestRatio >= 0.28 ? [...paperItems].indexOf(bestPaper) : -1);
+  }, { threshold: [0, 0.28, 0.48, 0.68], rootMargin: "-12% 0px -18% 0px" })
+  : null;
+
+paperItems.forEach((paper) => mobilePaperObserver?.observe(paper));
+
+const mobileNewsRatios = new Map();
+const mobileNewsObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => mobileNewsRatios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0));
+    if (!usesMobileEffects() || document.querySelector('[data-atlas-panel="news"]')?.hidden) return;
+    const bestItem = [...newsItems]
+      .filter((item) => !item.hidden && !item.classList.contains("is-hidden"))
+      .sort((left, right) => (mobileNewsRatios.get(right) || 0) - (mobileNewsRatios.get(left) || 0))[0];
+    newsItems.forEach((item) => item.classList.toggle("is-mobile-current", item === bestItem && (mobileNewsRatios.get(item) || 0) >= 0.26));
+  }, { threshold: [0, 0.26, 0.5, 0.72], rootMargin: "-10% 0px -20% 0px" })
+  : null;
+
+newsItems.forEach((item) => mobileNewsObserver?.observe(item));
+
+function syncMobileViewportFocus(activeId = atlasPanelId(window.location.hash)) {
+  if (!usesMobileEffects()) return;
+  const viewportCenter = window.innerHeight * 0.52;
+  const selectNearest = (items) => [...items]
+    .filter((item) => !item.hidden && !item.classList.contains("is-hidden"))
+    .map((item) => {
+      const rect = item.getBoundingClientRect();
+      return { item, distance: Math.abs(rect.top + rect.height * 0.5 - viewportCenter), rect };
+    })
+    .filter(({ rect }) => rect.bottom > 0 && rect.top < window.innerHeight)
+    .sort((left, right) => left.distance - right.distance)[0]?.item || null;
+
+  if (activeId === "work") {
+    const nearestPaper = selectNearest(paperItems);
+    setPublicationFocus(nearestPaper ? [...paperItems].indexOf(nearestPaper) : -1);
+  }
+  if (activeId === "news") {
+    const nearestNews = selectNearest(newsItems);
+    newsItems.forEach((item) => item.classList.toggle("is-mobile-current", item === nearestNews));
+  }
+}
+
+let mobileFocusFrame = 0;
+window.addEventListener("scroll", () => {
+  if (!usesMobileEffects() || mobileFocusFrame) return;
+  mobileFocusFrame = requestAnimationFrame(() => {
+    mobileFocusFrame = 0;
+    syncMobileViewportFocus();
+  });
+}, { passive: true });
 
 if (postcard) {
   if (revealObserver) revealObserver.observe(postcard);
@@ -863,7 +995,40 @@ document.querySelector(".postcard-journey")?.addEventListener("pointerleave", ()
   startPostcardCycle();
 });
 
-postcardPicture?.addEventListener("click", () => movePostcard(1));
+let postcardSwipeStart = null;
+let postcardSwipeConsumed = false;
+
+postcardPicture?.addEventListener("pointerdown", (event) => {
+  if (!usesMobileEffects()) return;
+  postcardSwipeStart = { x: event.clientX, y: event.clientY, time: performance.now(), pointerId: event.pointerId };
+  postcardSwipeConsumed = false;
+  postcardPicture.setPointerCapture?.(event.pointerId);
+});
+
+postcardPicture?.addEventListener("pointerup", (event) => {
+  if (!postcardSwipeStart || postcardSwipeStart.pointerId !== event.pointerId) return;
+  const deltaX = event.clientX - postcardSwipeStart.x;
+  const deltaY = event.clientY - postcardSwipeStart.y;
+  const elapsed = performance.now() - postcardSwipeStart.time;
+  postcardSwipeStart = null;
+  if (elapsed < 720 && Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15) {
+    postcardSwipeConsumed = true;
+    movePostcard(deltaX < 0 ? 1 : -1);
+  }
+});
+
+postcardPicture?.addEventListener("pointercancel", () => {
+  postcardSwipeStart = null;
+});
+
+postcardPicture?.addEventListener("click", (event) => {
+  if (postcardSwipeConsumed) {
+    postcardSwipeConsumed = false;
+    event.preventDefault();
+    return;
+  }
+  movePostcard(1);
+});
 
 postcardPrevious?.addEventListener("click", (event) => {
   event.stopPropagation();
@@ -919,6 +1084,9 @@ activateAtlasPanel(location.hash.slice(1), { updateHash: false });
 
 const atlasCursor = document.querySelector("[data-atlas-cursor]");
 const cursorContext = atlasCursor?.getContext("2d");
+if (atlasCursor && cursorContext) {
+  document.documentElement.classList.add("atlas-cursor-ready");
+}
 const mapCanvas = document.querySelector("[data-atlas-map-canvas]");
 const mapContext = mapCanvas?.getContext("2d");
 const atlasMap = mapCanvas?.closest(".atlas-map");
@@ -941,6 +1109,13 @@ const graphEdges = [];
 const topicMetadata = new Map();
 let pointer = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.5 };
 let cursorFrame = 0;
+let cursorTarget = null;
+let cursorPressed = false;
+const cursorVisual = {
+  x: pointer.x,
+  y: pointer.y,
+  scale: 1,
+};
 let mapFrame = 0;
 let graphHoverKey = null;
 let graphLockedKey = null;
@@ -1064,13 +1239,21 @@ graphPapers.forEach((paper) => {
 
 function configureOverviewManuscript() {
   const coreNodes = graphNodes.filter((node) => node.type === "core");
-  const coreFlights = [
-    [-230, -118, -9],
-    [18, -230, 7],
-    [235, -112, 10],
-    [-210, 165, 8],
-    [225, 172, -8],
-  ];
+  const coreFlights = usesMobileEffects()
+    ? [
+      [-82, -74, -5],
+      [10, -104, 4],
+      [86, -68, 5],
+      [-78, 92, 4],
+      [82, 96, -4],
+    ]
+    : [
+      [-230, -118, -9],
+      [18, -230, 7],
+      [235, -112, 10],
+      [-210, 165, 8],
+      [225, 172, -8],
+    ];
   coreNodes.forEach((node, index) => {
     const [flightX, flightY, rotation] = coreFlights[index % coreFlights.length];
     node.element.style.setProperty("--manuscript-delay", `${50 + index * 72}ms`);
@@ -1093,8 +1276,12 @@ function configureOverviewManuscript() {
     const node = graphNodeByKey.get(key);
     if (!node) return;
     const side = node.area === "ai" ? 1 : node.area === "hci" ? -1 : index % 2 ? 1 : -1;
-    const flightX = side * (150 + (index % 4) * 34);
-    const flightY = (index % 3 - 1) * 118 + (index % 2 ? 46 : -34);
+    const flightX = usesMobileEffects()
+      ? side * (64 + (index % 4) * 12)
+      : side * (150 + (index % 4) * 34);
+    const flightY = usesMobileEffects()
+      ? (index % 3 - 1) * 52 + (index % 2 ? 18 : -14)
+      : (index % 3 - 1) * 118 + (index % 2 ? 46 : -34);
     node.element.style.setProperty("--manuscript-delay", `${90 + index * 42}ms`);
     node.element.style.setProperty("--flight-x", `${flightX}px`);
     node.element.style.setProperty("--flight-y", `${flightY}px`);
@@ -1193,7 +1380,7 @@ const mobileTopicSlots = {
 };
 
 function positionTopicNodes() {
-  const slotsByArea = window.innerWidth <= 640 ? mobileTopicSlots : topicSlots;
+  const slotsByArea = usesMobileEffects() ? mobileTopicSlots : topicSlots;
   const areaIndexes = {};
   graphNodes.filter((node) => node.type === "topic").forEach((node) => {
     const area = slotsByArea[node.area] ? node.area : "default";
@@ -1202,8 +1389,12 @@ function positionTopicNodes() {
     areaIndexes[area] = index + 1;
     const [baseX, baseY] = slots[index % slots.length];
     const cycle = Math.floor(index / slots.length);
-    const x = Math.max(7, Math.min(93, baseX + cycle * 3));
-    const y = Math.max(7, Math.min(94, baseY - cycle * 4));
+    const x = usesMobileEffects()
+      ? Math.max(12, Math.min(88, baseX + cycle * 3))
+      : Math.max(7, Math.min(93, baseX + cycle * 3));
+    const y = usesMobileEffects()
+      ? Math.max(8, Math.min(92, baseY - cycle * 4))
+      : Math.max(7, Math.min(94, baseY - cycle * 4));
     node.element.style.left = `${x}%`;
     node.element.style.top = `${y}%`;
     node.element.style.setProperty("--topic-delay", `${index * -0.7}s`);
@@ -1465,27 +1656,222 @@ atlasMap?.addEventListener("keydown", (event) => {
 
 updateGraphState();
 
-function drawCursorField() {
+function atlasCursorMode() {
+  const activePanel = document.querySelector("[data-atlas-panel]:not([hidden])")?.dataset.atlasPanel;
+  return {
+    index: "overview",
+    human: "news",
+    ai: "publication",
+    space: "overview",
+    news: "news",
+    work: "publication",
+    about: "postcard",
+    contact: "contact",
+  }[activePanel] || "overview";
+}
+
+function cursorAccent() {
+  const modeColors = {
+    overview: "#187c78",
+    news: "#a65350",
+    publication: "#2f6f9f",
+    postcard: "#5269a9",
+    contact: "#187c78",
+  };
+
+  if (!cursorTarget) return modeColors[atlasCursorMode()];
+
+  const accentScopes = [
+    [cursorTarget.closest("[data-paper]"), "--paper-accent"],
+    [cursorTarget.closest("[data-news-item]"), "--news-accent"],
+    [cursorTarget.closest("[data-postcard]"), "--postcard-accent"],
+    [cursorTarget.closest("[data-letter-link]"), "--letter-link-color"],
+    [cursorTarget.closest("[data-map-node]"), "--node-accent"],
+  ];
+
+  for (const [element, property] of accentScopes) {
+    if (!element) continue;
+    const value = getComputedStyle(element).getPropertyValue(property).trim();
+    if (value && !value.includes("var(")) return value;
+  }
+
+  return modeColors[atlasCursorMode()];
+}
+
+function beginCursorStroke(context, accent, alpha, width = 1.25) {
+  context.strokeStyle = accent;
+  context.globalAlpha = alpha;
+  context.lineWidth = width;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.beginPath();
+}
+
+function cursorDot(context, x, y, radius, accent, alpha = 0.72) {
+  context.globalAlpha = alpha;
+  context.fillStyle = accent;
+  context.beginPath();
+  context.arc(x, y, radius, 0, Math.PI * 2);
+  context.fill();
+}
+
+function drawOverviewCursor(context, time, accent, active) {
+  const phase = atlasReduceMotion.matches ? 0.45 : time * 0.0011;
+  const reach = active ? 1.14 : 1;
+  context.rotate(-0.16);
+
+  beginCursorStroke(context, accent, active ? 0.72 : 0.5, active ? 1.55 : 1.15);
+  context.ellipse(0, 0, 34 * reach, 14 * reach, 0, 0.12, Math.PI * 1.34);
+  context.stroke();
+
+  beginCursorStroke(context, accent, active ? 0.5 : 0.32, 1);
+  context.ellipse(0, 0, 19 * reach, 29 * reach, 0, Math.PI * 0.82, Math.PI * 2.18);
+  context.stroke();
+
+  const outerX = Math.cos(phase) * 34 * reach;
+  const outerY = Math.sin(phase) * 14 * reach;
+  const innerPhase = phase * -0.72 + 1.2;
+  const innerX = Math.cos(innerPhase) * 19 * reach;
+  const innerY = Math.sin(innerPhase) * 29 * reach;
+  cursorDot(context, outerX, outerY, active ? 3.2 : 2.4, accent, 0.82);
+  cursorDot(context, innerX, innerY, 1.8, accent, 0.55);
+}
+
+function drawNewsCursor(context, time, accent, active) {
+  const width = active ? 25 : 20;
+  const height = active ? 25 : 21;
+  beginCursorStroke(context, accent, active ? 0.76 : 0.5, active ? 1.55 : 1.2);
+  context.moveTo(-width * 0.62, -height);
+  context.lineTo(-width * 0.62, height);
+  context.moveTo(-width * 0.62, -height * 0.62);
+  context.lineTo(width, -height * 0.62);
+  context.moveTo(-width * 0.62, 0);
+  context.lineTo(width * 0.52, 0);
+  context.moveTo(-width * 0.62, height * 0.62);
+  context.lineTo(width * 0.82, height * 0.62);
+  context.stroke();
+
+  const travel = atlasReduceMotion.matches ? 0.5 : (Math.sin(time * 0.0022) + 1) * 0.5;
+  cursorDot(context, -width * 0.62, -height + travel * height * 2, active ? 3 : 2.2, accent, 0.84);
+}
+
+function drawPublicationCursor(context, time, accent, active) {
+  const halfWidth = active ? 26 : 21;
+  const halfHeight = active ? 19 : 16;
+  const corner = active ? 9 : 7;
+  beginCursorStroke(context, accent, active ? 0.82 : 0.56, active ? 1.65 : 1.25);
+  context.moveTo(-halfWidth, -halfHeight + corner);
+  context.lineTo(-halfWidth, -halfHeight);
+  context.lineTo(-halfWidth + corner, -halfHeight);
+  context.moveTo(halfWidth - corner, -halfHeight);
+  context.lineTo(halfWidth, -halfHeight);
+  context.lineTo(halfWidth, -halfHeight + corner);
+  context.moveTo(halfWidth, halfHeight - corner);
+  context.lineTo(halfWidth, halfHeight);
+  context.lineTo(halfWidth - corner, halfHeight);
+  context.moveTo(-halfWidth + corner, halfHeight);
+  context.lineTo(-halfWidth, halfHeight);
+  context.lineTo(-halfWidth, halfHeight - corner);
+  context.stroke();
+
+  const scan = atlasReduceMotion.matches ? 0 : Math.sin(time * 0.0025) * halfHeight * 0.72;
+  beginCursorStroke(context, accent, active ? 0.44 : 0.25, 1);
+  context.moveTo(-halfWidth * 0.62, scan);
+  context.lineTo(halfWidth * 0.62, scan);
+  context.stroke();
+  cursorDot(context, 0, 0, active ? 2.7 : 2, accent, 0.7);
+}
+
+function drawPostcardCursor(context, time, accent, active) {
+  const sway = atlasReduceMotion.matches ? -0.06 : -0.06 + Math.sin(time * 0.0017) * 0.025;
+  const width = active ? 48 : 41;
+  const height = active ? 31 : 27;
+  context.rotate(sway);
+
+  beginCursorStroke(context, accent, active ? 0.76 : 0.48, active ? 1.5 : 1.15);
+  context.rect(-width * 0.5, -height * 0.5, width, height);
+  context.moveTo(width * 0.18, -height * 0.5);
+  context.lineTo(width * 0.5, -height * 0.16);
+  context.moveTo(width * 0.18, -height * 0.5);
+  context.lineTo(width * 0.18, -height * 0.16);
+  context.lineTo(width * 0.5, -height * 0.16);
+  context.stroke();
+
+  beginCursorStroke(context, accent, active ? 0.48 : 0.3, 1);
+  context.moveTo(-width * 0.32, height * 0.08);
+  context.lineTo(width * 0.08, height * 0.08);
+  context.moveTo(-width * 0.32, height * 0.3);
+  context.lineTo(width * 0.24, height * 0.3);
+  context.stroke();
+}
+
+function drawContactCursor(context, time, accent, active) {
+  const blink = atlasReduceMotion.matches || Math.floor(time / 430) % 2 === 0;
+  context.rotate(-0.09);
+  beginCursorStroke(context, accent, blink ? (active ? 0.86 : 0.62) : 0.24, active ? 1.8 : 1.35);
+  context.moveTo(5, -21);
+  context.lineTo(5, 18);
+  context.stroke();
+
+  beginCursorStroke(context, accent, active ? 0.7 : 0.42, 1.2);
+  context.moveTo(-25, 17);
+  context.bezierCurveTo(-14, 7, -3, 27, 15, 13);
+  context.bezierCurveTo(20, 9, 25, 11, 29, 8);
+  context.stroke();
+
+  context.globalAlpha = active ? 0.78 : 0.5;
+  context.fillStyle = accent;
+  context.beginPath();
+  context.moveTo(5, 18);
+  context.lineTo(1, 25);
+  context.lineTo(9, 25);
+  context.closePath();
+  context.fill();
+}
+
+function drawCursorField(frameTime = performance.now()) {
   if (!atlasCursor || !cursorContext) return;
+
+  if (usesTouchPointer()) {
+    cursorContext.clearRect(0, 0, atlasCursor.width, atlasCursor.height);
+    graphNodes.forEach((node) => node.element.classList.remove("is-near"));
+    cursorFrame = 0;
+    return;
+  }
 
   resizeCanvas(atlasCursor, cursorContext, {
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  cursorContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  cursorContext.strokeStyle = "rgba(0, 106, 220, 0.14)";
-  cursorContext.lineWidth = 1;
-  cursorContext.beginPath();
-  cursorContext.arc(pointer.x, pointer.y, 34, 0, Math.PI * 2);
-  cursorContext.stroke();
+  const ease = atlasReduceMotion.matches ? 1 : 0.26;
+  cursorVisual.x += (pointer.x - cursorVisual.x) * ease;
+  cursorVisual.y += (pointer.y - cursorVisual.y) * ease;
+  const targetScale = cursorPressed ? 0.82 : cursorTarget ? 1.08 : 1;
+  cursorVisual.scale += (targetScale - cursorVisual.scale) * (atlasReduceMotion.matches ? 1 : 0.2);
 
-  cursorContext.fillStyle = "rgba(0, 159, 179, 0.22)";
-  cursorContext.beginPath();
-  cursorContext.arc(pointer.x, pointer.y, 2.6, 0, Math.PI * 2);
-  cursorContext.fill();
+  cursorContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  cursorContext.save();
+  cursorContext.translate(cursorVisual.x, cursorVisual.y);
+  cursorContext.scale(cursorVisual.scale, cursorVisual.scale);
+  const mode = atlasCursorMode();
+  const accent = cursorAccent();
+  const active = Boolean(cursorTarget);
+
+  if (mode === "news") drawNewsCursor(cursorContext, frameTime, accent, active);
+  else if (mode === "publication") drawPublicationCursor(cursorContext, frameTime, accent, active);
+  else if (mode === "postcard") drawPostcardCursor(cursorContext, frameTime, accent, active);
+  else if (mode === "contact") drawContactCursor(cursorContext, frameTime, accent, active);
+  else drawOverviewCursor(cursorContext, frameTime, accent, active);
+
+  cursorContext.restore();
+  cursorContext.globalAlpha = 1;
 
   graphNodes.forEach((node) => {
+    if (mode !== "overview") {
+      node.element.classList.remove("is-near");
+      return;
+    }
     const rect = node.element.getBoundingClientRect();
     const x = rect.left + rect.width * 0.5;
     const y = rect.top + rect.height * 0.5;
@@ -1500,11 +1886,37 @@ function drawCursorField() {
 }
 
 window.addEventListener("pointermove", (event) => {
+  if (usesTouchPointer()) return;
   pointer = { x: event.clientX, y: event.clientY };
+  const target = event.target instanceof Element ? event.target : null;
+  cursorTarget = target?.closest([
+    "a",
+    "button",
+    "select",
+    "[tabindex]",
+    "[data-paper]",
+    "[data-news-item]",
+    "[data-postcard]",
+  ].join(", ")) || null;
+  if (atlasReduceMotion.matches) drawCursorField();
+});
+
+window.addEventListener("pointerdown", () => {
+  if (usesTouchPointer()) return;
+  cursorPressed = true;
+});
+
+window.addEventListener("pointerup", () => {
+  cursorPressed = false;
+});
+
+document.documentElement.addEventListener("mouseleave", () => {
+  cursorTarget = null;
+  cursorPressed = false;
 });
 
 interactiveName?.addEventListener("pointermove", (event) => {
-  if (atlasReduceMotion.matches) return;
+  if (atlasReduceMotion.matches || usesTouchPointer()) return;
   const rect = interactiveName.getBoundingClientRect();
   const x = (event.clientX - rect.left) / rect.width - 0.5;
   const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -1524,12 +1936,37 @@ interactiveName?.addEventListener("pointerleave", () => {
 });
 
 window.addEventListener("resize", () => {
+  configureOverviewManuscript();
   positionTopicNodes();
   drawAtlasLines();
   drawPublicationFlow(performance.now());
   if (contactLetterActive) drawContactLetter();
   if (atlasReduceMotion.matches) drawCursorField();
+  syncMobileViewportFocus();
 });
+
+function refreshPointerMode() {
+  cancelAnimationFrame(cursorFrame);
+  cursorFrame = 0;
+  configureOverviewManuscript();
+  positionTopicNodes();
+  drawAtlasLines(performance.now());
+  drawPublicationFlow(performance.now());
+  if (!usesMobileEffects() && !atlasReduceMotion.matches) {
+    cursorFrame = requestAnimationFrame(drawCursorField);
+  } else {
+    drawCursorField();
+  }
+  if (!usesMobileEffects()) {
+    setPublicationFocus(-1);
+    newsItems.forEach((item) => item.classList.remove("is-mobile-current"));
+  } else {
+    syncMobileViewportFocus();
+  }
+}
+
+atlasNarrowNavigation.addEventListener("change", refreshPointerMode);
+atlasCoarsePointer.addEventListener("change", refreshPointerMode);
 
 atlasReduceMotion.addEventListener("change", () => {
   cancelAnimationFrame(cursorFrame);
@@ -1537,7 +1974,7 @@ atlasReduceMotion.addEventListener("change", () => {
   cancelAnimationFrame(publicationFlowFrame);
   drawAtlasLines();
   drawPublicationFlow(performance.now());
-  drawCursorField();
+  refreshPointerMode();
   if (!atlasReduceMotion.matches) {
     mapFrame = requestAnimationFrame(animateAtlasLines);
     publicationFlowFrame = requestAnimationFrame(animatePublicationFlow);
@@ -1551,5 +1988,5 @@ if (atlasReduceMotion.matches) {
   mapFrame = requestAnimationFrame(animateAtlasLines);
   publicationFlowFrame = requestAnimationFrame(animatePublicationFlow);
 }
-drawCursorField();
+refreshPointerMode();
 })();
