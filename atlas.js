@@ -836,6 +836,50 @@ paperItems.forEach((paper, index) => {
   if (revealObserver) revealObserver.observe(paper);
   else paper.classList.add("is-in-view");
 
+  const paperVisual = paper.querySelector(".paper-visual");
+  let paperTapStart = null;
+  let suppressPaperClick = false;
+
+  paperVisual?.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "touch") return;
+    paperTapStart = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      startedAt: performance.now(),
+    };
+  }, { passive: true });
+
+  paperVisual?.addEventListener("pointercancel", () => {
+    paperTapStart = null;
+  });
+
+  paperVisual?.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch" || !paperTapStart || paperTapStart.pointerId !== event.pointerId) return;
+
+    const distance = Math.hypot(event.clientX - paperTapStart.x, event.clientY - paperTapStart.y);
+    const duration = performance.now() - paperTapStart.startedAt;
+    paperTapStart = null;
+
+    if (distance > 12 || duration > 700) return;
+
+    event.preventDefault();
+    suppressPaperClick = true;
+    window.setTimeout(() => {
+      suppressPaperClick = false;
+    }, 800);
+    paperVisual.blur();
+    const paperWindow = window.open(paperVisual.href, "_blank", "noopener,noreferrer");
+    if (paperWindow) paperWindow.opener = null;
+  }, { passive: false });
+
+  paperVisual?.addEventListener("click", (event) => {
+    if (!suppressPaperClick) return;
+    event.preventDefault();
+    event.stopPropagation();
+    suppressPaperClick = false;
+  });
+
   const focusPaper = () => {
     if (!usesMobileEffects()) setPublicationFocus(index);
   };

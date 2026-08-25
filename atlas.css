@@ -4775,6 +4775,7 @@ html body > .atlas-site[data-atlas-site] {
 
   .publication-exhibition .paper-entry > .paper-visual {
     overflow: visible;
+    touch-action: pan-y;
   }
 
   .publication-exhibition .paper-entry.is-paper-focused > .paper-visual {
