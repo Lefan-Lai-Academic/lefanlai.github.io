@@ -3070,8 +3070,7 @@ html body > .atlas-site[data-atlas-site] {
   .atlas-axis,
   .about-layout,
   .contact-layout,
-  .paper-entry,
-  .paper-filters {
+  .paper-entry {
     grid-template-columns: 1fr;
   }
 
@@ -3081,8 +3080,13 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .paper-filters {
-    gap: 18px;
-    padding-bottom: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px clamp(24px, 5vw, 42px);
+    padding-bottom: 18px;
+  }
+
+  .paper-filters label:nth-child(3) {
+    grid-column: 1 / -1;
   }
 
   .axis-label {
@@ -3112,7 +3116,7 @@ html body > .atlas-site[data-atlas-site] {
 
 @media (max-width: 640px) {
   :root {
-    --atlas-display-size: clamp(3.15rem, 16vw, 4.6rem);
+    --atlas-display-size: clamp(2.8rem, 12vw, 4rem);
   }
 
   .atlas-topbar-inner,
@@ -3129,8 +3133,29 @@ html body > .atlas-site[data-atlas-site] {
     font-size: var(--atlas-display-size);
   }
 
+  .atlas-heading.news-heading {
+    font-size: clamp(2.9rem, 12vw, 3.7rem);
+  }
+
+  .atlas-panel {
+    padding: 32px 0 46px;
+  }
+
+  .index-layout {
+    gap: 30px;
+    min-height: auto;
+  }
+
+  .index-copy > .atlas-lead {
+    margin-top: 22px;
+    padding-left: 15px;
+    font-size: 1rem;
+    line-height: 1.68;
+  }
+
   .index-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 28px;
     border-top: 0;
   }
 
@@ -3143,7 +3168,7 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .atlas-map {
-    min-height: 720px;
+    min-height: 540px;
   }
 
   .map-node {
@@ -3171,12 +3196,26 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .letter-field {
-    min-height: 330px;
-    padding-top: 116px;
+    min-height: 280px;
+    padding: 94px 4px 24px;
   }
 
   .letter-meta {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+  }
+
+  .contact-layout {
+    gap: 18px;
+  }
+
+  .contact-intro {
+    margin-top: 22px;
+    font-size: 1rem;
+    line-height: 1.68;
+  }
+
+  .contact-lines {
+    margin-top: 26px;
   }
 
   .node-human {
@@ -3210,6 +3249,28 @@ html body > .atlas-site[data-atlas-site] {
     gap: 8px;
   }
 
+  .about-text {
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .about-text p {
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  .timeline {
+    margin-top: 24px;
+  }
+
+  .timeline article {
+    padding: 16px 0;
+  }
+
+  .portrait-file img {
+    max-height: 420px;
+  }
+
   .atlas-site .timeline::before {
     content: none;
   }
@@ -3219,9 +3280,35 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .paper-entry img {
-    aspect-ratio: 4 / 3;
+    max-height: 320px;
+    aspect-ratio: 16 / 10;
   }
 
+  .paper-entry {
+    gap: 22px;
+    padding: 30px 0;
+  }
+
+  .paper-meta {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-bottom: 14px;
+    white-space: normal;
+  }
+
+  .paper-entry h3 {
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+    line-height: 1.18;
+  }
+
+  .paper-entry .paper-authors {
+    margin: 12px 0 15px;
+    font-size: 0.9rem;
+    line-height: 1.55 !important;
+  }
+  }
+
+@media (max-width: 640px) {
   .news-filters {
     align-items: flex-start;
     flex-direction: column;
@@ -3312,6 +3399,66 @@ html body > .atlas-site[data-atlas-site] {
   .news-year-mark {
     right: 4px;
     font-size: clamp(4.6rem, 28vw, 7rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .atlas-topbar-inner,
+  .atlas-main,
+  .atlas-footer {
+    width: min(100% - 22px, 1240px);
+  }
+
+  .atlas-topbar-inner {
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .atlas-brand strong {
+    font-size: 1rem;
+  }
+
+  .atlas-nav {
+    gap: 4px;
+    padding-bottom: 1px;
+    scrollbar-width: none;
+  }
+
+  .atlas-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .atlas-tab {
+    flex: 0 0 auto;
+    padding: 8px 2px 11px;
+    font-size: 0.78rem;
+  }
+
+  .paper-filters {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .paper-filters label:nth-child(3) {
+    grid-column: auto;
+  }
+
+  .contact-lines a {
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .contact-lines a::after {
+    flex: 0 0 auto;
+  }
+
+  .contact-lines .email-link {
+    overflow-wrap: anywhere;
+  }
+
+  .letter-field {
+    min-height: 250px;
+    padding-top: 78px;
   }
 }
 
