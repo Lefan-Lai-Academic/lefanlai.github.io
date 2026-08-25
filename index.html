@@ -220,7 +220,14 @@
 
         <section class="atlas-panel" data-atlas-panel="news" hidden aria-label="News">
           <div>
-            <h2 class="atlas-heading news-heading">News</h2>
+            <header class="news-masthead">
+              <h2 class="atlas-heading news-heading">News</h2>
+              <div class="news-edition" aria-label="Research journal edition">
+                <span>Research notes</span>
+                <span>2025 &ndash; 2026</span>
+                <span>Issue 01</span>
+              </div>
+            </header>
 
             <div class="news-filters" aria-label="Filter news">
               <div class="news-filter-group" role="group" aria-label="News category">
@@ -238,7 +245,7 @@
 
             <p class="news-count" data-news-count aria-live="polite">Showing 3 updates.</p>
 
-            <div class="news-list" data-news-list>
+            <div class="news-list" data-news-list data-visible-count="3">
               <article class="news-item news-accepted" data-news-item data-news-category="paper" data-news-status="accepted">
                 <time datetime="2026-08">Aug 2026</time>
                 <div class="news-marker" aria-hidden="true"><span></span></div>

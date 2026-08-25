@@ -1142,54 +1142,93 @@ html body > .atlas-site[data-atlas-site] {
   letter-spacing: 0;
 }
 
-.news-filters {
+.news-masthead {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: clamp(18px, 2.2vw, 28px);
+}
+
+.news-masthead::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--atlas-ink);
+  content: "";
+  opacity: 0.7;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: newsRuleIn 680ms cubic-bezier(0.22, 1, 0.36, 1) 80ms forwards;
+}
+
+.news-edition {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, max-content));
-  align-items: stretch;
-  gap: 0;
-  width: fit-content;
+  grid-template-columns: repeat(3, max-content);
+  gap: 18px;
+  padding-bottom: 6px;
+  color: var(--atlas-muted);
+  font-family: var(--atlas-reading-font);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.news-edition span + span::before {
+  margin-right: 18px;
+  color: var(--atlas-line);
+  content: "/";
+}
+
+@keyframes newsRuleIn {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.news-filters {
+  display: flex;
+  align-items: center;
+  gap: clamp(26px, 4vw, 58px);
   max-width: 100%;
-  margin-top: clamp(28px, 4vw, 44px);
-  padding: 18px 0;
-  border-top: 1px solid var(--atlas-line);
+  padding: 15px 0;
   border-bottom: 1px solid var(--atlas-line);
 }
 
 .news-filter-group {
   --news-filter-accent: #b85f58;
-  display: grid;
-  grid-template-columns: repeat(3, max-content);
-  grid-template-rows: auto auto;
-  align-content: center;
+  display: flex;
   align-items: center;
-  gap: 10px 16px;
-  min-width: 310px;
-  padding: 0 32px 0 0;
+  gap: 18px;
+  min-width: 0;
+  padding: 0;
 }
 
 .news-filter-group > span {
-  grid-column: 1 / -1;
-  color: var(--atlas-muted);
-  font-family: var(--atlas-reading-font);
-  font-size: 0.88rem;
+  margin-right: 4px;
+  color: color-mix(in srgb, var(--atlas-muted) 78%, white);
+  font-family: var(--atlas-label-font);
+  font-size: 0.66rem;
   font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .news-filter-group button {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 0;
   border: 0;
   background: transparent;
   color: var(--atlas-muted);
   padding: 2px 0;
   cursor: pointer;
   font-family: var(--atlas-display-font);
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-style: italic;
   font-weight: 500;
   transition:
@@ -1198,14 +1237,19 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .news-filter-group button::before {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  bottom: -16px;
+  left: 0;
+  width: auto;
+  height: 2px;
+  border-radius: 0;
   background: var(--news-filter-accent);
   content: "";
   opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 180ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scaleX(0.2);
+  transform-origin: center;
+  transition: opacity 180ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .news-filter-group button:hover,
@@ -1225,10 +1269,9 @@ html body > .atlas-site[data-atlas-site] {
 
 .news-status-filter {
   --news-filter-accent: #7a3f98;
-  grid-template-columns: repeat(2, max-content);
-  min-width: 278px;
-  padding: 0 0 0 32px;
-  border-left: 1px solid var(--atlas-line);
+  min-width: 0;
+  padding: 0;
+  border-left: 0;
   animation: newsFilterIn 220ms ease both;
 }
 
@@ -1252,7 +1295,7 @@ html body > .atlas-site[data-atlas-site] {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 18px 0 0;
+  margin: 16px 0 0;
   color: color-mix(in srgb, var(--atlas-muted) 90%, var(--atlas-coral));
   font-family: var(--atlas-display-font);
   font-size: 0.92rem;
@@ -1268,19 +1311,68 @@ html body > .atlas-site[data-atlas-site] {
 
 .news-list {
   display: grid;
-  max-width: 980px;
-  margin-top: clamp(28px, 4vw, 48px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(24px, 4vw, 56px);
+  row-gap: 0;
+  width: 100%;
+  max-width: none;
+  margin-top: clamp(32px, 5vw, 62px);
   border-top: 1px solid var(--atlas-line);
 }
 
 .news-item {
   --news-accent: var(--atlas-blue);
+  position: relative;
   display: grid;
-  grid-template-columns: 92px 34px minmax(0, 1fr);
-  gap: 0 18px;
-  padding: 26px 0;
+  grid-column: span 6;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "date marker"
+    "copy copy";
+  align-content: start;
+  gap: 14px 18px;
+  min-width: 0;
+  padding: clamp(28px, 4vw, 46px) 0;
   border-bottom: 1px solid var(--atlas-line);
-  animation: newsItemIn 300ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+  animation: newsItemIn 520ms cubic-bezier(0.22, 0.72, 0.18, 1) both;
+  animation-delay: calc(var(--news-order, 0) * 65ms);
+}
+
+.news-item:nth-child(even):not(.is-first-visible) {
+  padding-left: clamp(18px, 3vw, 42px);
+  border-left: 1px solid var(--atlas-line);
+}
+
+.news-item:nth-child(odd):not(.is-first-visible) {
+  padding-right: clamp(18px, 3vw, 42px);
+}
+
+.news-item.is-first-visible {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(110px, 0.22fr) minmax(0, 1fr) auto;
+  grid-template-areas: "date copy marker";
+  gap: clamp(24px, 4vw, 60px);
+  padding: clamp(36px, 5vw, 68px) 0;
+}
+
+.news-item::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  background: var(--news-accent);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.16);
+  transform-origin: left;
+  transition: opacity 220ms ease, transform 440ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.news-item:hover::after,
+.news-item:focus-within::after {
+  opacity: 0.58;
+  transform: scaleX(1);
 }
 
 .news-item.is-hidden {
@@ -1290,38 +1382,37 @@ html body > .atlas-site[data-atlas-site] {
 @keyframes newsItemIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(12px);
   }
 
   to {
     opacity: 1;
+    clip-path: inset(0 0 0 0);
     transform: translateY(0);
   }
 }
 
 .news-item > time {
-  padding-top: 2px;
+  grid-area: date;
+  padding-top: 0;
   color: var(--news-accent);
-  font-family: var(--atlas-label-font);
-  font-size: 0.78rem;
-  font-weight: 780;
+  font-family: var(--atlas-reading-font);
+  font-size: 0.88rem;
+  font-style: italic;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .news-marker {
+  grid-area: marker;
   position: relative;
-  min-height: 100%;
+  width: 24px;
+  min-height: 12px;
 }
 
 .news-marker::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -27px;
-  bottom: -27px;
-  width: 1px;
-  background: var(--atlas-line);
-  transform: translateX(-50%);
+  content: none;
 }
 
 .news-marker span {
@@ -1330,7 +1421,7 @@ html body > .atlas-site[data-atlas-site] {
   display: block;
   width: 9px;
   height: 9px;
-  margin: 4px auto 0;
+  margin: 3px 0 0 auto;
   border: 2px solid #ffffff;
   border-radius: 50%;
   background: var(--news-accent);
@@ -1346,6 +1437,7 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .news-copy {
+  grid-area: copy;
   min-width: 0;
 }
 
@@ -1375,9 +1467,22 @@ html body > .atlas-site[data-atlas-site] {
   margin: 0;
   color: var(--atlas-ink);
   font-family: var(--atlas-display-font);
-  font-size: clamp(1.28rem, 2vw, 1.58rem);
-  font-weight: 600;
-  line-height: 1.24;
+  font-size: clamp(1.38rem, 2.25vw, 1.82rem);
+  font-weight: 520;
+  line-height: 1.18;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.news-item.is-first-visible .news-copy h3 {
+  max-width: 24ch;
+  font-size: clamp(2rem, 4.4vw, 4.35rem);
+  font-weight: 400;
+  line-height: 0.98;
+}
+
+.news-item:hover .news-copy h3,
+.news-item:focus-within .news-copy h3 {
+  transform: translateX(4px);
 }
 
 .news-copy > p:last-child {
@@ -1385,9 +1490,15 @@ html body > .atlas-site[data-atlas-site] {
   margin: 11px 0 0;
   color: color-mix(in srgb, var(--atlas-soft-ink) 82%, white);
   font-family: var(--atlas-reading-font);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 400;
   line-height: 1.68;
+}
+
+.news-item.is-first-visible .news-copy > p:last-child {
+  max-width: 66ch;
+  margin-top: 18px;
+  font-size: clamp(1rem, 1.35vw, 1.14rem);
 }
 
 .news-copy a {
@@ -2936,36 +3047,78 @@ html body > .atlas-site[data-atlas-site] {
   .news-filters {
     align-items: flex-start;
     flex-direction: column;
-    grid-template-columns: 1fr;
-    gap: 0;
+    gap: 14px;
     width: 100%;
   }
 
   .news-filter-group {
+    flex-wrap: wrap;
+    gap: 12px 16px;
     min-width: 0;
     width: 100%;
-    padding: 0 0 16px;
+    padding: 0;
   }
 
   .news-status-filter {
-    padding: 16px 0 0;
-    border-top: 1px solid var(--atlas-line);
+    padding: 14px 0 0;
+    border-top: 1px dotted var(--atlas-line);
     border-left: 0;
   }
 
+  .news-masthead {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .news-edition {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    padding-bottom: 0;
+  }
+
+  .news-edition span + span::before {
+    content: none;
+  }
+
+  .news-list {
+    grid-template-columns: 1fr;
+  }
+
   .news-item {
-    grid-template-columns: 72px 18px minmax(0, 1fr);
-    gap: 0 10px;
-    padding: 22px 0;
+    grid-column: 1;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date marker"
+      "copy copy";
+    gap: 12px 16px;
+    padding: 28px 0;
+    border-left: 0;
+  }
+
+  .news-item:nth-child(even):not(.is-first-visible),
+  .news-item:nth-child(odd):not(.is-first-visible) {
+    padding-right: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .news-item.is-first-visible {
+    grid-column: 1;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "date marker"
+      "copy copy";
+    gap: 12px 16px;
+    padding: 36px 0;
   }
 
   .news-item > time {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
   }
 
-  .news-marker::before {
-    top: -23px;
-    bottom: -23px;
+  .news-item.is-first-visible .news-copy h3 {
+    font-size: clamp(2rem, 10vw, 3.15rem);
   }
 }
 
@@ -2983,6 +3136,7 @@ html body > .atlas-site[data-atlas-site] {
   .vigor-badge::before,
   .vigor-badge::after,
   .news-filter-group button,
+  .news-masthead::after,
   .news-item,
   .news-marker span,
   .corresponding-mark::after,

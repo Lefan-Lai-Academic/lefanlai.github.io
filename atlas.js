@@ -183,6 +183,7 @@ function setPaperFilters(values) {
 function updateNewsFilters() {
   const filteringPapers = activeNewsCategory === "paper";
   let visibleCount = 0;
+  const visibleItems = [];
 
   if (newsStatusGroup) {
     newsStatusGroup.hidden = !filteringPapers;
@@ -197,8 +198,18 @@ function updateNewsFilters() {
         : item.dataset.newsCategory === "paper" && item.dataset.newsStatus === activeNewsStatus;
     item.hidden = !visible;
     item.classList.toggle("is-hidden", !visible);
+    item.classList.remove("is-first-visible");
+    if (visible) visibleItems.push(item);
     visibleCount += visible ? 1 : 0;
   });
+
+  visibleItems.forEach((item, index) => {
+    item.classList.toggle("is-first-visible", index === 0);
+    item.style.setProperty("--news-order", index);
+  });
+
+  const newsList = document.querySelector("[data-news-list]");
+  if (newsList) newsList.dataset.visibleCount = String(visibleCount);
 
   newsCategoryButtons.forEach((button) => {
     const selected = button.dataset.newsCategory === activeNewsCategory;
