@@ -5117,15 +5117,18 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .publication-exhibition .paper-entry > .paper-visual::before {
-    inset: -7px 7px 7px -9px;
+    inset: -5px;
     border-left: 2px solid color-mix(in srgb, var(--paper-accent) 58%, transparent);
     opacity: 0.58;
+    transform: none;
+    transform-origin: center;
   }
 
   .publication-exhibition .paper-entry.is-paper-focused > .paper-visual::before {
     border-left-color: var(--paper-accent);
     box-shadow: -5px 0 14px color-mix(in srgb, var(--paper-accent) 16%, transparent);
     opacity: 0.96;
+    transform: scale(1.012);
   }
 
   .publication-flow-canvas {

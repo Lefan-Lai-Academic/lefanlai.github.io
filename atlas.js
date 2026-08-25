@@ -1873,6 +1873,21 @@ function drawContactCursor(context, time, accent, active) {
   context.fill();
 }
 
+const cursorInteractiveSelector = [
+  "a",
+  "button",
+  "select",
+  "[tabindex]",
+  "[data-paper]",
+  "[data-news-item]",
+  "[data-postcard]",
+].join(", ");
+
+function cursorTargetAtPoint(x, y) {
+  const hit = document.elementFromPoint(x, y);
+  return hit instanceof Element ? hit.closest(cursorInteractiveSelector) : null;
+}
+
 function drawCursorField(frameTime = performance.now()) {
   if (!atlasCursor || !cursorContext) return;
 
@@ -1888,9 +1903,11 @@ function drawCursorField(frameTime = performance.now()) {
     height: window.innerHeight,
   });
 
-  const ease = atlasReduceMotion.matches ? 1 : 0.26;
-  cursorVisual.x += (pointer.x - cursorVisual.x) * ease;
-  cursorVisual.y += (pointer.y - cursorVisual.y) * ease;
+  // Keep the drawn cursor and its hit target on the same physical point.
+  // Rechecking here also clears stale targets after scrolling or panel changes.
+  cursorTarget = cursorTargetAtPoint(pointer.x, pointer.y);
+  cursorVisual.x = pointer.x;
+  cursorVisual.y = pointer.y;
   const targetScale = cursorPressed ? 0.82 : cursorTarget ? 1.08 : 1;
   cursorVisual.scale += (targetScale - cursorVisual.scale) * (atlasReduceMotion.matches ? 1 : 0.2);
 
@@ -1932,16 +1949,7 @@ function drawCursorField(frameTime = performance.now()) {
 window.addEventListener("pointermove", (event) => {
   if (usesTouchPointer()) return;
   pointer = { x: event.clientX, y: event.clientY };
-  const target = event.target instanceof Element ? event.target : null;
-  cursorTarget = target?.closest([
-    "a",
-    "button",
-    "select",
-    "[tabindex]",
-    "[data-paper]",
-    "[data-news-item]",
-    "[data-postcard]",
-  ].join(", ")) || null;
+  cursorTarget = cursorTargetAtPoint(pointer.x, pointer.y);
   if (atlasReduceMotion.matches) drawCursorField();
 });
 
@@ -1955,6 +1963,11 @@ window.addEventListener("pointerup", () => {
 });
 
 document.documentElement.addEventListener("mouseleave", () => {
+  cursorTarget = null;
+  cursorPressed = false;
+});
+
+window.addEventListener("blur", () => {
   cursorTarget = null;
   cursorPressed = false;
 });
