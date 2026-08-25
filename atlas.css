@@ -4793,6 +4793,11 @@ html body > .atlas-site[data-atlas-site] {
     transform: translateY(0);
   }
 
+  .publication-exhibition .paper-entry.is-paper-tap-armed > .paper-visual::after {
+    content: "Tap again to read  ↗";
+    opacity: 0.96;
+  }
+
   .publication-exhibition .paper-entry.is-paper-focused .paper-details::before {
     width: 88px;
     opacity: 0.8;

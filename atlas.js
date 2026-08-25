@@ -827,9 +827,22 @@ const revealObserver = "IntersectionObserver" in window
   : null;
 
 function setPublicationFocus(index = -1) {
+  if (armedPaperVisual) {
+    const armedIndex = [...paperItems].findIndex((item) => item.contains(armedPaperVisual));
+    if (armedIndex !== index) setPaperTapArm(null);
+  }
   activePublicationIndex = index;
   publicationList?.classList.toggle("has-paper-focus", index >= 0);
   paperItems.forEach((item, itemIndex) => item.classList.toggle("is-paper-focused", itemIndex === index));
+}
+
+let armedPaperVisual = null;
+
+function setPaperTapArm(visual = null) {
+  armedPaperVisual = visual;
+  paperItems.forEach((item) => {
+    item.classList.toggle("is-paper-tap-armed", Boolean(visual && item.contains(visual)));
+  });
 }
 
 paperItems.forEach((paper, index) => {
@@ -863,14 +876,22 @@ paperItems.forEach((paper, index) => {
 
     if (distance > 12 || duration > 700) return;
 
-    event.preventDefault();
-    suppressPaperClick = true;
-    window.setTimeout(() => {
-      suppressPaperClick = false;
-    }, 800);
+    if (armedPaperVisual !== paperVisual) {
+      event.preventDefault();
+      suppressPaperClick = true;
+      setPaperTapArm(paperVisual);
+      setPublicationFocus(index);
+      paperVisual.blur();
+      window.setTimeout(() => {
+        suppressPaperClick = false;
+      }, 800);
+      return;
+    }
+
+    // The second tap keeps the anchor's native new-tab behavior.
+    suppressPaperClick = false;
+    setPaperTapArm(null);
     paperVisual.blur();
-    const paperWindow = window.open(paperVisual.href, "_blank", "noopener,noreferrer");
-    if (paperWindow) paperWindow.opener = null;
   }, { passive: false });
 
   paperVisual?.addEventListener("click", (event) => {
@@ -896,6 +917,12 @@ paperItems.forEach((paper, index) => {
     });
   });
 });
+
+document.addEventListener("pointerdown", (event) => {
+  if (event.pointerType !== "touch" || !armedPaperVisual) return;
+  const target = event.target instanceof Element ? event.target : null;
+  if (!target?.closest(".paper-visual")) setPaperTapArm(null);
+}, { passive: true });
 
 const mobilePaperRatios = new Map();
 const mobilePaperObserver = "IntersectionObserver" in window
