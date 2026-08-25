@@ -19,6 +19,20 @@ const paperAreaButtons = document.querySelectorAll("[data-paper-area]");
 const paperTopicButtons = document.querySelectorAll("[data-paper-topic]");
 const topicToggleButtons = document.querySelectorAll("[data-topic-toggle]");
 const paperTopicSelect = document.querySelector('[data-paper-filter="topic"]');
+const publicationList = document.querySelector("[data-paper-list]");
+const publicationFlowCanvas = document.querySelector("[data-publication-flow-canvas]");
+const publicationFlowContext = publicationFlowCanvas?.getContext("2d");
+const postcard = document.querySelector("[data-postcard]");
+const postcardLocation = document.querySelector("[data-postcard-location]");
+const postcardImage = postcard?.querySelector("img");
+const postcardCaption = postcard?.querySelector("[data-postcard-caption]");
+const postcardPostmark = postcard?.querySelector("[data-postcard-postmark]");
+const postcardStops = document.querySelectorAll("[data-postcard-place]");
+const postcardPicture = postcard?.querySelector("[data-postcard-picture]");
+const postcardCount = postcard?.querySelector("[data-postcard-count]");
+const postcardDots = postcard?.querySelectorAll(".postcard-dots i") || [];
+const postcardPrevious = postcard?.querySelector("[data-postcard-previous]");
+const postcardNext = postcard?.querySelector("[data-postcard-next]");
 const newsCategoryButtons = document.querySelectorAll("button[data-news-category]");
 const newsStatusButtons = document.querySelectorAll("button[data-news-status]");
 const newsStatusGroup = document.querySelector("[data-news-status-group]");
@@ -163,6 +177,106 @@ function updatePaperFilters() {
     button.classList.toggle("is-selected", selected);
     button.setAttribute("aria-pressed", String(selected));
   });
+
+  requestAnimationFrame(() => drawPublicationFlow(performance.now()));
+}
+
+let publicationFlowFrame = 0;
+let activePublicationIndex = -1;
+
+function publicationCurvePoint(start, controlA, controlB, end, progress) {
+  const inverse = 1 - progress;
+  return {
+    x: inverse ** 3 * start.x
+      + 3 * inverse ** 2 * progress * controlA.x
+      + 3 * inverse * progress ** 2 * controlB.x
+      + progress ** 3 * end.x,
+    y: inverse ** 3 * start.y
+      + 3 * inverse ** 2 * progress * controlA.y
+      + 3 * inverse * progress ** 2 * controlB.y
+      + progress ** 3 * end.y,
+  };
+}
+
+function drawPublicationFlow(time = 0) {
+  if (!publicationList || !publicationFlowCanvas || !publicationFlowContext) return;
+
+  const listRect = publicationList.getBoundingClientRect();
+  if (listRect.width < 2 || listRect.height < 2) return;
+
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const width = Math.max(1, Math.floor(listRect.width * ratio));
+  const height = Math.max(1, Math.floor(listRect.height * ratio));
+  if (publicationFlowCanvas.width !== width || publicationFlowCanvas.height !== height) {
+    publicationFlowCanvas.width = width;
+    publicationFlowCanvas.height = height;
+    publicationFlowCanvas.style.width = `${listRect.width}px`;
+    publicationFlowCanvas.style.height = `${listRect.height}px`;
+  }
+
+  publicationFlowContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+  publicationFlowContext.clearRect(0, 0, listRect.width, listRect.height);
+
+  const visiblePapers = [...paperItems].filter((paper) => !paper.hidden && !paper.classList.contains("is-hidden"));
+  if (visiblePapers.length < 2) return;
+
+  const firstVisual = visiblePapers[0].querySelector(".paper-visual")?.getBoundingClientRect();
+  const secondVisual = visiblePapers[1].querySelector(".paper-visual")?.getBoundingClientRect();
+  if (!firstVisual || !secondVisual) return;
+
+  const compact = window.innerWidth <= 980;
+  const start = compact
+    ? { x: 9, y: firstVisual.bottom - listRect.top + 12 }
+    : { x: firstVisual.left + firstVisual.width * 0.72 - listRect.left, y: firstVisual.bottom - listRect.top + 8 };
+  const end = compact
+    ? { x: 9, y: secondVisual.top - listRect.top - 12 }
+    : { x: secondVisual.left + secondVisual.width * 0.28 - listRect.left, y: secondVisual.top - listRect.top - 8 };
+  const middleY = (start.y + end.y) * 0.5;
+  const controlA = compact
+    ? { x: 26, y: middleY - 34 }
+    : { x: listRect.width * 0.7, y: middleY - 24 };
+  const controlB = compact
+    ? { x: 26, y: middleY + 34 }
+    : { x: listRect.width * 0.3, y: middleY + 24 };
+  const activePaper = visiblePapers[activePublicationIndex] || null;
+  const activeColor = activePaper
+    ? getComputedStyle(activePaper).getPropertyValue("--paper-accent").trim()
+    : "#5269a9";
+  const gradient = publicationFlowContext.createLinearGradient(start.x, start.y, end.x, end.y);
+  gradient.addColorStop(0, activePublicationIndex === 0 ? activeColor : "rgba(47, 111, 159, 0.48)");
+  gradient.addColorStop(0.5, "rgba(80, 105, 151, 0.3)");
+  gradient.addColorStop(1, activePublicationIndex === 1 ? activeColor : "rgba(122, 63, 152, 0.48)");
+
+  publicationFlowContext.strokeStyle = gradient;
+  publicationFlowContext.lineWidth = activePublicationIndex >= 0 ? 1.6 : 1.05;
+  publicationFlowContext.setLineDash([3, 9]);
+  publicationFlowContext.lineDashOffset = atlasReduceMotion.matches ? 0 : -(time / 42);
+  publicationFlowContext.beginPath();
+  publicationFlowContext.moveTo(start.x, start.y);
+  publicationFlowContext.bezierCurveTo(controlA.x, controlA.y, controlB.x, controlB.y, end.x, end.y);
+  publicationFlowContext.stroke();
+  publicationFlowContext.setLineDash([]);
+
+  if (!atlasReduceMotion.matches) {
+    const progress = (time / 3600) % 1;
+    const point = publicationCurvePoint(start, controlA, controlB, end, progress);
+    publicationFlowContext.fillStyle = activePublicationIndex >= 0 ? activeColor : "rgba(82, 105, 169, 0.78)";
+    publicationFlowContext.beginPath();
+    publicationFlowContext.arc(point.x, point.y, activePublicationIndex >= 0 ? 3.2 : 2.4, 0, Math.PI * 2);
+    publicationFlowContext.fill();
+    publicationFlowContext.strokeStyle = "rgba(255, 255, 255, 0.82)";
+    publicationFlowContext.lineWidth = 1;
+    publicationFlowContext.beginPath();
+    publicationFlowContext.arc(point.x, point.y, 6.5, 0, Math.PI * 2);
+    publicationFlowContext.stroke();
+  }
+}
+
+function animatePublicationFlow(time) {
+  drawPublicationFlow(time);
+  if (!atlasReduceMotion.matches) {
+    publicationFlowFrame = requestAnimationFrame(animatePublicationFlow);
+  }
 }
 
 function setPaperFilters(values) {
@@ -473,6 +587,17 @@ function setContactLetterTarget(link) {
   if (atlasReduceMotion.matches && contactLetterActive) drawContactLetter();
 }
 
+let overviewManuscriptRequest = 0;
+
+function scheduleOverviewManuscript(shouldPlay) {
+  const request = ++overviewManuscriptRequest;
+  queueMicrotask(() => {
+    if (request !== overviewManuscriptRequest) return;
+    if (shouldPlay) startOverviewManuscript();
+    else stopOverviewManuscript();
+  });
+}
+
 contactLetterLinks.forEach((link) => {
   link.addEventListener("pointerenter", () => setContactLetterTarget(link));
   link.addEventListener("pointerleave", () => setContactLetterTarget(null));
@@ -504,6 +629,9 @@ function activateAtlasPanel(id, options = {}) {
     panel.classList.toggle("is-active", active);
   });
 
+  restartPanelEntrance(activeId);
+  scheduleOverviewManuscript(activeId === "index");
+
   atlasButtons.forEach((button) => {
     const active = !button.dataset.paperAreaShortcut && button.dataset.atlasTarget === activeId;
     button.classList.toggle("is-active", active);
@@ -520,7 +648,19 @@ function activateAtlasPanel(id, options = {}) {
     stopContactLetter();
   }
 
-  requestAnimationFrame(drawAtlasLines);
+  if (activeId === "about") {
+    if (postcardStops[0]) {
+      setPostcardStop(postcardStops[0], { immediate: true });
+    }
+    startPostcardCycle();
+  } else {
+    stopPostcardCycle();
+  }
+
+  requestAnimationFrame(() => {
+    drawAtlasLines();
+    drawPublicationFlow(performance.now());
+  });
 }
 
 atlasButtons.forEach((button) => {
@@ -568,6 +708,188 @@ topicToggleButtons.forEach((button) => {
     button.textContent = expanded ? "Show topics" : "Hide topics";
     topicPanel.hidden = expanded;
   });
+});
+
+publicationList?.classList.add("has-exhibition-motion");
+
+document.querySelectorAll(".about-text p").forEach((paragraph, index) => {
+  paragraph.style.setProperty("--about-order", String(index));
+});
+
+postcardStops.forEach((stop, index) => {
+  stop.style.setProperty("--journey-order", String(index));
+});
+
+let panelEntranceTimers = [];
+
+function restartPanelEntrance(activeId) {
+  panelEntranceTimers.forEach((timer) => window.clearTimeout(timer));
+  panelEntranceTimers = [];
+  atlasPanels.forEach((panel) => panel.classList.remove("is-panel-entering"));
+  const activePanel = document.querySelector(`[data-atlas-panel="${activeId}"]`);
+  if (!activePanel) return;
+
+  requestAnimationFrame(() => activePanel.classList.add("is-panel-entering"));
+
+  if (activeId === "work") {
+    paperItems.forEach((paper, index) => {
+      paper.classList.remove("is-in-view");
+      panelEntranceTimers.push(window.setTimeout(() => {
+        paper.classList.add("is-in-view");
+      }, 120 + index * 170));
+    });
+  }
+
+  if (activeId === "about" && postcard) {
+    postcard.classList.remove("is-in-view");
+    panelEntranceTimers.push(window.setTimeout(() => postcard.classList.add("is-in-view"), 120));
+  }
+}
+
+const revealObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-in-view");
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 })
+  : null;
+
+paperItems.forEach((paper, index) => {
+  if (revealObserver) revealObserver.observe(paper);
+  else paper.classList.add("is-in-view");
+
+  const focusPaper = () => {
+    activePublicationIndex = index;
+    publicationList?.classList.add("has-paper-focus");
+    paperItems.forEach((item, itemIndex) => item.classList.toggle("is-paper-focused", itemIndex === index));
+  };
+  const releasePaper = () => {
+    activePublicationIndex = -1;
+    publicationList?.classList.remove("has-paper-focus");
+    paperItems.forEach((item) => item.classList.remove("is-paper-focused"));
+  };
+
+  paper.addEventListener("pointerenter", focusPaper);
+  paper.addEventListener("pointerleave", releasePaper);
+  paper.addEventListener("focusin", focusPaper);
+  paper.addEventListener("focusout", () => {
+    requestAnimationFrame(() => {
+      if (!paper.contains(document.activeElement)) releasePaper();
+    });
+  });
+});
+
+if (postcard) {
+  if (revealObserver) revealObserver.observe(postcard);
+  else postcard.classList.add("is-in-view");
+}
+
+let postcardCycleTimer = 0;
+let postcardImageTimer = 0;
+let postcardStopIndex = 0;
+
+function setPostcardStop(stop, options = {}) {
+  if (!postcard || !postcardLocation || !stop) return;
+  postcardStopIndex = Math.max(0, [...postcardStops].indexOf(stop));
+  postcardStops.forEach((item) => item.classList.toggle("is-route-active", item === stop));
+  postcardDots.forEach((dot, index) => dot.classList.toggle("is-active", index === postcardStopIndex));
+  if (postcardCount) {
+    postcardCount.textContent = `${String(postcardStopIndex + 1).padStart(2, "0")} / ${String(postcardStops.length).padStart(2, "0")}`;
+  }
+  postcard.dataset.postcardTone = stop.dataset.postcardTone || "auckland";
+  postcard.classList.add("is-place-changing");
+  postcardLocation.textContent = `${stop.dataset.postcardPlace} · ${stop.dataset.postcardYear}`;
+  postcardPostmark?.setAttribute("data-postcard-code", stop.dataset.postcardCode || "");
+  if (postcardCaption) postcardCaption.textContent = stop.dataset.postcardCaption || "";
+
+  const nextImage = stop.dataset.postcardImage;
+  if (postcardImage && nextImage && !postcardImage.src.endsWith(nextImage.replace("assets/", "/assets/"))) {
+    const swapImage = () => {
+      postcardImage.src = nextImage;
+      postcardImage.alt = `${stop.dataset.postcardPlace} period of Lefan Lai`;
+      requestAnimationFrame(() => postcard.classList.remove("is-image-changing"));
+    };
+
+    window.clearTimeout(postcardImageTimer);
+    if (options.immediate) swapImage();
+    else {
+      postcard.classList.add("is-image-changing");
+      postcardImageTimer = window.setTimeout(swapImage, 180);
+    }
+  }
+  window.setTimeout(() => postcard.classList.remove("is-place-changing"), 320);
+}
+
+function stopPostcardCycle() {
+  window.clearInterval(postcardCycleTimer);
+  postcardCycleTimer = 0;
+}
+
+function startPostcardCycle() {
+  stopPostcardCycle();
+  if (atlasReduceMotion.matches || postcardStops.length < 2) return;
+  postcardCycleTimer = window.setInterval(() => {
+    postcardStopIndex = (postcardStopIndex + 1) % postcardStops.length;
+    setPostcardStop(postcardStops[postcardStopIndex]);
+  }, 4600);
+}
+
+function movePostcard(direction) {
+  if (!postcardStops.length) return;
+  stopPostcardCycle();
+  postcardStopIndex = (postcardStopIndex + direction + postcardStops.length) % postcardStops.length;
+  setPostcardStop(postcardStops[postcardStopIndex]);
+  startPostcardCycle();
+}
+
+const defaultPostcardStop = postcardStops[0];
+if (defaultPostcardStop) setPostcardStop(defaultPostcardStop, { immediate: true });
+
+postcardStops.forEach((stop) => {
+  stop.addEventListener("pointerenter", () => {
+    stopPostcardCycle();
+    setPostcardStop(stop);
+  });
+  stop.addEventListener("focus", () => {
+    stopPostcardCycle();
+    setPostcardStop(stop);
+  });
+  stop.addEventListener("blur", startPostcardCycle);
+});
+
+document.querySelector(".postcard-journey")?.addEventListener("pointerleave", () => {
+  startPostcardCycle();
+});
+
+postcardPicture?.addEventListener("click", () => movePostcard(1));
+
+postcardPrevious?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  movePostcard(-1);
+});
+
+postcardNext?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  movePostcard(1);
+});
+
+postcard?.addEventListener("pointermove", (event) => {
+  if (atlasReduceMotion.matches) return;
+  const rect = postcard.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width - 0.5;
+  const y = (event.clientY - rect.top) / rect.height - 0.5;
+  postcard.style.setProperty("--postcard-rotate-x", `${(-y * 2.8).toFixed(2)}deg`);
+  postcard.style.setProperty("--postcard-rotate-y", `${(x * 3.6).toFixed(2)}deg`);
+});
+
+postcard?.addEventListener("pointerenter", stopPostcardCycle);
+
+postcard?.addEventListener("pointerleave", () => {
+  postcard.style.setProperty("--postcard-rotate-x", "0deg");
+  postcard.style.setProperty("--postcard-rotate-y", "0deg");
+  startPostcardCycle();
 });
 
 newsCategoryButtons.forEach((button) => {
@@ -624,6 +946,11 @@ let graphHoverKey = null;
 let graphLockedKey = null;
 let currentGraphKey = null;
 let currentGraphPaperIds = new Set();
+let overviewManuscriptStartedAt = 0;
+let overviewManuscriptActive = false;
+let overviewManuscriptTimer = 0;
+let latestGraphPaper = null;
+let overviewIntroEdgeMeta = [];
 
 function graphColor(area, topic) {
   if (topic === "human-centered") return graphColors.human;
@@ -735,6 +1062,123 @@ graphPapers.forEach((paper) => {
   paper.topicKeys.slice(1).forEach((key, index) => addGraphEdge(paper.topicKeys[index], key, paper.id));
 });
 
+function configureOverviewManuscript() {
+  const coreNodes = graphNodes.filter((node) => node.type === "core");
+  const coreFlights = [
+    [-230, -118, -9],
+    [18, -230, 7],
+    [235, -112, 10],
+    [-210, 165, 8],
+    [225, 172, -8],
+  ];
+  coreNodes.forEach((node, index) => {
+    const [flightX, flightY, rotation] = coreFlights[index % coreFlights.length];
+    node.element.style.setProperty("--manuscript-delay", `${50 + index * 72}ms`);
+    node.element.style.setProperty("--flight-x", `${flightX}px`);
+    node.element.style.setProperty("--flight-y", `${flightY}px`);
+    node.element.style.setProperty("--flight-rotate", `${rotation}deg`);
+  });
+
+  const topicOrder = [];
+  graphPapers.forEach((paper) => {
+    paper.nodeKeys.forEach((key) => {
+      const node = graphNodeByKey.get(key);
+      if (node?.type === "topic" && !topicOrder.includes(key)) topicOrder.push(key);
+    });
+  });
+  graphNodes.filter((node) => node.type === "topic").forEach((node) => {
+    if (!topicOrder.includes(node.key)) topicOrder.push(node.key);
+  });
+  topicOrder.forEach((key, index) => {
+    const node = graphNodeByKey.get(key);
+    if (!node) return;
+    const side = node.area === "ai" ? 1 : node.area === "hci" ? -1 : index % 2 ? 1 : -1;
+    const flightX = side * (150 + (index % 4) * 34);
+    const flightY = (index % 3 - 1) * 118 + (index % 2 ? 46 : -34);
+    node.element.style.setProperty("--manuscript-delay", `${90 + index * 42}ms`);
+    node.element.style.setProperty("--flight-x", `${flightX}px`);
+    node.element.style.setProperty("--flight-y", `${flightY}px`);
+    node.element.style.setProperty("--flight-rotate", `${side * (6 + index % 5)}deg`);
+  });
+
+  latestGraphPaper = graphPapers.at(-1) || null;
+
+  const edgeOrderByPaper = new Map();
+  overviewIntroEdgeMeta = graphEdges.map((edge) => {
+    const paper = graphPapers.find((candidate) => edge.paperIds.has(candidate.id)) || null;
+    const paperIndex = paper ? graphPapers.indexOf(paper) : 0;
+    const edgeOrder = edgeOrderByPaper.get(paper?.id) || 0;
+    if (paper) edgeOrderByPaper.set(paper.id, edgeOrder + 1);
+    return { paper, paperIndex, edgeOrder };
+  });
+}
+
+function stopOverviewManuscript() {
+  window.clearTimeout(overviewManuscriptTimer);
+  overviewManuscriptTimer = 0;
+  overviewManuscriptActive = false;
+  atlasMap?.classList.remove("is-manuscript-entering");
+  vigorEcho?.classList.remove("is-manuscript-trace");
+  graphNodes.forEach((node) => node.element.classList.remove(
+    "is-manuscript-latest",
+    "is-intro-chi-motion",
+    "is-intro-vigor-motion",
+  ));
+}
+
+function startOverviewManuscript() {
+  if (!atlasMap) return;
+  stopOverviewManuscript();
+  graphLockedKey = null;
+  graphHoverKey = null;
+  updateGraphState();
+
+  if (atlasReduceMotion.matches) {
+    drawAtlasLines();
+    return;
+  }
+
+  latestGraphPaper?.nodeKeys.forEach((key) => {
+    graphNodeByKey.get(key)?.element.classList.add("is-manuscript-latest");
+  });
+  graphPapers.forEach((paper) => {
+    const motionClass = paper.animation === "chi-search"
+      ? "is-intro-chi-motion"
+      : paper.animation === "vigor-frames"
+        ? "is-intro-vigor-motion"
+        : null;
+    if (!motionClass) return;
+    paper.nodeKeys.forEach((key, index) => {
+      const node = graphNodeByKey.get(key);
+      node?.element.classList.add(motionClass);
+      node?.element.style.setProperty("--publication-order", String(index));
+    });
+  });
+  atlasMap.classList.remove("is-manuscript-entering");
+  void atlasMap.offsetWidth;
+  overviewManuscriptStartedAt = performance.now();
+  overviewManuscriptActive = true;
+  atlasMap.classList.add("is-manuscript-entering");
+
+  if (graphPapers.some((paper) => paper.animation === "vigor-frames")) {
+    vigorEcho?.classList.add("is-manuscript-trace");
+  }
+
+  overviewManuscriptTimer = window.setTimeout(() => {
+    overviewManuscriptActive = false;
+    atlasMap.classList.remove("is-manuscript-entering");
+    vigorEcho?.classList.remove("is-manuscript-trace");
+    graphNodes.forEach((node) => node.element.classList.remove(
+      "is-manuscript-latest",
+      "is-intro-chi-motion",
+      "is-intro-vigor-motion",
+    ));
+    drawAtlasLines(performance.now());
+  }, 2320);
+}
+
+configureOverviewManuscript();
+
 const topicSlots = {
   hci: [[15, 45], [34, 34], [35, 65], [11, 63]],
   xr: [[56, 69], [47, 90], [68, 62], [87, 89]],
@@ -787,7 +1231,7 @@ function resizeCanvas(canvas, context, rect) {
 function drawAtlasLines(time = 0) {
   if (!mapCanvas || !mapContext || !graphNodes.length) return;
 
-  const mapRect = mapCanvas.getBoundingClientRect();
+  const mapRect = atlasMap?.getBoundingClientRect() || mapCanvas.getBoundingClientRect();
   if (mapRect.width < 2 || mapRect.height < 2) return;
 
   resizeCanvas(mapCanvas, mapContext, mapRect);
@@ -802,6 +1246,9 @@ function drawAtlasLines(time = 0) {
     }];
   }));
 
+  const introElapsed = overviewManuscriptActive
+    ? Math.max(0, time - overviewManuscriptStartedAt)
+    : Number.POSITIVE_INFINITY;
   graphEdges.forEach((edge, index) => {
     const a = points.get(edge.from);
     const b = points.get(edge.to);
@@ -815,28 +1262,81 @@ function drawAtlasLines(time = 0) {
         .map((paperId) => graphPaperById.get(paperId))
         .find(Boolean)
       : null;
-    const lineAnimation = highlightedPaper?.animation || "generic";
+    const edgePaper = [...edge.paperIds].map((paperId) => graphPaperById.get(paperId)).find(Boolean);
+    const lineAnimation = highlightedPaper?.animation || edgePaper?.animation || "generic";
+    const introMeta = overviewIntroEdgeMeta[index];
+    const introStart = 720
+      + (introMeta?.paperIndex || 0) * 310
+      + (introMeta?.edgeOrder || 0) * 42;
+    const introEdgeProgress = overviewManuscriptActive
+      ? Math.min(1, Math.max(0, (introElapsed - introStart) / 610))
+      : -1;
+    const introPulse = introEdgeProgress >= 0 && introEdgeProgress < 1
+      ? Math.sin(Math.PI * introEdgeProgress)
+      : 0;
     const toNode = graphNodeByKey.get(edge.to);
-    const [red, green, blue] = highlighted ? (toNode?.color || graphColors.default) : graphColors.default;
+    const [red, green, blue] = highlighted || introPulse > 0
+      ? (toNode?.color || graphColors.default)
+      : graphColors.default;
     mapContext.strokeStyle = highlighted
       ? `rgba(${red}, ${green}, ${blue}, 0.66)`
+      : introPulse > 0
+        ? `rgba(${red}, ${green}, ${blue}, ${0.24 + introPulse * 0.62})`
       : hasActiveNode
         ? "rgba(66, 91, 112, 0.045)"
-        : `rgba(${red}, ${green}, ${blue}, 0.13)`;
-    mapContext.lineWidth = highlighted ? (lineAnimation === "chi-search" ? 1.45 : 1.8) : 0.9;
-    mapContext.setLineDash(highlighted
+        : `rgba(${red}, ${green}, ${blue}, ${overviewManuscriptActive ? 0.18 : 0.13})`;
+    mapContext.lineWidth = highlighted
+      ? (lineAnimation === "chi-search" ? 1.45 : 1.8)
+      : introPulse > 0
+        ? 1.15 + introPulse * 0.85
+        : 0.9;
+    mapContext.setLineDash(highlighted || introPulse > 0 || overviewManuscriptActive
       ? lineAnimation === "chi-search" ? [2, 8] : lineAnimation === "vigor-frames" ? [7, 9] : [5, 9]
       : []);
-    mapContext.lineDashOffset = highlighted
+    mapContext.lineDashOffset = highlighted || introPulse > 0 || overviewManuscriptActive
       ? -(time / (lineAnimation === "chi-search" ? 26 : 38) + index * 4)
       : 0;
-    mapContext.beginPath();
-    mapContext.moveTo(a.x, a.y);
     const cx = (a.x + b.x) * 0.5;
     const movement = highlighted ? Math.sin(time / 330 + index) * 12 : 0;
     const cy = (a.y + b.y) * 0.5 + (index % 2 === 0 ? -15 : 15) + movement;
-    mapContext.quadraticCurveTo(cx, cy, b.x, b.y);
-    mapContext.stroke();
+    const edgeProgress = overviewManuscriptActive
+      ? Math.min(1, Math.max(0, (introElapsed - (introStart - 210)) / 430))
+      : 1;
+
+    if (edgeProgress > 0) {
+      const firstControl = {
+        x: a.x + (cx - a.x) * edgeProgress,
+        y: a.y + (cy - a.y) * edgeProgress,
+      };
+      const secondControl = {
+        x: cx + (b.x - cx) * edgeProgress,
+        y: cy + (b.y - cy) * edgeProgress,
+      };
+      const partialEnd = {
+        x: firstControl.x + (secondControl.x - firstControl.x) * edgeProgress,
+        y: firstControl.y + (secondControl.y - firstControl.y) * edgeProgress,
+      };
+      mapContext.beginPath();
+      mapContext.moveTo(a.x, a.y);
+      mapContext.quadraticCurveTo(firstControl.x, firstControl.y, partialEnd.x, partialEnd.y);
+      mapContext.stroke();
+    }
+
+    if (introPulse > 0 && !atlasReduceMotion.matches) {
+      const progress = introEdgeProgress;
+      const inverse = 1 - progress;
+      const x = inverse * inverse * a.x + 2 * inverse * progress * cx + progress * progress * b.x;
+      const y = inverse * inverse * a.y + 2 * inverse * progress * cy + progress * progress * b.y;
+      mapContext.fillStyle = `rgba(${red}, ${green}, ${blue}, 0.92)`;
+      mapContext.beginPath();
+      mapContext.arc(x, y, lineAnimation === "chi-search" ? 2.9 : 2.4, 0, Math.PI * 2);
+      mapContext.fill();
+      mapContext.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${lineAnimation === "chi-search" ? 0.34 : 0.22})`;
+      mapContext.lineWidth = 1;
+      mapContext.beginPath();
+      mapContext.arc(x, y, lineAnimation === "chi-search" ? 8.2 : 6.8, 0, Math.PI * 2);
+      mapContext.stroke();
+    }
 
     if (highlighted && !atlasReduceMotion.matches) {
       const pointOffsets = lineAnimation === "chi-search"
@@ -1026,6 +1526,7 @@ interactiveName?.addEventListener("pointerleave", () => {
 window.addEventListener("resize", () => {
   positionTopicNodes();
   drawAtlasLines();
+  drawPublicationFlow(performance.now());
   if (contactLetterActive) drawContactLetter();
   if (atlasReduceMotion.matches) drawCursorField();
 });
@@ -1033,17 +1534,22 @@ window.addEventListener("resize", () => {
 atlasReduceMotion.addEventListener("change", () => {
   cancelAnimationFrame(cursorFrame);
   cancelAnimationFrame(mapFrame);
+  cancelAnimationFrame(publicationFlowFrame);
   drawAtlasLines();
+  drawPublicationFlow(performance.now());
   drawCursorField();
   if (!atlasReduceMotion.matches) {
     mapFrame = requestAnimationFrame(animateAtlasLines);
+    publicationFlowFrame = requestAnimationFrame(animatePublicationFlow);
   }
 });
 
 if (atlasReduceMotion.matches) {
   drawAtlasLines();
+  drawPublicationFlow();
 } else {
   mapFrame = requestAnimationFrame(animateAtlasLines);
+  publicationFlowFrame = requestAnimationFrame(animatePublicationFlow);
 }
 drawCursorField();
 })();

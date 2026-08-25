@@ -295,14 +295,10 @@ html body > .atlas-site[data-atlas-site] {
   content: "";
   opacity: 0.58;
   transform-origin: left center;
-  animation: index-kicker-line 720ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: none;
 }
 
 .interactive-name {
-  --name-x: 0px;
-  --name-y: 0px;
-  --name-inverse-x: 0px;
-  --name-inverse-y: 0px;
   display: grid;
   width: fit-content;
   isolation: isolate;
@@ -312,81 +308,27 @@ html body > .atlas-site[data-atlas-site] {
   position: relative;
   display: block;
   width: max-content;
-  transition:
-    color 280ms ease,
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  background: none !important;
+  color: var(--atlas-ink) !important;
+  -webkit-text-fill-color: currentColor !important;
+  transition: none;
 }
 
 .name-line::before,
 .name-line::after {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  content: attr(data-name);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 260ms ease,
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
-  display: none;
+  content: none;
 }
 
 .name-first {
-  transform: translate3d(var(--name-x), var(--name-y), 0);
-  animation: name-soft-arrival 520ms 80ms ease-out both;
+  transform: none;
+  animation: none;
 }
 
 .name-last {
   margin-top: -0.03em;
   margin-left: clamp(34px, 6vw, 82px);
-  transform: translate3d(var(--name-inverse-x), var(--name-inverse-y), 0);
-  animation: name-soft-arrival 560ms 150ms ease-out both;
-}
-
-@keyframes name-soft-arrival {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.name-first::before {
-  color: #bd625b;
-}
-
-.name-first::after {
-  color: #745db2;
-}
-
-.name-last::before {
-  color: #357aaa;
-}
-
-.name-last::after {
-  color: #19827b;
-}
-
-.interactive-name:hover .name-first::before,
-.interactive-name.is-name-active .name-first::before {
-  opacity: 0.14;
-  transform: translate(-5px, 2px);
-}
-
-.interactive-name:hover .name-first::after,
-.interactive-name.is-name-active .name-first::after {
-  opacity: 0.12;
-  transform: translate(6px, -2px);
-}
-
-.interactive-name:hover .name-last::before,
-.interactive-name.is-name-active .name-last::before {
-  opacity: 0.14;
-  transform: translate(5px, 2px);
-}
-
-.interactive-name:hover .name-last::after,
-.interactive-name.is-name-active .name-last::after {
-  opacity: 0.12;
-  transform: translate(-5px, -2px);
+  transform: none;
+  animation: none;
 }
 
 .index-copy > .atlas-lead {
@@ -473,7 +415,7 @@ html body > .atlas-site[data-atlas-site] {
 .index-actions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: min(100%, 640px);
+  width: min(100%, 680px);
   margin-top: 38px;
   border-top: 1px solid var(--atlas-line);
 }
@@ -481,15 +423,15 @@ html body > .atlas-site[data-atlas-site] {
 .text-link {
   --action-accent: #187c78;
   position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  display: flex;
+  justify-content: center;
   align-items: baseline;
-  gap: 8px;
+  gap: 9px;
   min-width: 0;
   border: 0;
   background: transparent;
   color: var(--atlas-ink);
-  padding: 14px 14px 10px 0;
+  padding: 14px 20px 10px 8px;
   cursor: pointer;
   text-align: left;
   transition:
@@ -510,7 +452,7 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .text-link + .text-link {
-  padding-left: 14px;
+  padding-left: 8px;
 }
 
 .text-link::before {
@@ -534,13 +476,15 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .action-label {
-  overflow-wrap: anywhere;
+  white-space: nowrap;
   font-family: var(--atlas-reading-font);
   font-size: 1rem;
   font-weight: 560;
 }
 
 .action-arrow {
+  position: absolute;
+  right: 5px;
   color: var(--action-accent);
   opacity: 0;
   transform: translateX(-6px);
@@ -591,6 +535,94 @@ html body > .atlas-site[data-atlas-site] {
 .topic-cloud {
   z-index: 3;
   pointer-events: none;
+}
+
+.atlas-map.is-manuscript-entering .map-node {
+  animation: overview-core-orbit 880ms cubic-bezier(0.16, 0.82, 0.18, 1) var(--manuscript-delay, 60ms) both;
+}
+
+.atlas-map.is-manuscript-entering .topic-node {
+  animation: overview-topic-orbit 980ms cubic-bezier(0.16, 0.82, 0.18, 1) var(--manuscript-delay, 110ms) both;
+}
+
+.atlas-map.is-manuscript-entering .is-manuscript-latest::before {
+  animation: manuscript-latest-mark 460ms ease-out 1740ms both;
+}
+
+@keyframes overview-core-orbit {
+  0% {
+    filter: blur(5px);
+    opacity: 0;
+    rotate: var(--flight-rotate, -7deg);
+    scale: 0.72;
+    translate: var(--flight-x, -180px) var(--flight-y, -120px);
+  }
+
+  58% {
+    filter: blur(0.7px);
+    opacity: 0.88;
+    rotate: calc(var(--flight-rotate, -7deg) * -0.12);
+    scale: 1.04;
+    translate: calc(var(--flight-x, -180px) * -0.045) calc(var(--flight-y, -120px) * -0.045);
+  }
+
+  100% {
+    filter: blur(0);
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes overview-topic-orbit {
+  0% {
+    filter: blur(4px);
+    opacity: 0;
+    rotate: var(--flight-rotate, 8deg);
+    scale: 0.66;
+    translate: var(--flight-x, 150px) var(--flight-y, 90px);
+  }
+
+  46% {
+    filter: blur(1px);
+    opacity: 0.72;
+    rotate: calc(var(--flight-rotate, 8deg) * 0.18);
+    scale: 0.94;
+    translate: calc(var(--flight-x, 150px) * 0.2) calc(var(--flight-y, 90px) * 0.2);
+  }
+
+  76% {
+    filter: blur(0);
+    opacity: 1;
+    rotate: calc(var(--flight-rotate, 8deg) * -0.08);
+    scale: 1.04;
+    translate: calc(var(--flight-x, 150px) * -0.035) calc(var(--flight-y, 90px) * -0.035);
+  }
+
+  100% {
+    filter: blur(0);
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes manuscript-latest-mark {
+  0%, 100% {
+    background: #ffffff;
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 0%, transparent);
+    transform: scale(1);
+  }
+
+  48% {
+    background: currentColor;
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, currentColor 13%, transparent),
+      0 0 0 12px color-mix(in srgb, currentColor 6%, transparent);
+    transform: scale(1.16);
+  }
 }
 
 .atlas-site .topic-node {
@@ -668,12 +700,16 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .topic-node.is-chi-motion::before,
-.map-node.is-chi-motion::before {
+.map-node.is-chi-motion::before,
+.topic-node.is-intro-chi-motion::before,
+.map-node.is-intro-chi-motion::before {
   animation: map-chi-search-target 1.9s ease-in-out calc(var(--publication-order, 0) * 110ms) infinite;
 }
 
 .topic-node.is-vigor-motion::after,
-.map-node.is-vigor-motion::after {
+.map-node.is-vigor-motion::after,
+.topic-node.is-intro-vigor-motion::after,
+.map-node.is-intro-vigor-motion::after {
   position: absolute;
   inset: 1px -8px;
   z-index: -1;
@@ -840,6 +876,26 @@ html body > .atlas-site[data-atlas-site] {
 
 .vigor-echo.is-active span {
   animation: vigor-echo-scan 2.4s ease-in-out calc(var(--echo-index) * 95ms) infinite;
+}
+
+.vigor-echo.is-manuscript-trace {
+  opacity: 1;
+}
+
+.vigor-echo.is-manuscript-trace span {
+  animation: manuscript-vigor-frame 560ms ease-out calc(1180ms + var(--echo-index) * 72ms) both;
+}
+
+@keyframes manuscript-vigor-frame {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(9px) scale(0.94);
+  }
+
+  38%, 72% {
+    opacity: 0.54;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .map-publication-link {
@@ -1882,11 +1938,12 @@ html body > .atlas-site[data-atlas-site] {
   position: absolute;
   width: clamp(24px, 3.2vw, 40px);
   aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, 0.94);
+  border: 1.5px solid rgba(255, 255, 255, 0.98);
   box-shadow:
-    0 0 0 1px rgba(47, 111, 159, 0.88),
-    0 0 0 7px rgba(47, 111, 159, 0.06);
-  opacity: 0.18;
+    0 0 0 1.5px rgba(38, 101, 151, 0.9),
+    0 0 0 7px rgba(47, 111, 159, 0.11),
+    0 4px 13px rgba(22, 67, 101, 0.12);
+  opacity: 0.34;
   transform: translate(-50%, -50%) scale(0.74);
   animation: chi-target-search 8.8s cubic-bezier(0.22, 0.72, 0.18, 1) infinite;
   animation-delay: calc(var(--search-order) * 1.6s);
@@ -1903,16 +1960,18 @@ html body > .atlas-site[data-atlas-site] {
 }
 
 .chi-target::before {
-  width: 5px;
-  height: 5px;
-  background: #2f6f9f;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.68);
+  width: 6px;
+  height: 6px;
+  background: #246b9e;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.82),
+    0 0 12px rgba(36, 107, 158, 0.42);
 }
 
 .chi-target::after {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(24, 124, 120, 0.72);
+  border: 1.5px solid rgba(20, 123, 119, 0.84);
   opacity: 0;
   animation: chi-memory-echo 8.8s ease-out infinite;
   animation-delay: calc(var(--search-order) * 1.6s + 760ms);
@@ -1940,13 +1999,14 @@ html body > .atlas-site[data-atlas-site] {
 
 .chi-route {
   position: absolute;
-  height: 1px;
+  height: 2px;
   background: repeating-linear-gradient(
     90deg,
-    rgba(47, 111, 159, 0.55) 0 5px,
-    transparent 5px 11px
+    rgba(38, 101, 151, 0.82) 0 6px,
+    transparent 6px 11px
   );
-  opacity: 0.16;
+  filter: drop-shadow(0 0 3px rgba(38, 101, 151, 0.28));
+  opacity: 0.34;
   transform-origin: left center;
   animation: chi-route-flow 4.6s linear infinite;
 }
@@ -2022,17 +2082,17 @@ html body > .atlas-site[data-atlas-site] {
 
 .chi-paper-visual:hover .chi-route,
 .chi-paper-visual:focus-visible .chi-route {
-  opacity: 0.5;
+  opacity: 0.82;
   animation-duration: 2.8s;
 }
 
 @keyframes chi-target-search {
   0%, 5%, 27%, 100% {
-    opacity: 0.16;
+    opacity: 0.3;
     transform: translate(-50%, -50%) scale(0.74);
   }
   10%, 20% {
-    opacity: 0.96;
+    opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
 }
@@ -3383,7 +3443,10 @@ html body > .atlas-site[data-atlas-site] {
   }
 
   .news-item.is-first-visible .news-copy h3 {
-    font-size: clamp(1.85rem, 9vw, 2.8rem);
+    max-width: none;
+    font-size: clamp(1.38rem, 2.25vw, 1.82rem);
+    font-weight: 520;
+    line-height: 1.18;
   }
 
   .news-item.is-first-visible .news-copy {
@@ -3549,5 +3612,806 @@ html body > .atlas-site[data-atlas-site] {
 
   .vigor-focus.focus-center {
     opacity: 0.72 !important;
+  }
+}
+
+/* Publication gallery and postcard narrative */
+.action-label {
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
+.publication-exhibition {
+  position: relative;
+  isolation: isolate;
+  border-top: 0;
+  margin-top: clamp(8px, 1vw, 14px);
+}
+
+.publication-flow-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.publication-exhibition .paper-entry {
+  z-index: 1;
+  min-height: clamp(310px, 28vw, 360px);
+  align-items: start;
+  gap: clamp(22px, 2.7vw, 36px);
+  padding: clamp(18px, 1.8vw, 24px) 0;
+}
+
+.publication-exhibition .paper-entry::before {
+  left: -4px;
+  top: 50%;
+  bottom: auto;
+  width: 1px;
+  height: 46%;
+  opacity: 0.32;
+  transform: translateY(-50%) scaleY(0.34);
+  box-shadow: 0 0 0 color-mix(in srgb, var(--paper-accent) 0%, transparent);
+  transition:
+    opacity 240ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 360ms ease;
+}
+
+.publication-exhibition .paper-entry:hover::before,
+.publication-exhibition .paper-entry:focus-within::before,
+.publication-exhibition .paper-entry.is-paper-focused::before {
+  opacity: 0.94;
+  transform: translateY(-50%) scaleY(1);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--paper-accent) 34%, transparent);
+  animation: publication-focus-rail 1.8s ease-in-out infinite;
+}
+
+@keyframes publication-focus-rail {
+  0%, 100% {
+    filter: brightness(0.96);
+  }
+
+  50% {
+    filter: brightness(1.28);
+  }
+}
+
+.publication-exhibition .paper-entry::after {
+  content: attr(data-paper-index);
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  z-index: -1;
+  color: color-mix(in srgb, var(--paper-accent) 6%, white);
+  font-family: var(--atlas-display-font);
+  font-size: clamp(5rem, 13vw, 11rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.75;
+  pointer-events: none;
+  transition: color 420ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.publication-exhibition .paper-entry:hover::after,
+.publication-exhibition .paper-entry:focus-within::after,
+.publication-exhibition .paper-entry.is-paper-focused::after {
+  color: color-mix(in srgb, var(--paper-accent) 11%, white);
+  transform: translateY(-8px);
+}
+
+.publication-exhibition.has-exhibition-motion .paper-entry {
+  opacity: 0;
+  transform: translateY(38px);
+  transition:
+    opacity 720ms ease,
+    transform 860ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.publication-exhibition.has-exhibition-motion .paper-entry.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.publication-exhibition.has-paper-focus .paper-entry:not(.is-paper-focused) {
+  opacity: 0.52;
+}
+
+.publication-exhibition .paper-entry > .paper-visual {
+  overflow: visible;
+  outline: none;
+  transform-origin: center;
+  transition:
+    filter 360ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.publication-exhibition .paper-entry > .paper-visual::before {
+  content: "";
+  position: absolute;
+  inset: -12px 12px 12px -12px;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--paper-accent) 22%, transparent);
+  opacity: 0.42;
+  transform: translate(8px, 8px);
+  transition:
+    border-color 300ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.publication-exhibition .paper-entry > .paper-visual:hover,
+.publication-exhibition .paper-entry > .paper-visual:focus-visible {
+  filter: drop-shadow(0 18px 26px color-mix(in srgb, var(--paper-accent) 12%, transparent));
+  transform: translateY(-6px) rotate(-0.35deg);
+}
+
+.publication-exhibition .paper-entry > .paper-visual:hover::before,
+.publication-exhibition .paper-entry > .paper-visual:focus-visible::before {
+  border-color: color-mix(in srgb, var(--paper-accent) 58%, transparent);
+  transform: translate(2px, 2px);
+}
+
+.publication-exhibition .paper-entry img {
+  border: 0;
+}
+
+.publication-exhibition .paper-details {
+  position: relative;
+  max-width: 760px;
+}
+
+.publication-exhibition .paper-details::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: 0;
+  width: 52px;
+  height: 1px;
+  background: var(--paper-accent);
+  opacity: 0.36;
+  transform-origin: left;
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease;
+}
+
+.publication-exhibition .paper-entry:hover .paper-details::before,
+.publication-exhibition .paper-entry:focus-within .paper-details::before {
+  width: 104px;
+  opacity: 0.82;
+}
+
+.publication-exhibition .paper-entry h3 {
+  font-size: clamp(1.44rem, 1.8vw, 1.98rem);
+  line-height: 1.13;
+}
+
+.publication-exhibition .paper-meta {
+  margin-bottom: 14px;
+}
+
+.publication-exhibition .paper-authors {
+  margin-top: 13px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 981px) {
+  .publication-exhibition .paper-entry {
+    grid-template-columns: minmax(340px, 0.76fr) minmax(0, 1fr);
+  }
+
+  .publication-exhibition .paper-entry:nth-of-type(2) {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.72fr);
+  }
+
+  .publication-exhibition .paper-entry:nth-of-type(2) > .paper-visual {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .publication-exhibition .paper-entry:nth-of-type(2) > .paper-details {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .publication-exhibition .paper-entry:nth-of-type(2)::after {
+    right: auto;
+    left: 0;
+  }
+
+  .publication-exhibition .paper-entry:nth-of-type(2)::before {
+    right: -4px;
+    left: auto;
+  }
+}
+
+.about-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.43fr);
+  gap: clamp(58px, 9vw, 128px);
+}
+
+.portrait-file {
+  --postcard-accent: #187c78;
+  --postcard-rotate-x: 0deg;
+  --postcard-rotate-y: 0deg;
+  position: sticky;
+  top: 118px;
+  isolation: isolate;
+  border: 0;
+  background: #fffefd;
+  padding: 12px 12px 20px;
+  box-shadow:
+    0 24px 56px rgba(35, 49, 57, 0.11),
+    0 2px 0 rgba(35, 49, 57, 0.04);
+  opacity: 0;
+  transform: perspective(1000px) rotateX(var(--postcard-rotate-x)) rotateY(var(--postcard-rotate-y)) rotate(-1.15deg) translateY(28px);
+  transform-style: preserve-3d;
+  transition:
+    box-shadow 420ms ease,
+    opacity 720ms ease,
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portrait-file::before,
+.portrait-file::after {
+  content: "";
+  position: absolute;
+  inset: 8px -8px -8px 8px;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--postcard-accent) 18%, var(--atlas-line));
+  background: #fffefd;
+  transform: rotate(1.4deg);
+  transition:
+    border-color 320ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portrait-file::after {
+  inset: 15px -14px -14px 15px;
+  z-index: -2;
+  opacity: 0.58;
+  transform: rotate(2.4deg);
+}
+
+.portrait-file.is-place-changing::before {
+  transform: translate(4px, -2px) rotate(2deg);
+}
+
+.portrait-file.is-place-changing::after {
+  transform: translate(7px, -3px) rotate(3.1deg);
+}
+
+.portrait-file.is-in-view {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(var(--postcard-rotate-x)) rotateY(var(--postcard-rotate-y)) rotate(-1.15deg) translateY(0);
+}
+
+.portrait-file[data-postcard-tone="sydney"] {
+  --postcard-accent: #5269a9;
+}
+
+.portrait-file[data-postcard-tone="nanchang"] {
+  --postcard-accent: #a65350;
+}
+
+.portrait-file:hover,
+.portrait-file:focus-within {
+  box-shadow:
+    0 30px 70px color-mix(in srgb, var(--postcard-accent) 15%, transparent),
+    0 2px 0 rgba(35, 49, 57, 0.04);
+}
+
+.postcard-picture {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  background: #eaf2f4;
+  padding: 0;
+  cursor: e-resize;
+  text-align: left;
+}
+
+.postcard-picture:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--postcard-accent) 68%, white);
+  outline-offset: 4px;
+}
+
+.postcard-picture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  pointer-events: none;
+}
+
+.portrait-file img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: 56% 49%;
+  transition:
+    opacity 220ms ease,
+    filter 420ms ease,
+    transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portrait-file[data-postcard-tone="sydney"] img {
+  object-position: 50% 56%;
+  transform: scale(1.2);
+}
+
+.portrait-file[data-postcard-tone="nanchang"] img {
+  object-position: 50% 50%;
+  transform: scale(1.01);
+}
+
+.portrait-file.is-image-changing img {
+  opacity: 0;
+  transform: scale(1.04);
+}
+
+.portrait-file:hover img,
+.postcard-journey article:hover ~ * img {
+  transform: scale(1.018);
+}
+
+.portrait-file[data-postcard-tone="sydney"]:hover img {
+  transform: scale(1.225);
+}
+
+.portrait-file[data-postcard-tone="nanchang"]:hover img {
+  transform: scale(1.025);
+}
+
+.postcard-location {
+  position: absolute;
+  left: 14px;
+  bottom: 13px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--postcard-accent);
+  padding: 7px 10px;
+  font-family: var(--atlas-display-font);
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1;
+  transition:
+    background-color 260ms ease,
+    color 260ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.postcard-count {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.94);
+  font-family: var(--atlas-reading-font);
+  font-size: 0.76rem;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 12px rgba(17, 24, 39, 0.4);
+}
+
+.portrait-file.is-place-changing .postcard-location {
+  transform: translateY(-4px);
+}
+
+.postcard-postmark {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  z-index: 2;
+  width: 64px;
+  height: 64px;
+  border: 1px solid color-mix(in srgb, var(--postcard-accent) 54%, white);
+  border-radius: 50%;
+  opacity: 0.76;
+  transition: border-color 260ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.postcard-postmark::before {
+  content: attr(data-postcard-code);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--postcard-accent);
+  font-family: var(--atlas-reading-font);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.postcard-postmark i {
+  position: absolute;
+  top: 19px;
+  right: 56px;
+  width: 46px;
+  height: 1px;
+  background: color-mix(in srgb, var(--postcard-accent) 50%, white);
+}
+
+.postcard-postmark i:nth-child(2) {
+  top: 29px;
+  width: 58px;
+}
+
+.postcard-postmark i:nth-child(3) {
+  top: 39px;
+  width: 38px;
+}
+
+.portrait-file.is-place-changing .postcard-postmark {
+  transform: rotate(12deg) scale(1.04);
+}
+
+.portrait-file figcaption {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+  margin: 18px 8px 0;
+}
+
+.postcard-caption-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.portrait-file strong {
+  color: var(--postcard-accent);
+  transition: color 260ms ease;
+}
+
+.postcard-controls {
+  display: inline-grid;
+  grid-template-columns: 28px auto 28px;
+  align-items: center;
+  gap: 8px;
+}
+
+.postcard-controls > button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--postcard-accent) 46%, var(--atlas-line));
+  background: transparent;
+  color: var(--postcard-accent);
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--atlas-reading-font);
+  font-size: 1rem;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.postcard-controls > button:hover,
+.postcard-controls > button:focus-visible {
+  border-color: var(--postcard-accent);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.postcard-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.postcard-dots i {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--postcard-accent) 28%, white);
+  transition:
+    background-color 240ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.postcard-dots i.is-active {
+  width: 14px;
+  border-radius: 0;
+  background: var(--postcard-accent);
+}
+
+.postcard-journey {
+  margin-top: 40px;
+}
+
+.atlas-site .postcard-journey::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    #187c78 0 10px,
+    transparent 10px 16px,
+    #5269a9 16px 26px,
+    transparent 26px 32px,
+    #a65350 32px 42px,
+    transparent 42px 48px
+  );
+  background-size: 100% 48px;
+  animation: postcard-route-travel 8s linear infinite;
+}
+
+.postcard-journey article {
+  outline: none;
+  transition:
+    background-color 260ms ease,
+    padding-left 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.postcard-journey article:hover,
+.postcard-journey article:focus-visible,
+.postcard-journey article.is-route-active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--timeline-accent) 7%, white), transparent 72%);
+  padding-left: 8px;
+  transform: translateX(5px);
+}
+
+.postcard-journey article:hover::before,
+.postcard-journey article:focus-visible::before,
+.postcard-journey article.is-route-active::before {
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--timeline-accent) 13%, transparent);
+  transform: scale(1.12);
+}
+
+@keyframes postcard-route-travel {
+  from { background-position: 0 0; }
+  to { background-position: 0 48px; }
+}
+
+.atlas-panel.is-panel-entering .publications-heading,
+.atlas-panel.is-panel-entering .about-heading {
+  animation: atlas-section-title-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .index-copy > .atlas-kicker {
+  animation: atlas-overview-copy-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .index-copy > .atlas-kicker::before {
+  animation: index-kicker-line 620ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .name-first {
+  animation: none;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .name-last {
+  animation: none;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .index-copy > .atlas-lead {
+  animation: atlas-overview-copy-arrive 640ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .index-copy > .atlas-lead::before {
+  animation: index-lead-line 560ms 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .text-link {
+  animation: atlas-overview-action-arrive 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .text-link:nth-child(1) { animation-delay: 310ms; }
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .text-link:nth-child(2) { animation-delay: 370ms; }
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .text-link:nth-child(3) { animation-delay: 430ms; }
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .text-link:nth-child(4) { animation-delay: 490ms; }
+
+.atlas-panel[data-atlas-panel="index"].is-panel-entering .atlas-map {
+  animation: none;
+}
+
+.atlas-panel.is-panel-entering .paper-filters,
+.atlas-panel.is-panel-entering .filter-status {
+  animation: atlas-section-detail-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) 90ms both;
+}
+
+.atlas-panel.is-panel-entering .about-text p {
+  animation: atlas-section-detail-arrive 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(90ms + var(--about-order, 0) * 80ms);
+}
+
+.atlas-panel.is-panel-entering .postcard-journey article {
+  animation: atlas-postcard-stop-arrive 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(180ms + var(--journey-order, 0) * 90ms);
+}
+
+@keyframes atlas-section-title-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(20px) skewX(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) skewX(0);
+  }
+}
+
+@keyframes atlas-section-detail-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atlas-postcard-stop-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes atlas-overview-name-arrive {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 32% 0);
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes atlas-overview-copy-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atlas-overview-action-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atlas-overview-map-arrive {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 980px) {
+  .publication-exhibition .paper-entry {
+    min-height: 0;
+  }
+
+  .publication-flow-canvas {
+    opacity: 0.64;
+  }
+
+  .portrait-file {
+    position: relative;
+    top: auto;
+    width: min(100%, 480px);
+    justify-self: center;
+    transform: perspective(1000px) rotateX(var(--postcard-rotate-x)) rotateY(var(--postcard-rotate-y)) rotate(-0.65deg) translateY(28px);
+  }
+
+  .portrait-file.is-in-view {
+    transform: perspective(1000px) rotateX(var(--postcard-rotate-x)) rotateY(var(--postcard-rotate-y)) rotate(-0.65deg) translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .action-label {
+    font-size: clamp(0.9rem, 4vw, 1rem);
+  }
+
+  .publication-exhibition .paper-entry {
+    gap: 22px;
+    padding: 28px 0;
+  }
+
+  .publication-exhibition .paper-entry::after {
+    bottom: 10px;
+    font-size: 5.2rem;
+  }
+
+  .publication-exhibition .paper-entry > .paper-visual::before {
+    inset: -7px 7px 7px -7px;
+  }
+
+  .publication-exhibition .paper-details::before {
+    top: -16px;
+  }
+
+  .publication-exhibition .paper-entry h3 {
+    font-size: clamp(1.35rem, 6.2vw, 1.72rem);
+  }
+
+  .publication-flow-canvas {
+    opacity: 0.5;
+  }
+
+  .portrait-file {
+    width: calc(100% - 10px);
+    padding: 9px 9px 16px;
+  }
+
+  .postcard-picture {
+    aspect-ratio: 4 / 3;
+  }
+
+  .portrait-file figcaption {
+    grid-template-columns: 1fr;
+  }
+
+  .postcard-controls {
+    justify-self: start;
+  }
+
+  .postcard-postmark {
+    width: 54px;
+    height: 54px;
+  }
+
+  .postcard-postmark i {
+    right: 47px;
+    width: 34px;
+  }
+
+  .postcard-postmark i:nth-child(2) {
+    width: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .publication-exhibition.has-exhibition-motion .paper-entry,
+  .portrait-file {
+    opacity: 1;
+    transform: none;
+  }
+
+  .publication-flow-canvas {
+    opacity: 0.3;
+  }
+
+  .atlas-site .postcard-journey::before {
+    animation: none;
+  }
+
+  .atlas-panel.is-panel-entering .publications-heading,
+  .atlas-panel.is-panel-entering .about-heading,
+  .atlas-panel.is-panel-entering .paper-filters,
+  .atlas-panel.is-panel-entering .filter-status,
+  .atlas-panel.is-panel-entering .about-text p,
+  .atlas-panel.is-panel-entering .postcard-journey article {
+    animation: none;
   }
 }

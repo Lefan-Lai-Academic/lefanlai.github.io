@@ -362,7 +362,8 @@
             </div>
             <p class="filter-status" data-paper-count aria-live="polite">Showing 2 papers.</p>
 
-            <div class="work-list" data-paper-list>
+            <div class="work-list publication-exhibition" data-paper-list>
+              <canvas class="publication-flow-canvas" data-publication-flow-canvas aria-hidden="true"></canvas>
               <article
                 class="paper-entry paper-chi"
                 data-paper
@@ -371,6 +372,7 @@
                 data-year="2026"
                 data-area="hci xr"
                 data-topic="human-centered interaction visual-search mixed-reality spatial-learning"
+                data-paper-index="01"
               >
                 <a class="paper-visual chi-paper-visual" href="assets/CHI2026_Searching_Through_Complex_Worlds.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="Read Searching Through Complex Worlds as a PDF">
                   <img src="assets/teaser.png" alt="Mixed reality visual search teaser" />
@@ -386,7 +388,7 @@
                     <span class="chi-target target-book" style="--search-order: 3" data-search="04"></span>
                   </span>
                 </a>
-                <div>
+                <div class="paper-details">
                   <div class="paper-meta" aria-label="Publication venue and track">
                     <span>CHI 2026</span>
                     <span>Main Conference</span>
@@ -428,6 +430,7 @@
                 data-year="2026"
                 data-area="ai"
                 data-topic="mllms object-hallucination visual-grounding training-free"
+                data-paper-index="02"
               >
                 <a class="paper-visual vigor-paper-visual" href="assets/EMNLP2026_VIGOR.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="Read VIGOR as a PDF">
                   <img src="assets/vigor-scene.jpg" alt="VIGOR visual grounding example showing a sink area" />
@@ -440,7 +443,7 @@
                   <span class="vigor-focus focus-middle-left" data-view="06" aria-hidden="true"></span>
                   <span class="vigor-focus focus-middle-right" data-view="07" aria-hidden="true"></span>
                 </a>
-                <div>
+                <div class="paper-details">
                   <div class="paper-meta" aria-label="Publication venue and track">
                     <span>EMNLP 2026</span>
                     <span>Findings</span>
@@ -514,15 +517,15 @@
                 </p>
               </div>
 
-              <div class="timeline" aria-label="Education timeline">
-                <article>
+              <div class="timeline postcard-journey" aria-label="Education journey">
+                <article tabindex="0" data-postcard-place="Barcelona" data-postcard-code="BCN" data-postcard-year="2026" data-postcard-tone="barcelona" data-postcard-image="assets/profile.jpg" data-postcard-caption="CHI 2026 · Barcelona">
                   <span>2026.5 - Present</span>
                   <div>
                     <h3>PhD in Human-Computer Interaction</h3>
                     <p>The University of Auckland, New Zealand.</p>
                   </div>
                 </article>
-                <article>
+                <article tabindex="0" data-postcard-place="Sydney" data-postcard-code="SYD" data-postcard-year="2024" data-postcard-tone="sydney" data-postcard-image="assets/about-sydney.jpg" data-postcard-caption="Master of Computer Science · University of Sydney">
                   <span>2024.7 - 2026.1</span>
                   <div>
                     <h3>Master of Computer Science</h3>
@@ -530,7 +533,7 @@
                     <p class="timeline-wam"><span>WAM</span> 85.75 <em>High Distinction</em></p>
                   </div>
                 </article>
-                <article>
+                <article tabindex="0" data-postcard-place="Nanchang" data-postcard-code="NCU" data-postcard-year="2023" data-postcard-tone="nanchang" data-postcard-image="assets/about-nanchang.jpg" data-postcard-caption="Bachelor of Software Engineering · Nanchang University">
                   <span>2019.9 - 2023.6</span>
                   <div>
                     <h3>Bachelor of Software Engineering</h3>
@@ -540,11 +543,25 @@
               </div>
             </div>
 
-            <figure class="portrait-file">
-              <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+            <figure class="portrait-file" data-postcard>
+              <button class="postcard-picture" type="button" data-postcard-picture aria-label="Show next photograph">
+                <img src="assets/profile.jpg" alt="Portrait of Lefan Lai" />
+                <span class="postcard-postmark" data-postcard-postmark data-postcard-code="BCN" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="postcard-location" data-postcard-location>Barcelona · 2026</span>
+                <span class="postcard-count" data-postcard-count aria-hidden="true">01 / 03</span>
+              </button>
               <figcaption>
-                <strong>Lefan Lai</strong>
-                <span>PhD student in HCI, AI, XR, and spatial learning</span>
+                <span class="postcard-caption-copy">
+                  <strong>Lefan Lai</strong>
+                  <span data-postcard-caption>CHI 2026 · Barcelona</span>
+                </span>
+                <span class="postcard-controls" role="group" aria-label="Photograph navigation">
+                  <button type="button" data-postcard-previous aria-label="Previous photograph">&#8592;</button>
+                  <span class="postcard-dots" aria-hidden="true">
+                    <i class="is-active"></i><i></i><i></i>
+                  </span>
+                  <button type="button" data-postcard-next aria-label="Next photograph">&#8594;</button>
+                </span>
               </figcaption>
             </figure>
           </div>
