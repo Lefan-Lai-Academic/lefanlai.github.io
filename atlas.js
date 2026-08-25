@@ -267,6 +267,23 @@ let contactLetterPoint = null;
 let contactLetterSendingAt = 0;
 let contactMailTimer = 0;
 
+function resetContactLetterVisuals() {
+  contactLetterLayout?.classList.remove("is-letter-writing", "is-letter-complete", "is-link-active");
+  contactLetterField?.classList.remove("is-sending");
+  contactLetterLinks.forEach((link) => link.classList.remove("is-letter-target"));
+  contactLetterLines.forEach((line) => {
+    line.textContent = "";
+    line.classList.remove("is-current");
+  });
+
+  if (contactLetterCanvas && contactLetterContext) {
+    contactLetterContext.save();
+    contactLetterContext.setTransform(1, 0, 0, 1, 0, 0);
+    contactLetterContext.clearRect(0, 0, contactLetterCanvas.width, contactLetterCanvas.height);
+    contactLetterContext.restore();
+  }
+}
+
 function resizeContactLetterCanvas(rect) {
   if (!contactLetterCanvas || !contactLetterContext) return;
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -439,19 +456,14 @@ function startContactLetter() {
   contactLetterPoint = null;
   contactLetterSendingAt = 0;
   contactLetterStartedAt = performance.now();
-  contactLetterLayout.classList.remove("is-letter-writing", "is-letter-complete", "is-link-active");
-  contactLetterField?.classList.remove("is-sending");
-  contactLetterLinks.forEach((link) => link.classList.remove("is-letter-target"));
-  contactLetterLines.forEach((line) => {
-    line.textContent = "";
-    line.classList.remove("is-current");
-  });
+  resetContactLetterVisuals();
   requestAnimationFrame(drawContactLetter);
 }
 
 function stopContactLetter() {
   contactLetterActive = false;
   cancelAnimationFrame(contactLetterFrame);
+  resetContactLetterVisuals();
 }
 
 function setContactLetterTarget(link) {
@@ -503,7 +515,7 @@ function activateAtlasPanel(id, options = {}) {
   }
 
   if (activeId === "contact") {
-    requestAnimationFrame(startContactLetter);
+    startContactLetter();
   } else {
     stopContactLetter();
   }
