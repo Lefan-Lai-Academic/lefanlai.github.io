@@ -1855,8 +1855,8 @@ function drawPublicationCursor(context, time, accent, active) {
 
 function drawPostcardCursor(context, time, accent, active) {
   const sway = atlasReduceMotion.matches ? -0.06 : -0.06 + Math.sin(time * 0.0017) * 0.025;
-  const width = active ? 48 : 41;
-  const height = active ? 31 : 27;
+  const width = active ? 36 : 48;
+  const height = active ? 23 : 31;
   context.rotate(sway);
 
   beginCursorStroke(context, accent, active ? 0.76 : 0.48, active ? 1.5 : 1.15);
