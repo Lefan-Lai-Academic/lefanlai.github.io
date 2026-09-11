@@ -352,9 +352,8 @@ function updateNewsFilters() {
   newsItems.forEach((item) => {
     item.querySelector(".news-latest-label")?.remove();
     item.querySelector(".news-year-mark")?.remove();
-    const isAcceptedPaper = item.dataset.newsCategory === "paper" && item.dataset.newsStatus === "accepted";
     const visible = activeNewsCategory === "all"
-      ? item.dataset.newsCategory === "social" || isAcceptedPaper
+      ? true
       : activeNewsCategory === "social"
         ? item.dataset.newsCategory === "social"
         : item.dataset.newsCategory === "paper" && item.dataset.newsStatus === activeNewsStatus;
