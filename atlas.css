@@ -1803,6 +1803,10 @@ html body > .atlas-site[data-atlas-site] {
   --news-accent: #b25b48;
 }
 
+.news-review {
+  --news-accent: #2f6f9f;
+}
+
 .paper-entry {
   --paper-accent: var(--atlas-blue);
   --paper-wash: #f1f8fd;

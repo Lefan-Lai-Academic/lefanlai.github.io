@@ -353,10 +353,12 @@ function updateNewsFilters() {
     item.querySelector(".news-latest-label")?.remove();
     item.querySelector(".news-year-mark")?.remove();
     const visible = activeNewsCategory === "all"
-      ? true
+      ? item.dataset.newsCategory !== "review"
       : activeNewsCategory === "social"
         ? item.dataset.newsCategory === "social"
-        : item.dataset.newsCategory === "paper" && item.dataset.newsStatus === activeNewsStatus;
+        : activeNewsCategory === "review"
+          ? item.dataset.newsCategory === "review"
+          : item.dataset.newsCategory === "paper" && item.dataset.newsStatus === activeNewsStatus;
     item.hidden = !visible;
     item.classList.toggle("is-hidden", !visible);
     item.classList.remove("is-first-visible");
@@ -371,9 +373,11 @@ function updateNewsFilters() {
     if (index === 0) {
       const latestLabel = document.createElement("span");
       latestLabel.className = "news-latest-label";
-      latestLabel.textContent = activeNewsCategory === "paper" && activeNewsStatus === "submitted"
-        ? "Latest submission"
-        : "Latest";
+      latestLabel.textContent = activeNewsCategory === "review"
+        ? "Latest review"
+        : activeNewsCategory === "paper" && activeNewsStatus === "submitted"
+          ? "Latest submission"
+          : "Latest";
       item.querySelector(".news-copy")?.prepend(latestLabel);
 
       const yearMark = document.createElement("span");

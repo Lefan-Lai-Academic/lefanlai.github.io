@@ -239,6 +239,7 @@
                 <button class="is-active" type="button" data-news-category="all" aria-pressed="true">All</button>
                 <button type="button" data-news-category="social" aria-pressed="false">Social</button>
                 <button type="button" data-news-category="paper" aria-pressed="false">Papers</button>
+                <button type="button" data-news-category="review" aria-pressed="false">Reviewing</button>
               </div>
               <div class="news-filter-group news-status-filter" role="group" aria-label="Paper status" data-news-status-group hidden>
                 <span>Paper Status</span>
@@ -250,6 +251,16 @@
             <p class="news-count" data-news-count aria-live="polite">Showing 8 updates.</p>
 
             <div class="news-list" data-news-list data-visible-count="8">
+              <article class="news-item news-review" data-news-item data-news-category="review" data-news-status="none" hidden>
+                <time datetime="2026-10">Oct 2026</time>
+                <div class="news-marker" aria-hidden="true"><span></span></div>
+                <div class="news-copy">
+                  <p class="news-kind"><span>Academic Service</span><span>Reviewing</span></p>
+                  <h3>I served as a reviewer for CHI 2027.</h3>
+                  <p>I contributed peer-review service to the ACM CHI Conference on Human Factors in Computing Systems.</p>
+                </div>
+              </article>
+
               <article class="news-item news-submitted" data-news-item data-news-category="paper" data-news-status="submitted">
                 <time datetime="2026-09">Sep 2026</time>
                 <div class="news-marker" aria-hidden="true"><span></span></div>
