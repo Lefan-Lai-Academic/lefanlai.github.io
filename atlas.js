@@ -353,7 +353,7 @@ function updateNewsFilters() {
     item.querySelector(".news-latest-label")?.remove();
     item.querySelector(".news-year-mark")?.remove();
     const visible = activeNewsCategory === "all"
-      ? item.dataset.newsCategory !== "review"
+      ? item.dataset.newsCategory !== "review" && item.dataset.newsStatus !== "submitted"
       : activeNewsCategory === "social"
         ? item.dataset.newsCategory === "social"
         : activeNewsCategory === "review"
