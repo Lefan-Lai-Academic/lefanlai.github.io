@@ -361,13 +361,15 @@ function updateNewsFilters() {
           : item.dataset.newsCategory === "paper" && item.dataset.newsStatus === activeNewsStatus;
     item.hidden = !visible;
     item.classList.toggle("is-hidden", !visible);
-    item.classList.remove("is-first-visible");
+    item.classList.remove("is-first-visible", "is-news-left", "is-news-right");
     if (visible) visibleItems.push(item);
     visibleCount += visible ? 1 : 0;
   });
 
   visibleItems.forEach((item, index) => {
     item.classList.toggle("is-first-visible", index === 0);
+    item.classList.toggle("is-news-left", index > 0 && index % 2 === 1);
+    item.classList.toggle("is-news-right", index > 0 && index % 2 === 0);
     item.style.setProperty("--news-order", index);
 
     if (index === 0) {
