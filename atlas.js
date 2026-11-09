@@ -43,9 +43,19 @@ const newsStatusButtons = document.querySelectorAll("button[data-news-status]");
 const newsStatusGroup = document.querySelector("[data-news-status-group]");
 const newsItems = document.querySelectorAll("[data-news-item]");
 const newsCount = document.querySelector("[data-news-count]");
+const reachDashboard = document.querySelector("[data-reach-dashboard]");
+const reachEndpoint = reachDashboard?.dataset.reachEndpoint?.trim() || "";
+const reachRangeButtons = document.querySelectorAll("[data-reach-range]");
+const reachConnection = document.querySelector("[data-reach-connection]");
+const reachMapPoints = document.querySelector("[data-reach-map-points]");
+const reachMapArcs = document.querySelector("[data-reach-map-arcs]");
+const reachActivity = document.querySelector("[data-reach-activity]");
+const reachRegions = document.querySelector("[data-reach-regions]");
 const interactiveName = document.querySelector("[data-interactive-name]");
 let activeNewsCategory = "all";
 let activeNewsStatus = "accepted";
+let activeReachRange = "30d";
+let loadedReachRange = "";
 
 function usesMobileEffects() {
   return atlasNarrowNavigation.matches;
@@ -133,6 +143,9 @@ const atlasAliases = {
   paper: "work",
   papers: "work",
   publications: "work",
+  reach: "reach",
+  visitors: "reach",
+  map: "reach",
   news: "news",
   updates: "news",
   about: "about",
@@ -408,6 +421,274 @@ function updateNewsFilters() {
   if (newsCount) {
     newsCount.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? "update" : "updates"}.`;
   }
+}
+
+const reachPreviewLocations = [
+  { city: "Sydney", country: "Australia", latitude: -33.8688, longitude: 151.2093, visits: 42 },
+  { city: "Singapore", country: "Singapore", latitude: 1.3521, longitude: 103.8198, visits: 35 },
+  { city: "London", country: "United Kingdom", latitude: 51.5072, longitude: -0.1276, visits: 28 },
+  { city: "Seattle", country: "United States", latitude: 47.6062, longitude: -122.3321, visits: 19 },
+  { city: "Barcelona", country: "Spain", latitude: 41.3874, longitude: 2.1686, visits: 16 },
+  { city: "Auckland", country: "New Zealand", latitude: -36.8509, longitude: 174.7645, visits: 14 },
+];
+
+function reachPreviewData(range = "30d") {
+  const factor = range === "24h" ? 0.18 : range === "7d" ? 0.56 : 1;
+  const now = Date.now();
+  return {
+    summary: { total: 1384, day: 23, week: 117, countries: 18 },
+    locations: reachPreviewLocations.map((location) => ({
+      ...location,
+      visits: Math.max(1, Math.round(location.visits * factor)),
+    })),
+    recent: [
+      { city: "Sydney", country: "Australia", path: "Publications", visitedAt: new Date(now - 4 * 60 * 1000).toISOString() },
+      { city: "Singapore", country: "Singapore", path: "News", visitedAt: new Date(now - 19 * 60 * 1000).toISOString() },
+      { city: "London", country: "United Kingdom", path: "Overview", visitedAt: new Date(now - 47 * 60 * 1000).toISOString() },
+      { city: "Seattle", country: "United States", path: "Publications", visitedAt: new Date(now - 96 * 60 * 1000).toISOString() },
+    ],
+    generatedAt: new Date(now).toISOString(),
+  };
+}
+
+function reachSetText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element) element.textContent = value;
+}
+
+function reachNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? new Intl.NumberFormat("en-NZ").format(number) : "—";
+}
+
+function reachConnectionState(state, title, detail) {
+  if (reachConnection) reachConnection.dataset.state = state;
+  reachSetText("[data-reach-status]", title);
+  reachSetText("[data-reach-synced]", detail);
+}
+
+function reachProject(longitude, latitude) {
+  const lon = Math.max(-180, Math.min(180, Number(longitude) || 0));
+  const lat = Math.max(-90, Math.min(90, Number(latitude) || 0));
+  return {
+    x: 40 + ((lon + 180) / 360) * 920,
+    y: 36 + ((90 - lat) / 180) * 448,
+  };
+}
+
+function reachSvgElement(name, attributes = {}) {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", name);
+  Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, String(value)));
+  return element;
+}
+
+function renderReachMap(locations = []) {
+  reachMapPoints?.replaceChildren();
+  reachMapArcs?.replaceChildren();
+  const mapEmpty = document.querySelector("[data-reach-map-empty]");
+  const usableLocations = locations
+    .filter((location) => Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude)))
+    .slice(0, 12);
+
+  if (mapEmpty) mapEmpty.hidden = usableLocations.length > 0;
+  reachSetText(
+    "[data-reach-map-caption]",
+    usableLocations.length
+      ? `${usableLocations.length} active ${usableLocations.length === 1 ? "location" : "locations"}`
+      : "No visitor locations recorded",
+  );
+
+  const home = reachProject(174.7645, -36.8509);
+  usableLocations.forEach((location, index) => {
+    const point = reachProject(location.longitude, location.latitude);
+    const controlX = (home.x + point.x) / 2;
+    const controlY = Math.min(home.y, point.y) - Math.min(120, 42 + Math.abs(home.x - point.x) * 0.09);
+    const arc = reachSvgElement("path", {
+      class: "reach-arc",
+      d: `M${home.x.toFixed(1)} ${home.y.toFixed(1)} Q${controlX.toFixed(1)} ${controlY.toFixed(1)} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`,
+      style: `animation-delay:${index * -0.7}s`,
+    });
+    reachMapArcs?.append(arc);
+
+    const group = reachSvgElement("g", { class: "reach-point" });
+    const halo = reachSvgElement("circle", {
+      class: "reach-point-halo",
+      cx: point.x.toFixed(1),
+      cy: point.y.toFixed(1),
+      r: Math.min(18, 7 + Math.sqrt(Number(location.visits) || 1) * 1.6).toFixed(1),
+      style: `animation-delay:${index * -0.38}s`,
+    });
+    const core = reachSvgElement("circle", {
+      class: "reach-point-core",
+      cx: point.x.toFixed(1),
+      cy: point.y.toFixed(1),
+      r: Math.min(6.5, 2.8 + Math.sqrt(Number(location.visits) || 1) * 0.45).toFixed(1),
+    });
+    const title = reachSvgElement("title");
+    title.textContent = `${location.city || "Unknown city"}, ${location.country || "Unknown country"}: ${reachNumber(location.visits)} visits`;
+    group.append(halo, core, title);
+    reachMapPoints?.append(group);
+  });
+}
+
+function reachFormatTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Recently";
+  return new Intl.DateTimeFormat("en-NZ", {
+    timeZone: "Pacific/Auckland",
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+function renderReachActivity(recent = []) {
+  if (!reachActivity) return;
+  reachActivity.replaceChildren();
+  if (!recent.length) {
+    const empty = document.createElement("li");
+    empty.className = "reach-empty-row";
+    empty.textContent = "Recent visits will appear here without IP addresses or personal identifiers.";
+    reachActivity.append(empty);
+    return;
+  }
+
+  recent.slice(0, 6).forEach((visit) => {
+    const item = document.createElement("li");
+    const place = document.createElement("span");
+    const page = document.createElement("span");
+    const time = document.createElement("time");
+    place.className = "reach-activity-place";
+    page.className = "reach-activity-page";
+    time.className = "reach-activity-time";
+    place.textContent = [visit.city, visit.country].filter(Boolean).join(", ") || "Unknown location";
+    page.textContent = visit.path || "Website visit";
+    time.dateTime = visit.visitedAt || "";
+    time.textContent = reachFormatTime(visit.visitedAt);
+    item.append(place, page, time);
+    reachActivity.append(item);
+  });
+}
+
+function renderReachRegions(locations = []) {
+  if (!reachRegions) return;
+  reachRegions.replaceChildren();
+  const ranked = [...locations]
+    .sort((left, right) => (Number(right.visits) || 0) - (Number(left.visits) || 0))
+    .slice(0, 6);
+  if (!ranked.length) {
+    const empty = document.createElement("li");
+    empty.className = "reach-empty-row";
+    empty.textContent = "Location rankings will appear after the first visits are recorded.";
+    reachRegions.append(empty);
+    return;
+  }
+
+  const maximum = Math.max(...ranked.map((location) => Number(location.visits) || 0), 1);
+  ranked.forEach((location) => {
+    const item = document.createElement("li");
+    const name = document.createElement("span");
+    const bar = document.createElement("span");
+    const fill = document.createElement("span");
+    const value = document.createElement("span");
+    name.className = "reach-region-name";
+    bar.className = "reach-region-bar";
+    value.className = "reach-region-value";
+    name.textContent = location.city || location.country || "Unknown";
+    fill.style.width = `${Math.max(8, ((Number(location.visits) || 0) / maximum) * 100)}%`;
+    value.textContent = reachNumber(location.visits);
+    bar.append(fill);
+    item.append(name, bar, value);
+    reachRegions.append(item);
+  });
+}
+
+function renderReachDashboard(data, options = {}) {
+  const summary = data?.summary || {};
+  const locations = Array.isArray(data?.locations) ? data.locations : [];
+  const recent = Array.isArray(data?.recent) ? data.recent : [];
+  reachSetText("[data-reach-total]", reachNumber(summary.total));
+  reachSetText("[data-reach-day]", reachNumber(summary.day));
+  reachSetText("[data-reach-week]", reachNumber(summary.week));
+  reachSetText("[data-reach-countries]", reachNumber(summary.countries));
+  reachSetText("[data-reach-day-note]", options.preview ? "Local design preview" : "Rolling twenty-four-hour window");
+  renderReachMap(locations);
+  renderReachActivity(recent);
+  renderReachRegions(locations);
+
+  if (options.preview) {
+    reachConnectionState("preview", "Preview data", "Local design preview — not published statistics");
+  } else {
+    const synced = data?.generatedAt ? `Updated ${reachFormatTime(data.generatedAt)}` : "Live anonymous analytics";
+    reachConnectionState("live", "Live signal", synced);
+  }
+}
+
+async function loadReachData(range = activeReachRange) {
+  if (!reachDashboard) return;
+  activeReachRange = range;
+  reachRangeButtons.forEach((button) => {
+    const selected = button.dataset.reachRange === range;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+
+  const isLocalPreview = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+  if (!reachEndpoint) {
+    if (isLocalPreview) {
+      renderReachDashboard(reachPreviewData(range), { preview: true });
+      loadedReachRange = range;
+    } else {
+      reachConnectionState("idle", "Waiting for analytics", "Live data is not connected yet");
+    }
+    return;
+  }
+
+  reachConnectionState("loading", "Loading signal", "Fetching anonymous visit totals");
+  try {
+    const response = await fetch(`${reachEndpoint.replace(/\/$/, "")}/summary?range=${encodeURIComponent(range)}`, {
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) throw new Error(`Reach API returned ${response.status}`);
+    renderReachDashboard(await response.json());
+    loadedReachRange = range;
+  } catch (error) {
+    console.warn("Reach analytics could not be loaded.", error);
+    reachConnectionState("error", "Signal unavailable", "The analytics service could not be reached");
+  }
+}
+
+function reachSessionId() {
+  try {
+    const existing = sessionStorage.getItem("atlas-reach-session");
+    if (existing) return existing;
+    const value = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    sessionStorage.setItem("atlas-reach-session", value);
+    return value;
+  } catch {
+    return crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+}
+
+const trackedReachPanels = new Set();
+function trackReachVisit(panel) {
+  if (!reachEndpoint || location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
+  if (trackedReachPanels.has(panel)) return;
+  trackedReachPanels.add(panel);
+  const payload = {
+    sessionId: reachSessionId(),
+    path: panel,
+    referrer: document.referrer || "",
+    device: matchMedia("(max-width: 640px)").matches ? "mobile" : matchMedia("(max-width: 980px)").matches ? "tablet" : "desktop",
+  };
+  fetch(`${reachEndpoint.replace(/\/$/, "")}/collect`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => {});
 }
 
 const contactLetterLayout = document.querySelector("[data-letter-layout]");
@@ -726,6 +1007,11 @@ function activateAtlasPanel(id, options = {}) {
     startPostcardCycle();
   } else {
     stopPostcardCycle();
+  }
+
+  trackReachVisit(activeId);
+  if (activeId === "reach" && loadedReachRange !== activeReachRange) {
+    loadReachData(activeReachRange);
   }
 
   if (usesMobileEffects() && activeId !== "work") setPublicationFocus(-1);
@@ -1146,6 +1432,10 @@ newsStatusButtons.forEach((button) => {
     activeNewsStatus = button.dataset.newsStatus || "accepted";
     updateNewsFilters();
   });
+});
+
+reachRangeButtons.forEach((button) => {
+  button.addEventListener("click", () => loadReachData(button.dataset.reachRange || "30d"));
 });
 
 updateTopicOptions(paperFilterValue("area"));
@@ -1741,6 +2031,7 @@ function atlasCursorMode() {
     space: "overview",
     news: "news",
     work: "publication",
+    reach: "reach",
     about: "postcard",
     contact: "contact",
   }[activePanel] || "overview";
@@ -1751,6 +2042,7 @@ function cursorAccent() {
     overview: "#187c78",
     news: "#a65350",
     publication: "#2f6f9f",
+    reach: "#bd7642",
     postcard: "#5269a9",
     contact: "#187c78",
   };

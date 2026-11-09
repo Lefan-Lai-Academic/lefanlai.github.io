@@ -36,8 +36,9 @@
             <button class="atlas-tab" type="button" data-atlas-target="space" hidden aria-hidden="true">Space</button>
             <button class="atlas-tab" type="button" data-atlas-target="news" data-menu-index="01">News</button>
             <button class="atlas-tab" type="button" data-atlas-target="work" data-menu-index="02">Publications</button>
-            <button class="atlas-tab" type="button" data-atlas-target="about" data-menu-index="03">About Me</button>
-            <button class="atlas-tab" type="button" data-atlas-target="contact" data-menu-index="04">Contact</button>
+            <button class="atlas-tab" type="button" data-atlas-target="reach" data-menu-index="03">Reach</button>
+            <button class="atlas-tab" type="button" data-atlas-target="about" data-menu-index="04">About Me</button>
+            <button class="atlas-tab" type="button" data-atlas-target="contact" data-menu-index="05">Contact</button>
           </nav>
         </div>
       </header>
@@ -66,13 +67,18 @@
                   <span class="action-label">Publications</span>
                   <span class="action-arrow" aria-hidden="true">&#8594;</span>
                 </button>
-                <button class="text-link" type="button" data-atlas-target="about">
+                <button class="text-link" type="button" data-atlas-target="reach">
                   <span class="action-number" aria-hidden="true">03</span>
+                  <span class="action-label">Reach</span>
+                  <span class="action-arrow" aria-hidden="true">&#8594;</span>
+                </button>
+                <button class="text-link" type="button" data-atlas-target="about">
+                  <span class="action-number" aria-hidden="true">04</span>
                   <span class="action-label">About Me</span>
                   <span class="action-arrow" aria-hidden="true">&#8594;</span>
                 </button>
                 <button class="text-link" type="button" data-atlas-target="contact">
-                  <span class="action-number" aria-hidden="true">04</span>
+                  <span class="action-number" aria-hidden="true">05</span>
                   <span class="action-label">Contact</span>
                   <span class="action-arrow" aria-hidden="true">&#8594;</span>
                 </button>
@@ -509,6 +515,135 @@
                   </div>
                 </div>
               </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="atlas-panel reach-panel" data-atlas-panel="reach" hidden aria-label="Global reach">
+          <div class="reach-shell" data-reach-dashboard data-reach-endpoint="">
+            <header class="reach-masthead">
+              <div>
+                <p class="atlas-kicker">Live site activity</p>
+                <h2 class="atlas-heading reach-heading">Global Reach</h2>
+                <p class="reach-intro">A privacy-conscious view of where this research website is being read around the world.</p>
+              </div>
+              <div class="reach-connection" data-reach-connection data-state="idle" aria-live="polite">
+                <span aria-hidden="true"></span>
+                <div>
+                  <strong data-reach-status>Waiting for analytics</strong>
+                  <small data-reach-synced>Live data is not connected yet</small>
+                </div>
+              </div>
+            </header>
+
+            <div class="reach-overview">
+              <section class="reach-map-card" aria-labelledby="reach-map-title">
+                <div class="reach-card-heading">
+                  <div>
+                    <p class="reach-eyebrow">Geographic signal</p>
+                    <h3 id="reach-map-title">Readers around the world</h3>
+                  </div>
+                  <div class="reach-range" role="group" aria-label="Analytics time range">
+                    <button type="button" data-reach-range="24h">24H</button>
+                    <button type="button" data-reach-range="7d">7D</button>
+                    <button class="is-active" type="button" data-reach-range="30d">30D</button>
+                  </div>
+                </div>
+
+                <div class="reach-map" data-reach-map>
+                  <svg viewBox="0 0 1000 520" role="img" aria-label="World map showing approximate reader locations">
+                    <defs>
+                      <radialGradient id="reach-ocean-glow-live" cx="52%" cy="48%" r="62%">
+                        <stop offset="0%" stop-color="#e4f7f3" stop-opacity="0.62"></stop>
+                        <stop offset="100%" stop-color="#f9fbfa" stop-opacity="0"></stop>
+                      </radialGradient>
+                      <filter id="reach-point-glow-live" x="-200%" y="-200%" width="400%" height="400%">
+                        <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+                        <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+                      </filter>
+                    </defs>
+                    <rect class="reach-ocean" x="0" y="0" width="1000" height="520" fill="url(#reach-ocean-glow-live)"></rect>
+                    <g class="reach-graticule" aria-hidden="true">
+                      <path d="M40 86H960M40 174H960M40 260H960M40 346H960M40 434H960"></path>
+                      <path d="M120 36V484M270 36V484M420 36V484M580 36V484M730 36V484M880 36V484"></path>
+                    </g>
+                    <g class="reach-land" aria-hidden="true">
+                      <path d="M82 132C118 83 181 61 246 75L299 105 319 143 294 176 253 173 224 199 181 189 156 217 121 199 97 166Z"></path>
+                      <path d="M246 220L281 235 303 276 294 326 271 373 248 424 224 392 213 342 190 302 203 251Z"></path>
+                      <path d="M440 116L477 94 518 101 533 128 505 145 469 139Z"></path>
+                      <path d="M468 159L525 153 556 188 552 248 526 323 491 362 458 316 441 251 449 194Z"></path>
+                      <path d="M524 112L594 78 700 72 781 96 869 135 901 177 858 199 815 179 773 205 716 190 667 216 620 190 575 174 548 143Z"></path>
+                      <path d="M804 330L850 309 901 327 919 363 895 395 842 401 803 375Z"></path>
+                      <path d="M333 61L359 42 388 51 379 81 348 91Z"></path>
+                      <path d="M914 414L929 405 940 420 928 436Z"></path>
+                    </g>
+                    <g class="reach-home-base" aria-hidden="true">
+                      <circle cx="937" cy="432" r="15"></circle>
+                      <circle cx="937" cy="432" r="4"></circle>
+                    </g>
+                    <g data-reach-map-arcs aria-hidden="true"></g>
+                    <g data-reach-map-points></g>
+                  </svg>
+                  <div class="reach-map-label"><span></span>Auckland / home base</div>
+                  <p class="reach-map-empty" data-reach-map-empty>Reader locations will appear when live analytics is connected.</p>
+                </div>
+
+                <footer class="reach-map-footer">
+                  <span data-reach-map-caption>No visitor locations recorded</span>
+                  <span>City-level approximation only</span>
+                </footer>
+              </section>
+
+              <aside class="reach-metrics" aria-label="Visit summary">
+                <article class="reach-metric reach-metric-primary">
+                  <span>Total visits</span>
+                  <strong data-reach-total>&mdash;</strong>
+                  <small>Since tracking began</small>
+                </article>
+                <article class="reach-metric">
+                  <span>Last 24 hours</span>
+                  <strong data-reach-day>&mdash;</strong>
+                  <small data-reach-day-note>Awaiting live data</small>
+                </article>
+                <article class="reach-metric">
+                  <span>Last 7 days</span>
+                  <strong data-reach-week>&mdash;</strong>
+                  <small>Rolling seven-day window</small>
+                </article>
+                <article class="reach-metric">
+                  <span>Countries reached</span>
+                  <strong data-reach-countries>&mdash;</strong>
+                  <small>Anonymous country totals</small>
+                </article>
+              </aside>
+            </div>
+
+            <div class="reach-details">
+              <section class="reach-activity-card" aria-labelledby="reach-activity-title">
+                <div class="reach-card-heading">
+                  <div>
+                    <p class="reach-eyebrow">Recent signal</p>
+                    <h3 id="reach-activity-title">Latest activity</h3>
+                  </div>
+                  <span class="reach-timezone">Pacific/Auckland time</span>
+                </div>
+                <ol class="reach-activity-list" data-reach-activity>
+                  <li class="reach-empty-row">Recent visits will appear here without IP addresses or personal identifiers.</li>
+                </ol>
+              </section>
+
+              <section class="reach-regions-card" aria-labelledby="reach-regions-title">
+                <div class="reach-card-heading">
+                  <div>
+                    <p class="reach-eyebrow">Top locations</p>
+                    <h3 id="reach-regions-title">Most active places</h3>
+                  </div>
+                </div>
+                <ol class="reach-regions-list" data-reach-regions>
+                  <li class="reach-empty-row">Location rankings will appear after the first visits are recorded.</li>
+                </ol>
+                <p class="reach-privacy-note"><span aria-hidden="true">&#9671;</span>No IP addresses, cookies, or precise locations are displayed.</p>
+              </section>
             </div>
           </div>
         </section>

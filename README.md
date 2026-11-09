@@ -40,5 +40,6 @@ publishing the contents of `dist/`.
 - `script.js`: scroll reveal, active navigation, mobile menu, spatial canvas
 - `assets/teaser.png`: CHI 2026 publication thumbnail
 - `assets/profile.jpg`: portrait image used in the hero section
+- `reach-analytics/`: anonymous city-level visit collection Worker and D1 schema
 - `scripts/dev-server.mjs`: dependency-free local preview server
 - `scripts/build.mjs`: dependency-free static build script
