@@ -156,7 +156,7 @@ const atlasAliases = {
 
 function atlasPanelId(id) {
   const normalized = atlasAliases[id] || "index";
-  return document.querySelector(`[data-atlas-panel="${normalized}"]`) ? normalized : "index";
+  return document.querySelector(`[data-atlas-panel="${normalized}"]:not([data-atlas-withdrawn])`) ? normalized : "index";
 }
 
 function paperFilterValue(name) {
@@ -627,7 +627,7 @@ function renderReachDashboard(data, options = {}) {
 }
 
 async function loadReachData(range = activeReachRange) {
-  if (!reachDashboard) return;
+  if (!reachDashboard || reachDashboard.closest("[data-atlas-withdrawn]")) return;
   activeReachRange = range;
   reachRangeButtons.forEach((button) => {
     const selected = button.dataset.reachRange === range;
@@ -674,6 +674,7 @@ function reachSessionId() {
 
 const trackedReachPanels = new Set();
 function trackReachVisit(panel) {
+  if (reachDashboard?.closest("[data-atlas-withdrawn]")) return;
   if (!reachEndpoint || location.hostname === "localhost" || location.hostname === "127.0.0.1") return;
   if (trackedReachPanels.has(panel)) return;
   trackedReachPanels.add(panel);
@@ -974,6 +975,9 @@ contactLetterLinks.find((link) => link.dataset.letterLink === "email")?.addEvent
 
 function activateAtlasPanel(id, options = {}) {
   const activeId = atlasPanelId(id);
+  if (options.updateHash === false && (atlasAliases[id] || "index") !== activeId) {
+    history.replaceState(null, "", `#${activeId}`);
+  }
 
   atlasPanels.forEach((panel) => {
     const active = panel.dataset.atlasPanel === activeId;

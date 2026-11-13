@@ -70,6 +70,12 @@ html body > .atlas-site[data-atlas-site] {
   font: inherit;
 }
 
+/* Keep withdrawn features recoverable in source, but unavailable on the public site. */
+.atlas-site [data-atlas-withdrawn],
+.atlas-site [data-atlas-target="reach"][hidden] {
+  display: none !important;
+}
+
 .atlas-cursor {
   position: fixed;
   left: 0;
