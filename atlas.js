@@ -143,6 +143,9 @@ const atlasAliases = {
   paper: "work",
   papers: "work",
   publications: "work",
+  projects: "projects",
+  project: "projects",
+  spatial: "projects",
   reach: "reach",
   visitors: "reach",
   map: "reach",
@@ -2035,6 +2038,7 @@ function atlasCursorMode() {
     space: "overview",
     news: "news",
     work: "publication",
+    projects: "projects",
     reach: "reach",
     about: "postcard",
     contact: "contact",
@@ -2046,6 +2050,7 @@ function cursorAccent() {
     overview: "#187c78",
     news: "#a65350",
     publication: "#2f6f9f",
+    projects: "#31584d",
     reach: "#bd7642",
     postcard: "#5269a9",
     contact: "#187c78",
@@ -2107,6 +2112,28 @@ function drawOverviewCursor(context, time, accent, active) {
   const innerY = Math.sin(innerPhase) * 29 * reach;
   cursorDot(context, outerX, outerY, active ? 3.2 : 2.4, accent, 0.82);
   cursorDot(context, innerX, innerY, 1.8, accent, 0.55);
+}
+
+function drawProjectsCursor(context, time, accent, active) {
+  const shift = active ? 0 : 7;
+  const half = active ? 13 : 15;
+  const angle = atlasReduceMotion.matches ? 0 : Math.sin(time * 0.0012) * 0.055;
+  context.rotate(angle);
+  beginCursorStroke(context, accent, 0.32, 1);
+  context.rect(-half + shift, -half - shift, half * 2, half * 2);
+  context.stroke();
+  beginCursorStroke(context, accent, active ? 0.82 : 0.62, active ? 1.5 : 1.15);
+  context.rect(-half - shift, -half + shift, half * 2, half * 2);
+  context.stroke();
+  if (!active) {
+    beginCursorStroke(context, accent, 0.38, 1);
+    for (const [x, y] of [[-half, -half], [half, -half], [half, half], [-half, half]]) {
+      context.moveTo(x - shift, y + shift);
+      context.lineTo(x + shift, y - shift);
+    }
+    context.stroke();
+  }
+  cursorDot(context, 0, 0, active ? 2.1 : 1.4, accent, 0.62);
 }
 
 function drawNewsCursor(context, time, accent, active) {
@@ -2249,6 +2276,7 @@ function drawCursorField(frameTime = performance.now()) {
 
   if (mode === "news") drawNewsCursor(cursorContext, frameTime, accent, active);
   else if (mode === "publication") drawPublicationCursor(cursorContext, frameTime, accent, active);
+  else if (mode === "projects") drawProjectsCursor(cursorContext, frameTime, accent, active);
   else if (mode === "postcard") drawPostcardCursor(cursorContext, frameTime, accent, active);
   else if (mode === "contact") drawContactCursor(cursorContext, frameTime, accent, active);
   else drawOverviewCursor(cursorContext, frameTime, accent, active);

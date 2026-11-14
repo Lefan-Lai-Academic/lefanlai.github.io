@@ -271,6 +271,7 @@ html body > .atlas-site[data-atlas-site] {
 
 .atlas-panel[data-atlas-panel="news"],
 .atlas-panel[data-atlas-panel="work"],
+.atlas-panel[data-atlas-panel="projects"],
 .atlas-panel[data-atlas-panel="reach"],
 .atlas-panel[data-atlas-panel="about"] {
   padding-top: clamp(16px, 2.1vw, 30px);
@@ -1234,6 +1235,7 @@ html body > .atlas-site[data-atlas-site] {
 
 .atlas-heading.publications-heading,
 .atlas-heading.news-heading,
+.atlas-heading.projects-heading,
 .atlas-heading.about-heading {
   max-width: none;
   font-family: var(--atlas-display-font);

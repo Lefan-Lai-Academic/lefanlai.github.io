@@ -41,5 +41,6 @@ publishing the contents of `dist/`.
 - `assets/teaser.png`: CHI 2026 publication thumbnail
 - `assets/profile.jpg`: portrait image used in the hero section
 - `reach-analytics/`: anonymous city-level visit collection Worker and D1 schema
+- `projects.css` / `projects.js`: Projects presentation, funding and role details, and interactive spatial illustration
 - `scripts/dev-server.mjs`: dependency-free local preview server
 - `scripts/build.mjs`: dependency-free static build script
