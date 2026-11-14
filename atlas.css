@@ -2869,6 +2869,19 @@ html body > .atlas-site[data-atlas-site] {
   color: var(--timeline-accent);
 }
 
+.timeline .timeline-wam em {
+  color: var(--timeline-accent, #5269a9);
+}
+
+.timeline .timeline-wam small {
+  flex-basis: 100%;
+  color: var(--atlas-muted);
+  font-family: var(--atlas-reading-font);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
 .reach-panel {
   --reach-accent: #167c78;
   --reach-warm: #bd7642;

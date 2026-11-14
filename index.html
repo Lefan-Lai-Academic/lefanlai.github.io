@@ -13,8 +13,8 @@
     </script>
     <link rel="stylesheet" href="styles.css?v=html-effects-20260730" />
     <link rel="stylesheet" href="reboot.css?v=20260825" />
-    <link rel="stylesheet" href="atlas.css?v=20261115-projects1" />
-    <link rel="stylesheet" href="projects.css?v=20261115-projects1" />
+    <link rel="stylesheet" href="atlas.css?v=20261115-projects2" />
+    <link rel="stylesheet" href="projects.css?v=20261115-projects2" />
   </head>
   <body>
     <div class="atlas-site" data-atlas-site>
@@ -661,18 +661,25 @@
             <p>Research with a purpose, and people at its heart.</p>
           </header>
 
-          <article class="spatial-project" aria-labelledby="spatial-project-title">
+          <article class="spatial-project" data-project-expanded="false" aria-labelledby="spatial-project-title">
+            <button class="project-back-button" type="button" data-project-back hidden><span aria-hidden="true">←</span> All projects</button>
             <div class="project-hero">
               <div class="project-introduction">
                 <p class="project-eyebrow"><span>01</span> Current research · Aotearoa New Zealand</p>
                 <h3 id="spatial-project-title">Spatial skills<br>for <em>STEM.</em></h3>
-                <p class="project-full-title">Spatial Skills Training for Improved Students’ Participation and Performance in STEM</p>
-                <p class="project-lead">Helping young people think in three dimensions, through playful learning, adaptive technology, and Māori cultural knowledge.</p>
-                <a class="project-story-link" href="https://www.auckland.ac.nz/en/news/2025/07/24/pioneering-research-promises-to-improve-students-performance-in-stem.html" target="_blank" rel="noopener noreferrer">Read the project story <span aria-hidden="true">↗</span></a>
+                <p class="project-summary-copy" data-project-summary-only>A spatial-skills learning game grounded in Māori culture, developed in partnership with <a href="https://www.metia.co.nz/" target="_blank" rel="noopener noreferrer">Metia Interactive</a>.</p>
+                <dl class="project-summary-facts" data-project-summary-only>
+                  <div><dt>Project funding</dt><dd>NZ$1 million</dd></div>
+                  <div><dt>My role</dt><dd>Sole PhD student</dd></div>
+                </dl>
+                <button class="project-open-button" type="button" data-project-open data-project-summary-only aria-expanded="false" aria-controls="spatial-project-details">View project <span aria-hidden="true">→</span></button>
+                <p class="project-full-title" data-project-detail-only hidden>Spatial Skills Training for Improved Students’ Participation and Performance in STEM</p>
+                <p class="project-lead" data-project-detail-only hidden>Many established educational games reflect Western narratives and cultural settings. With Māori game studio <a href="https://www.metia.co.nz/" target="_blank" rel="noopener noreferrer">Metia Interactive</a>, we are developing a spatial-skills training game grounded in mātauranga Māori.</p>
+                <a class="project-story-link" data-project-detail-only hidden href="https://www.auckland.ac.nz/en/news/2025/07/24/pioneering-research-promises-to-improve-students-performance-in-stem.html" target="_blank" rel="noopener noreferrer">Read the project story <span aria-hidden="true">↗</span></a>
               </div>
 
               <figure class="project-spatial-figure" aria-label="Interactive illustration of three-dimensional spatial relationships">
-                <div class="project-spatial-stage" data-spatial-stage>
+                <div class="project-spatial-stage" data-spatial-stage role="group" tabindex="0" aria-label="Interactive 3D illustration. Drag to rotate, or use the arrow keys. Press Home to reset the view.">
                   <svg class="project-field-lines" viewBox="0 0 540 480" aria-hidden="true">
                     <defs>
                       <pattern id="project-field-grid" width="36" height="36" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
@@ -699,7 +706,7 @@
                       </div>
                     </div>
                   </div>
-                  <span class="project-scene-label project-scene-label-top">Rotate. Relate. Reason.</span>
+                  <span class="project-scene-label project-scene-label-top">Drag to explore.</span>
                   <span class="project-scene-label project-scene-label-side" aria-hidden="true">x · y · z</span>
                   <button class="project-rotate-button" type="button" data-spatial-rotate aria-label="Rotate the spatial illustration by 90 degrees">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 8A8 8 0 1 0 20 14M19 3V8H14"></path></svg>
@@ -711,6 +718,7 @@
               </figure>
             </div>
 
+            <div class="project-details" id="spatial-project-details" data-project-details hidden>
             <dl class="project-facts" aria-label="Project funding and my role">
               <div><dt>Project funding</dt><dd>NZ$1 <span>million</span></dd><small>MBIE Endeavour Fund · Smart Ideas</small></div>
               <div><dt>My role</dt><dd class="project-role-value">Sole PhD student</dd><small>The only PhD student on this project</small></div>
@@ -769,15 +777,19 @@
                   <h4 id="project-culture-title">Learning through<br>culture, place<br><em>&amp; play.</em></h4>
                 </div>
                 <div class="project-culture-copy">
-                  <p>Developed in partnership with Māori game studio <strong>Metia Interactive</strong>, the programme draws on visual and animation elements from <em>Guardian Maia</em> to explore spatial learning in a culturally grounded adventure-game setting.</p>
-                  <p>Co-design with Māori students, educators, and mātauranga Māori experts connects the research to the people and knowledge it aims to serve.</p>
+                  <p>Educational games have often foregrounded Western stories and cultural perspectives, leaving Indigenous knowledge less visible. Our project brings mātauranga Māori into the design of a spatial-skills learning game.</p>
+                  <p>Working with Māori game studio <a href="https://www.metia.co.nz/" target="_blank" rel="noopener noreferrer"><strong>Metia Interactive</strong></a>, we are developing an adventure-style educational game that draws on the visual and animation elements of <em>Guardian Maia</em>. We aim to make spatial reasoning practice engaging and culturally meaningful, supporting students’ participation and confidence in STEM.</p>
+                  <p>Co-design with Māori students, educators, and mātauranga Māori experts connects the game’s tasks, stories, and interactions to the communities it aims to serve.</p>
                   <p class="project-values-intro">The programme also explores Māori-informed perspectives on learning:</p>
                   <dl class="project-cultural-values">
                     <div><dt lang="mi">Manawaroa</dt><dd>Perseverance</dd></div>
                     <div><dt lang="mi">Māia</dt><dd>Confidence &amp; capability</dd></div>
                     <div><dt lang="mi">Ihumanea</dt><dd>Intuitiveness</dd></div>
                   </dl>
-                  <a class="project-culture-source" href="https://www.auckland.ac.nz/en/news/2025/07/24/pioneering-research-promises-to-improve-students-performance-in-stem.html" target="_blank" rel="noopener noreferrer">About the collaboration <span aria-hidden="true">↗</span></a>
+                  <div class="project-culture-links">
+                    <a class="project-culture-source" href="https://www.auckland.ac.nz/en/news/2025/07/24/pioneering-research-promises-to-improve-students-performance-in-stem.html" target="_blank" rel="noopener noreferrer">About the collaboration <span aria-hidden="true">↗</span></a>
+                    <a class="project-culture-source" href="https://link.springer.com/article/10.1007/s13384-026-00992-z" target="_blank" rel="noopener noreferrer">Research context <span aria-hidden="true">↗</span></a>
+                  </div>
                 </div>
               </div>
             </section>
@@ -796,6 +808,7 @@
                 </div>
               </div>
             </section>
+            </div>
           </article>
         </section>
 
@@ -851,7 +864,7 @@
                   <div>
                     <h3>Master of Computer Science</h3>
                     <p>The University of Sydney, Australia.</p>
-                    <p class="timeline-wam"><span>WAM</span> 85.75 <em>High Distinction</em></p>
+                    <p class="timeline-wam"><em>High Distinction</em><small>University of Sydney’s highest grade band</small></p>
                   </div>
                 </article>
                 <article tabindex="0" data-postcard-place="Nanchang" data-postcard-code="NCU" data-postcard-year="2023" data-postcard-tone="nanchang" data-postcard-image="assets/about-nanchang.jpg" data-postcard-caption="Bachelor of Software Engineering · Nanchang University">
@@ -1788,7 +1801,7 @@
                 <h3>Master of Computer Science</h3>
                 <p class="institution">The University of Sydney, Australia</p>
                 <ul>
-                  <li>Weighted Average Mark: 85.75, High Distinction.</li>
+                  <li>High Distinction — the University of Sydney’s highest grade band.</li>
                   <li>Thesis: Searching Through Complex Worlds.</li>
                   <li>Thesis Grade: 92, High Distinction.</li>
                   <li>Supervisors: Dr Brandon Syiem and Dr Zhanna Sarsenbayeva.</li>
@@ -1959,8 +1972,8 @@
 
     <script src="script.js?v=html-effects-20260730"></script>
     <script type="text/plain" data-retired-src="reboot.js?v=20260825"></script>
-    <script src="projects.js?v=20261115-projects1"></script>
-    <script src="atlas.js?v=20261115-projects1"></script>
+    <script src="projects.js?v=20261115-projects2"></script>
+    <script src="atlas.js?v=20261115-projects2"></script>
   </body>
 </html>
 

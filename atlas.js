@@ -978,6 +978,7 @@ contactLetterLinks.find((link) => link.dataset.letterLink === "email")?.addEvent
 
 function activateAtlasPanel(id, options = {}) {
   const activeId = atlasPanelId(id);
+  if (activeId === "projects") window.atlasProjects?.showOverview();
   if (options.updateHash === false && (atlasAliases[id] || "index") !== activeId) {
     history.replaceState(null, "", `#${activeId}`);
   }

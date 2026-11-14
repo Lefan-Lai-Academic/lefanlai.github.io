@@ -25,7 +25,8 @@
   line-height: 1.5;
 }
 
-.spatial-project { font-family: var(--atlas-reading-font); }
+.spatial-project { font-family: var(--atlas-reading-font); scroll-margin-top: 90px; }
+.spatial-project [hidden] { display: none !important; }
 .spatial-project a { font-weight: 400; }
 .spatial-project a[target="_blank"]::after { display: none; content: none; }
 .project-hero { display: grid; grid-template-columns: 1.02fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; padding: clamp(36px, 5vw, 64px) 0 38px; }
@@ -40,14 +41,18 @@
 .project-story-link:hover span { transform: translate(2px, -2px); }
 
 .project-spatial-figure { min-width: 0; margin: 0; }
-.project-spatial-stage { position: relative; display: grid; place-items: center; min-height: 430px; aspect-ratio: 1.1; overflow: hidden; background: radial-gradient(ellipse at 52% 48%, #edf1ea 0%, #f7f8f4 46%, #fcfcfa 76%); perspective: 950px; }
+.project-spatial-stage { position: relative; display: grid; place-items: center; min-height: 430px; aspect-ratio: 1.1; overflow: hidden; background: radial-gradient(ellipse at 52% 48%, #edf1ea 0%, #f7f8f4 46%, #fcfcfa 76%); perspective: 950px; touch-action: none; user-select: none; }
+.project-spatial-stage:focus-visible { outline: 1px solid var(--project-green); outline-offset: 4px; }
+.project-spatial-stage.is-dragging .project-spatial-structure { transition: none; }
+.project-spatial-stage.is-dragging .project-spatial-float,
+.project-spatial-stage:focus-within .project-spatial-float { animation-play-state: paused; }
 .project-field-lines { position: absolute; inset: 0; width: 100%; height: 100%; color: #31584d; opacity: 0.27; }
 .project-orbit { fill: none; stroke: #31584d; stroke-width: 1; stroke-dasharray: 4 7; }
 .project-orbit-secondary { stroke: #a65f4d; stroke-dasharray: none; opacity: 0.55; }
 .project-field-axis { fill: none; stroke: #31584d; stroke-width: 0.6; opacity: 0.35; }
 .project-field-lines circle { fill: #a65f4d; }
 .project-spatial-float { position: relative; width: 200px; height: 200px; transform-style: preserve-3d; animation: projectSpatialFloat 8s ease-in-out infinite; }
-.project-spatial-structure { --scene-turn: -32deg; position: relative; width: 200px; height: 200px; transform-style: preserve-3d; transform: rotateX(-24deg) rotateY(var(--scene-turn)); transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1); }
+.project-spatial-structure { --scene-turn: -32deg; --scene-tilt: -24deg; position: relative; width: 200px; height: 200px; transform-style: preserve-3d; transform: rotateX(var(--scene-tilt)) rotateY(var(--scene-turn)); transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1); }
 .spatial-block { --block-size: 94px; --block-half: 47px; position: absolute; top: 53px; left: 53px; width: var(--block-size); height: var(--block-size); transform-style: preserve-3d; }
 .spatial-block-one { transform: translate3d(-48px, 38px, 48px); }
 .spatial-block-two { transform: translate3d(48px, 38px, 48px); }
@@ -135,6 +140,25 @@
 .project-contribution-links button { display: inline-flex; gap: 18px; align-items: center; padding: 0 0 6px; border: 0; border-bottom: 1px solid #31584d55; background: transparent; color: var(--project-green); font-family: var(--atlas-reading-font); font-size: 0.89rem; font-style: italic; }
 .project-contribution-links button:last-child { color: var(--atlas-muted); border-bottom-color: var(--atlas-line); }
 
+.project-summary-copy { max-width: 43ch; margin: 20px 0 24px; color: var(--atlas-soft-ink); font-size: 1.05rem; line-height: 1.7; }
+.atlas-site .project-summary-copy a,
+.atlas-site .project-lead a,
+.atlas-site .project-culture-copy p a { color: var(--project-green); font-weight: 500; text-decoration-color: #31584d55; }
+.project-summary-facts { display: flex; flex-wrap: wrap; gap: 18px 32px; margin: 0 0 28px; }
+.project-summary-facts dt { margin-bottom: 6px; color: var(--atlas-muted); font-size: 0.77rem; font-style: italic; }
+.project-summary-facts dd { margin: 0; color: var(--project-green); font-size: 1.07rem; }
+.project-open-button, .project-back-button { display: inline-flex; align-items: center; gap: 20px; padding: 0 0 6px; border: 0; border-bottom: 1px solid #31584d55; background: transparent; color: var(--project-green); font-family: var(--atlas-reading-font); font-size: 0.92rem; font-style: italic; }
+.project-open-button:focus-visible, .project-back-button:focus-visible { outline: 2px solid var(--project-green); outline-offset: 5px; }
+.project-open-button span { transition: transform 180ms ease; }
+.project-open-button:hover span { transform: translateX(4px); }
+.project-back-button { margin-top: 26px; padding-bottom: 4px; color: var(--atlas-muted); font-size: 0.82rem; border-bottom-color: var(--atlas-line); }
+.spatial-project[data-project-expanded="false"] .project-hero { padding-block: 38px; }
+.spatial-project[data-project-expanded="false"] .project-introduction h3 { font-size: clamp(2.8rem, 4.6vw, 4.4rem); }
+.spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 340px; aspect-ratio: 1.32; }
+.spatial-project[data-project-expanded="false"] .project-spatial-float { animation: none; }
+.spatial-project[data-project-expanded="false"] .project-spatial-figure figcaption { display: none; }
+.project-culture-links { display: flex; flex-wrap: wrap; gap: 13px 25px; }
+
 @media (max-width: 980px) {
   .project-hero { gap: 30px; }
   .project-spatial-stage { min-height: 360px; }
@@ -145,6 +169,8 @@
 }
 
 @media (max-width: 760px) {
+  .spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 260px; aspect-ratio: 1.5; }
+  .spatial-project[data-project-expanded="false"] .project-spatial-float { transform: scale(0.8); }
   .projects-masthead { align-items: flex-start; flex-direction: column; gap: 13px; }
   .project-hero { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
   .project-introduction h3 { font-size: clamp(3.35rem, 9vw, 4.8rem); }
