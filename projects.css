@@ -147,6 +147,10 @@
 .project-summary-facts { display: flex; flex-wrap: wrap; gap: 18px 32px; margin: 0 0 28px; }
 .project-summary-facts dt { margin-bottom: 6px; color: var(--atlas-muted); font-size: 0.77rem; font-style: italic; }
 .project-summary-facts dd { margin: 0; color: var(--project-green); font-size: 1.07rem; }
+.project-summary-target { flex-basis: 100%; padding-top: 15px; border-top: 1px solid var(--atlas-line); }
+.project-summary-target dd { line-height: 1.5; }
+.project-summary-target dd strong { margin-right: 3px; font-family: var(--atlas-display-font); font-size: 1.6rem; font-weight: 400; }
+.project-summary-target small { display: block; margin-top: 4px; color: var(--atlas-muted); font-size: 0.77rem; font-style: italic; line-height: 1.5; }
 .project-open-button, .project-back-button { display: inline-flex; align-items: center; gap: 20px; padding: 0 0 6px; border: 0; border-bottom: 1px solid #31584d55; background: transparent; color: var(--project-green); font-family: var(--atlas-reading-font); font-size: 0.92rem; font-style: italic; }
 .project-open-button:focus-visible, .project-back-button:focus-visible { outline: 2px solid var(--project-green); outline-offset: 5px; }
 .project-open-button span { transition: transform 180ms ease; }
