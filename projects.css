@@ -32,7 +32,7 @@
 .project-hero { display: grid; grid-template-columns: 1.02fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; padding: clamp(36px, 5vw, 64px) 0 38px; }
 .project-eyebrow { margin: 0 0 22px; color: var(--project-green); font-family: var(--atlas-reading-font); font-size: 0.83rem; font-style: italic; font-weight: 400; line-height: 1.5; }
 .project-eyebrow > span:not([lang]) { display: inline-block; margin-right: 12px; color: var(--project-red); font-style: normal; }
-.project-introduction h3 { margin: 0; color: var(--atlas-ink); font-family: var(--atlas-display-font); font-size: clamp(3.3rem, 5.8vw, 5.4rem); font-weight: 400; line-height: 0.98; letter-spacing: -0.025em; }
+.project-introduction h3 { margin: 0; color: var(--atlas-ink); font-family: var(--atlas-display-font); font-size: clamp(1.5rem, 4.5vw, 3.15rem); font-weight: 400; line-height: 1.08; letter-spacing: -0.025em; white-space: nowrap; }
 .project-introduction h3 em { color: var(--project-green); font-weight: 400; }
 .project-full-title { max-width: 44ch; margin: 24px 0 0; color: var(--atlas-muted); font-size: 0.83rem; font-style: italic; line-height: 1.65; }
 .project-lead { max-width: 42ch; margin: 20px 0 24px; color: var(--atlas-soft-ink); font-size: clamp(1.02rem, 1.4vw, 1.15rem); line-height: 1.65; }
@@ -141,25 +141,29 @@
 .project-contribution-links button:last-child { color: var(--atlas-muted); border-bottom-color: var(--atlas-line); }
 
 .project-summary-copy { max-width: 43ch; margin: 20px 0 24px; color: var(--atlas-soft-ink); font-size: 1.05rem; line-height: 1.7; }
+.project-summary-copy > span { display: block; }
 .atlas-site .project-summary-copy a,
 .atlas-site .project-lead a,
 .atlas-site .project-culture-copy p a { color: var(--project-green); font-weight: 500; text-decoration-color: #31584d55; }
 .project-summary-facts { display: flex; flex-wrap: wrap; gap: 18px 32px; margin: 0 0 28px; }
 .project-summary-facts dt { margin-bottom: 6px; color: var(--atlas-muted); font-size: 0.77rem; font-style: italic; }
 .project-summary-facts dd { margin: 0; color: var(--project-green); font-size: 1.07rem; }
-.project-summary-target { flex-basis: 100%; padding-top: 15px; border-top: 1px solid var(--atlas-line); }
-.project-summary-target dd { line-height: 1.5; }
-.project-summary-target dd strong { margin-right: 3px; font-family: var(--atlas-display-font); font-size: 1.6rem; font-weight: 400; }
-.project-summary-target small { display: block; margin-top: 4px; color: var(--atlas-muted); font-size: 0.77rem; font-style: italic; line-height: 1.5; }
+.project-summary-target { position: relative; display: flex; flex-basis: 100%; align-items: baseline; gap: 8px; padding-top: 13px; border-top: 1px solid var(--atlas-line); white-space: nowrap; }
+.project-summary-target dt { flex-shrink: 0; margin: 0; }
+.project-summary-target dt::after { content: " ·"; }
+.project-summary-target dd { font-size: 0.89rem; line-height: 1.5; }
+.project-summary-target dd strong { font-weight: 500; }
+.project-summary-target small { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .project-open-button, .project-back-button { display: inline-flex; align-items: center; gap: 20px; padding: 0 0 6px; border: 0; border-bottom: 1px solid #31584d55; background: transparent; color: var(--project-green); font-family: var(--atlas-reading-font); font-size: 0.92rem; font-style: italic; }
 .project-open-button:focus-visible, .project-back-button:focus-visible { outline: 2px solid var(--project-green); outline-offset: 5px; }
 .project-open-button span { transition: transform 180ms ease; }
 .project-open-button:hover span { transform: translateX(4px); }
 .project-back-button { margin-top: 26px; padding-bottom: 4px; color: var(--atlas-muted); font-size: 0.82rem; border-bottom-color: var(--atlas-line); }
-.spatial-project[data-project-expanded="false"] .project-hero { padding-block: 38px; }
-.spatial-project[data-project-expanded="false"] .project-introduction h3 { font-size: clamp(2.8rem, 4.6vw, 4.4rem); }
-.spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 340px; aspect-ratio: 1.32; }
-.spatial-project[data-project-expanded="false"] .project-spatial-float { animation: none; }
+.spatial-project[data-project-expanded="false"] .project-hero { grid-template-columns: minmax(0, 1.75fr) minmax(260px, 0.85fr); padding-block: 38px; }
+.spatial-project[data-project-expanded="false"] .project-summary-copy { max-width: none; }
+.spatial-project[data-project-expanded="false"] .project-spatial-figure { width: 100%; max-width: 360px; justify-self: end; }
+.spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 260px; aspect-ratio: 1.32; }
+.spatial-project[data-project-expanded="false"] .project-spatial-float { transform: scale(0.8); animation: none; }
 .spatial-project[data-project-expanded="false"] .project-spatial-figure figcaption { display: none; }
 .project-culture-links { display: flex; flex-wrap: wrap; gap: 13px 25px; }
 
@@ -173,11 +177,13 @@
 }
 
 @media (max-width: 760px) {
-  .spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 260px; aspect-ratio: 1.5; }
-  .spatial-project[data-project-expanded="false"] .project-spatial-float { transform: scale(0.8); }
+  .spatial-project[data-project-expanded="false"] .project-hero { grid-template-columns: 1fr; }
+  .spatial-project[data-project-expanded="false"] .project-spatial-figure { max-width: 300px; justify-self: center; }
+  .spatial-project[data-project-expanded="false"] .project-spatial-stage { min-height: 210px; aspect-ratio: 1.4; }
+  .spatial-project[data-project-expanded="false"] .project-spatial-float { transform: scale(0.7); }
   .projects-masthead { align-items: flex-start; flex-direction: column; gap: 13px; }
   .project-hero { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
-  .project-introduction h3 { font-size: clamp(3.35rem, 9vw, 4.8rem); }
+  .project-introduction h3 { font-size: clamp(1.5rem, 4.5vw, 3.15rem); }
   .project-lead { max-width: 48ch; }
   .project-spatial-stage { aspect-ratio: 1.4; min-height: 330px; }
   .project-spatial-float { transform: scale(1); }
@@ -198,6 +204,9 @@
 }
 
 @media (max-width: 480px) {
+  .project-summary-copy { font-size: clamp(0.8rem, 3.5vw, 0.95rem); }
+  .project-summary-target dt { font-size: 0.7rem; }
+  .project-summary-target dd { font-size: 0.76rem; }
   .projects-masthead > p { max-width: 28ch; font-size: 0.86rem; }
   .project-eyebrow { font-size: 0.76rem; }
   .project-spatial-stage { min-height: 320px; aspect-ratio: 1.08; }
